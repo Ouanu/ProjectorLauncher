@@ -21,6 +21,7 @@ import com.android.projectorlauncher.R;
 import com.android.projectorlauncher.bean.VideoCard;
 import com.android.projectorlauncher.databinding.FragmentPagerBinding;
 import com.android.projectorlauncher.databinding.ItemCardBinding;
+import com.android.projectorlauncher.utils.JumpToApplication;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.google.android.material.tabs.TabLayout;
@@ -140,7 +141,7 @@ public class PagerFragment extends Fragment {
 
             @Override
             public void onClick(View v) {
-//                JumpToApplication.turnToKtcp(getContext(), card.getId());
+                JumpToApplication.turnToKtcp(getContext(), card.getId());
             }
         }
     }
