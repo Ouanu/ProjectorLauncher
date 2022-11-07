@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/banner"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginVertical="20dp"
+        app:cardBackgroundColor="@color/white"
+        app:cardCornerRadius="10dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHeight_percent="0.8"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0"
+        app:layout_constraintWidth_percent="0.85">
+        <ImageView
+            android:id="@+id/image"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="centerCrop"/>
+    </androidx.cardview.widget.CardView>
+
+    <com.android.projectorlauncher.ui.design.PosterCardView
+        android:id="@+id/recommend_1"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginVertical="20dp"
+        android:clickable="true"
+        android:focusable="true"
+        android:translationZ="10dp"
+        app:cardBackgroundColor="@color/white"
+        app:cardCornerRadius="10dp"
+        android:nextFocusRight="@id/recommend_2"
+        android:nextFocusLeft="@id/search"
+        android:nextFocusDown="@id/recommend_1"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHeight_percent="0.2"
+        app:layout_constraintHorizontal_bias="0.05"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/banner"
+        app:layout_constraintVertical_bias="1"
+        app:layout_constraintWidth_percent="0.16" />
+
+    <com.android.projectorlauncher.ui.design.PosterCardView
+        android:id="@+id/recommend_2"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginVertical="20dp"
+        android:clickable="true"
+        android:focusable="true"
+        android:translationZ="10dp"
+        app:cardBackgroundColor="@color/white"
+        app:cardCornerRadius="10dp"
+        android:nextFocusRight="@id/recommend_3"
+        android:nextFocusLeft="@id/recommend_1"
+        android:nextFocusDown="@id/recommend_2"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHeight_percent="0.2"
+        app:layout_constraintHorizontal_bias="0.25"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/banner"
+        app:layout_constraintVertical_bias="1"
+        app:layout_constraintWidth_percent="0.16" />
+
+    <com.android.projectorlauncher.ui.design.PosterCardView
+        android:id="@+id/recommend_3"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginVertical="20dp"
+        android:clickable="true"
+        android:focusable="true"
+        android:translationZ="10dp"
+        app:cardBackgroundColor="@color/white"
+        app:cardCornerRadius="10dp"
+        android:nextFocusRight="@id/recommend_4"
+        android:nextFocusLeft="@id/recommend_2"
+        android:nextFocusDown="@id/recommend_3"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHeight_percent="0.2"
+        app:layout_constraintHorizontal_bias="0.45"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/banner"
+        app:layout_constraintVertical_bias="1"
+        app:layout_constraintWidth_percent="0.16" />
+
+    <com.android.projectorlauncher.ui.design.PosterCardView
+        android:id="@+id/recommend_4"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginVertical="20dp"
+        android:clickable="true"
+        android:focusable="true"
+        android:translationZ="10dp"
+        app:cardBackgroundColor="@color/white"
+        app:cardCornerRadius="10dp"
+        android:nextFocusRight="@id/category"
+        android:nextFocusLeft="@id/recommend_3"
+        android:nextFocusDown="@id/recommend_4"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHeight_percent="0.2"
+        app:layout_constraintHorizontal_bias="0.65"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/banner"
+        app:layout_constraintVertical_bias="1"
+        app:layout_constraintWidth_percent="0.16" />
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/category"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginVertical="20dp"
+        android:clickable="true"
+        android:focusable="true"
+        android:nextFocusLeft="@id/recommend_4"
+        android:nextFocusRight="@id/search"
+        android:nextFocusDown="@id/category"
+        android:translationZ="10dp"
+        app:cardBackgroundColor="@color/self_3"
+        app:cardCornerRadius="10dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHeight_percent="0.2"
+        app:layout_constraintHorizontal_bias="0.81"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/banner"
+        app:layout_constraintVertical_bias="1"
+        app:layout_constraintWidth_percent="0.12">
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingTop="5dp"
+            android:scaleType="centerInside"
+            android:src="@drawable/movie_category" />
+    </androidx.cardview.widget.CardView>
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/search"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginVertical="20dp"
+        android:clickable="true"
+        android:focusable="true"
+        android:nextFocusLeft="@id/category"
+        android:nextFocusRight="@id/recommend_1"
+        android:nextFocusDown="@id/search"
+        android:translationZ="10dp"
+        app:cardBackgroundColor="@color/self_3"
+        app:cardCornerRadius="10dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHeight_percent="0.2"
+        app:layout_constraintHorizontal_bias="0.955"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/banner"
+        app:layout_constraintVertical_bias="1"
+        app:layout_constraintWidth_percent="0.12">
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingTop="5dp"
+            android:scaleType="centerInside"
+            android:src="@drawable/movie_search" />
+    </androidx.cardview.widget.CardView>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

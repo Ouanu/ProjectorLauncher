@@ -7,6 +7,7 @@ import android.os.Message;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
 
 import com.android.projectorlauncher.bean.VideoCard;
 import com.android.projectorlauncher.ui.view.PagerFragment;
@@ -19,8 +20,8 @@ public class MainPresenter {
     private static final int SUCCESS = 100;
     private static final int FAILURE = 101;
     private final MainHandler handler;
-    private final List<PagerFragment> fragments;
-    public MainPresenter(Context context, List<PagerFragment> fragments) {
+    private final List<Fragment> fragments;
+    public MainPresenter(Context context, List<Fragment> fragments) {
         this.context = context;
         handler = new MainHandler(context.getMainLooper());
         this.fragments = fragments;
@@ -41,7 +42,7 @@ public class MainPresenter {
                 case SUCCESS:
                     Toast.makeText(context, "写入成功", Toast.LENGTH_SHORT).show();
                     List<VideoCard> cards = JsonUtils.readVideoCards(context, "Movie.json");
-                    fragments.get(0).setCards(cards);
+//                    fragments.get(0).setCards(cards);
                     break;
                 case FAILURE:
                     Toast.makeText(context, "写入失败", Toast.LENGTH_SHORT).show();

@@ -10,12 +10,16 @@ import android.graphics.Typeface;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+
 import com.android.projectorlauncher.databinding.ActivityMainBinding;
 import com.android.projectorlauncher.presenter.MainPresenter;
+import com.android.projectorlauncher.ui.view.MovieFragment;
 import com.android.projectorlauncher.ui.view.PagerFragment;
+import com.android.projectorlauncher.ui.view.TvFragment;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 import java.util.ArrayList;
@@ -24,13 +28,15 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
     ActivityMainBinding binding;
-    private final List<String> titles = Arrays.asList("电影", "剧集", "综艺", "排行榜", "应用");
-    private final ArrayList<PagerFragment> fragments = new ArrayList<>();
+    private final List<String> titles = Arrays.asList("电影", "剧集", "综艺", "排行榜");
+    private final ArrayList<Fragment> fragments = new ArrayList<>();
     private TabLayoutMediator mediator;
 
     private final int normalSize = 18;
     private View selectView = null;
     private MainPresenter presenter;
+    private MovieFragment fragment = new MovieFragment();
+    private TvFragment tvFragment = new TvFragment();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,8 +52,20 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void initView() {
+        int cnt = 0;
         for (String title : titles) {
-            fragments.add(new PagerFragment(new ArrayList<>()));
+            if (cnt == titles.size()) {
+                break;
+            }
+            if (cnt == 0) {
+                fragments.add(fragment);
+            } else if (cnt == 1){
+                fragments.add(tvFragment);
+            } else {
+                fragments.add(new PagerFragment(new ArrayList<>()));
+            }
+
+            cnt++;
         }
         binding.tabLayout.getViewTreeObserver().addOnGlobalFocusChangeListener((oldFocus, newFocus) -> {
             Log.d("ViewTreeObserver", "initView: " + oldFocus + " " + newFocus);
@@ -69,6 +87,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         binding.viewPager.registerOnPageChangeCallback(changeCallback);
+        binding.viewPager.setUserInputEnabled(false);
         mediator = new TabLayoutMediator(binding.tabLayout, binding.viewPager, (tab, position) -> {
             TextView tabView = new TextView(MainActivity.this);
             tabView.setText(titles.get(position));
@@ -90,6 +109,19 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+//        if (binding.viewPager.getCurrentItem() == 0) {
+//            Log.d("ViewTreeObserver", "onKeyDown: " + binding.getRoot().findFocus());
+//            if (keyCode == 22) {
+//                fragment.switchRight();
+//            } else if (keyCode == 21) {
+//                fragment.switchLeft();
+//            }
+//        }
+        Log.d("MovieFragment", "onKeyDown: " + keyCode + "  " + event.getAction());
+        return super.onKeyDown(keyCode, event);
+    }
 
     private final ViewPager2.OnPageChangeCallback changeCallback = new ViewPager2.OnPageChangeCallback() {
         @Override
@@ -120,7 +152,7 @@ public class MainActivity extends AppCompatActivity {
 //        binding.tabLayout.setFocusable(true);
         binding.viewPager.clearFocus();
         binding.tabLayout.requestFocus();
-//        super.onBackPressed();
+        super.onBackPressed();
     }
 
     @Override

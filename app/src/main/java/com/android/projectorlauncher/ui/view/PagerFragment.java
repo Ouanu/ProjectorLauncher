@@ -63,16 +63,61 @@ public class PagerFragment extends Fragment {
                 outRect.right = 20;
             }
         });
-        pagerBinding.recyclerView.getViewTreeObserver().addOnGlobalFocusChangeListener((oldFocus, newFocus) -> {
-
-            if (selectView != null && (!(newFocus instanceof CardView) && !(newFocus instanceof TabLayout.TabView))) {
-                selectView.setFocusable(true);
-                selectView.requestFocus();
+//        pagerBinding.recyclerView.getViewTreeObserver().addOnGlobalFocusChangeListener((oldFocus, newFocus) -> {
+//
+//            if (selectView != null && (!(newFocus instanceof CardView) && !(newFocus instanceof TabLayout.TabView))) {
+//                selectView.setFocusable(true);
+//                selectView.requestFocus();
+//            }
+//
+//            if (newFocus instanceof CardView)
+//                selectView = newFocus;
+//
+//        });
+        pagerBinding.more.setOnFocusChangeListener((v, hasFocus) -> {
+            if (hasFocus) {
+                ViewCompat.animate(v)
+                        .setDuration(200)
+                        .scaleX(1.10f)
+                        .scaleY(1.10f)
+                        .start();
+            } else {
+                ViewCompat.animate(v)
+                        .setDuration(200)
+                        .scaleX(1f)
+                        .scaleY(1f)
+                        .start();
             }
-
-            if (newFocus instanceof CardView)
-                selectView = newFocus;
-
+        });
+        pagerBinding.search.setOnFocusChangeListener((v, hasFocus) -> {
+            if (hasFocus) {
+                ViewCompat.animate(v)
+                        .setDuration(200)
+                        .scaleX(1.10f)
+                        .scaleY(1.10f)
+                        .start();
+            } else {
+                ViewCompat.animate(v)
+                        .setDuration(200)
+                        .scaleX(1f)
+                        .scaleY(1f)
+                        .start();
+            }
+        });
+        pagerBinding.history.setOnFocusChangeListener((v, hasFocus) -> {
+            if (hasFocus) {
+                ViewCompat.animate(v)
+                        .setDuration(200)
+                        .scaleX(1.10f)
+                        .scaleY(1.10f)
+                        .start();
+            } else {
+                ViewCompat.animate(v)
+                        .setDuration(200)
+                        .scaleX(1f)
+                        .scaleY(1f)
+                        .start();
+            }
         });
 
         return pagerBinding.getRoot();
@@ -92,6 +137,8 @@ public class PagerFragment extends Fragment {
         @Override
         public void onBindViewHolder(@NonNull CardViewHolder holder, int position) {
             if (cards.getValue() == null) return;
+            if ((position + 1) % 7 == 0)
+                holder.itemView.setNextFocusRightId(holder.itemView.getId());
             holder.bind(cards.getValue().get(position));
 
         }
