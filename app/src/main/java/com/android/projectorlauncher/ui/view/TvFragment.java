@@ -6,6 +6,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.view.ViewCompat;
@@ -52,7 +54,7 @@ public class TvFragment extends Fragment {
         tvBinding.search.setCardElevation(3f);
         tvBinding.category.setOnFocusChangeListener((v, hasFocus) -> {
             if (hasFocus) {
-                tvBinding.category.setCardBackgroundColor(getResources().getColor(R.color.self_2, null));
+                tvBinding.category.setCardBackgroundColor(getResources().getColor(R.color.self_6, null));
                 ViewCompat.animate(v)
                         .scaleX(1.05f)
                         .scaleY(1.05f)
@@ -60,7 +62,7 @@ public class TvFragment extends Fragment {
                         .translationZ(1f)
                         .start();
             } else {
-                tvBinding.category.setCardBackgroundColor(getResources().getColor(R.color.self_1, null));
+                tvBinding.category.setCardBackgroundColor(getResources().getColor(R.color.self_6_un_focus, null));
                 ViewCompat.animate(v)
                         .scaleX(1f)
                         .scaleY(1f)
@@ -71,7 +73,7 @@ public class TvFragment extends Fragment {
         });
         tvBinding.search.setOnFocusChangeListener((v, hasFocus) -> {
             if (hasFocus) {
-                tvBinding.search.setCardBackgroundColor(getResources().getColor(R.color.self_2, null));
+                tvBinding.search.setCardBackgroundColor(getResources().getColor(R.color.self_6, null));
                 ViewCompat.animate(v)
                         .scaleX(1.05f)
                         .scaleY(1.05f)
@@ -79,7 +81,7 @@ public class TvFragment extends Fragment {
                         .translationZ(1.2f)
                         .start();
             } else {
-                tvBinding.search.setCardBackgroundColor(getResources().getColor(R.color.self_1, null));
+                tvBinding.search.setCardBackgroundColor(getResources().getColor(R.color.self_6_un_focus, null));
                 ViewCompat.animate(v)
                         .scaleX(1f)
                         .scaleY(1f)
@@ -88,14 +90,31 @@ public class TvFragment extends Fragment {
                         .start();
             }
         });
-        tvBinding.getRoot().getViewTreeObserver().addOnGlobalFocusChangeListener((oldFocus, newFocus) -> {
-            Log.d("TvFragment", "onGlobalFocusChanged: " + oldFocus + "   " + newFocus);
+
+        return tvBinding.getRoot();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        tvBinding.getRoot().getViewTreeObserver().addOnGlobalFocusChangeListener(changeListener);
+        tvBinding.recommend.requestFocus();
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        tvBinding.getRoot().getViewTreeObserver().removeOnGlobalFocusChangeListener(changeListener);
+    }
+
+    private ViewTreeObserver.OnGlobalFocusChangeListener changeListener = new ViewTreeObserver.OnGlobalFocusChangeListener() {
+        @Override
+        public void onGlobalFocusChanged(View oldFocus, View newFocus) {
             if (oldFocus instanceof TabLayout.TabView && !(newFocus instanceof TabLayout.TabView)) {
                 tvBinding.recommend.requestFocus();
             }
-        });
-        return tvBinding.getRoot();
-    }
+        }
+    };
 
     class TvViewHolder extends RecyclerView.ViewHolder{
         ItemTvBinding binding;
@@ -139,7 +158,7 @@ public class TvFragment extends Fragment {
         }
     }
 
-    class CardAnimationOnFocusChange implements View.OnFocusChangeListener {
+    static class CardAnimationOnFocusChange implements View.OnFocusChangeListener {
 
         @Override
         public void onFocusChange(View v, boolean hasFocus) {
@@ -150,8 +169,6 @@ public class TvFragment extends Fragment {
                         .setDuration(300)
                         .translationZ(1.2f)
                         .start();
-                v.setOutlineAmbientShadowColor(getResources().getColor(R.color.self_2));
-                v.setOutlineSpotShadowColor(getResources().getColor(R.color.self_2));
             } else {
                 ViewCompat.animate(v)
                         .scaleX(1f)
@@ -159,8 +176,6 @@ public class TvFragment extends Fragment {
                         .setDuration(300)
                         .translationZ(1f)
                         .start();
-                v.setOutlineAmbientShadowColor(getResources().getColor(R.color.black));
-                v.setOutlineSpotShadowColor(getResources().getColor(R.color.black));
             }
 
         }

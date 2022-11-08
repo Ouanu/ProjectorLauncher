@@ -17,8 +17,10 @@ import android.widget.TextView;
 
 import com.android.projectorlauncher.databinding.ActivityMainBinding;
 import com.android.projectorlauncher.presenter.MainPresenter;
+import com.android.projectorlauncher.ui.view.MatchFragment;
 import com.android.projectorlauncher.ui.view.MovieFragment;
 import com.android.projectorlauncher.ui.view.PagerFragment;
+import com.android.projectorlauncher.ui.view.ShowFragment;
 import com.android.projectorlauncher.ui.view.TvFragment;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
@@ -28,7 +30,7 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
     ActivityMainBinding binding;
-    private final List<String> titles = Arrays.asList("电影", "剧集", "综艺", "排行榜");
+    private final List<String> titles = Arrays.asList("电影", "剧集", "综艺", "热门赛事");
     private final ArrayList<Fragment> fragments = new ArrayList<>();
     private TabLayoutMediator mediator;
 
@@ -37,6 +39,8 @@ public class MainActivity extends AppCompatActivity {
     private MainPresenter presenter;
     private MovieFragment fragment = new MovieFragment();
     private TvFragment tvFragment = new TvFragment();
+    private ShowFragment showFragment = new ShowFragment();
+    private MatchFragment matchFragment = new MatchFragment();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,8 +65,10 @@ public class MainActivity extends AppCompatActivity {
                 fragments.add(fragment);
             } else if (cnt == 1){
                 fragments.add(tvFragment);
+            } else if (cnt == 2){
+                fragments.add(showFragment);
             } else {
-                fragments.add(new PagerFragment(new ArrayList<>()));
+                fragments.add(matchFragment);
             }
 
             cnt++;
@@ -70,7 +76,7 @@ public class MainActivity extends AppCompatActivity {
         binding.tabLayout.getViewTreeObserver().addOnGlobalFocusChangeListener((oldFocus, newFocus) -> {
             Log.d("ViewTreeObserver", "initView: " + oldFocus + " " + newFocus);
             Log.d("ViewTreeObserver", "initView: " + selectView);
-            if(!(oldFocus instanceof TabLayout.TabView) && newFocus instanceof TabLayout.TabView) {
+            if(!(oldFocus instanceof TabLayout.TabView) && newFocus instanceof TabLayout.TabView && selectView != null) {
                 selectView.setFocusable(true);
                 selectView.requestFocus();
             }
@@ -96,7 +102,6 @@ public class MainActivity extends AppCompatActivity {
             tabView.setFocusable(true);
             tabView.setPadding(10, 0, 10, 0);
             tabView.setGravity(Gravity.CENTER);
-            tab.view.setBackgroundResource(R.drawable.tab_focus_selector);
             tab.setCustomView(tabView);
             tab.view.setDescendantFocusability(ViewGroup.FOCUS_BLOCK_DESCENDANTS);
             tab.view.setNextFocusDownId(R.id.viewPager);
@@ -105,20 +110,12 @@ public class MainActivity extends AppCompatActivity {
         });
         mediator.attach();
         binding.tabLayout.setFocusable(true);
-        binding.tabLayout.requestFocus();
+//        binding.tabLayout.requestFocus();
 
     }
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
-//        if (binding.viewPager.getCurrentItem() == 0) {
-//            Log.d("ViewTreeObserver", "onKeyDown: " + binding.getRoot().findFocus());
-//            if (keyCode == 22) {
-//                fragment.switchRight();
-//            } else if (keyCode == 21) {
-//                fragment.switchLeft();
-//            }
-//        }
         Log.d("MovieFragment", "onKeyDown: " + keyCode + "  " + event.getAction());
         return super.onKeyDown(keyCode, event);
     }
@@ -139,9 +136,23 @@ public class MainActivity extends AppCompatActivity {
                     selectView = tab.view;
                     tab.view.setFocusable(true);
                     tab.view.requestFocus();
+                    if (position == 0) {
+                        tabView.setTextColor(getColor(R.color.self_5));
+                        binding.tabLayout.setSelectedTabIndicatorColor(getColor(R.color.self_5));
+                    } else if (position == 1) {
+                        tabView.setTextColor(getColor(R.color.self_6));
+                        binding.tabLayout.setSelectedTabIndicatorColor(getColor(R.color.self_6));
+                    } else if (position == 2) {
+                        tabView.setTextColor(getColor(R.color.self_2));
+                        binding.tabLayout.setSelectedTabIndicatorColor(getColor(R.color.self_2));
+                    } else {
+                        tabView.setTextColor(getColor(R.color.self_7));
+                        binding.tabLayout.setSelectedTabIndicatorColor(getColor(R.color.self_7));
+                    }
                 } else {
                     tabView.setTextSize(normalSize);
                     tabView.setTypeface(Typeface.DEFAULT);
+                    tabView.setTextColor(getColor(R.color.white));
                 }
             }
         }

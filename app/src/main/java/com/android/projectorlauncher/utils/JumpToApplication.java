@@ -10,29 +10,29 @@ import android.widget.Toast;
 public class JumpToApplication {
 
     @SuppressLint("WrongConstant")
-    public static void turnToKtcp(Context context, String id){
+    public static void turnToKtcp(Context context, String id) {
         // 视频播放
-//        Intent intent = new Intent("com.tencent.qqlivetv.open");
-//        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);//可选
+        Intent intent = new Intent("com.tencent.qqlivetv.open");
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);//可选
 //        intent.setData(Uri.parse("tenvideo2://?action=7&cover_id=" + id)); // 视频播放
-//        intent.setData(Uri.parse("tenvideo2://tvrecommendation/%s?action=1&cover_id=" + id)); // 播放详情页
+        intent.setData(Uri.parse("tenvideo2://tvrecommendation/%s?action=1&cover_id=" + id)); // 播放详情页
 
-      // 首页
+        // 首页
 //        Intent intent = new Intent();
 //        intent.setData(Uri.parse("tenvideo2://?action=4"));
 //        intent.setAction("com.tencent.qqlivetv.open");
 //        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 //        intent.setPackage("com.ktcp.video");
 
-        Intent intent = new Intent("com.tencent.qqlivetv.open");
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);//可选
+//        Intent intent = new Intent("com.tencent.qqlivetv.open");
+//        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);//可选
 //        intent.setData(Uri.parse("tenvideo2://?action=3&channel_code=hot_competitions&channel_name=hot_competitions")); // 所有赛事
 //        intent.setData(Uri.parse("tenvideo2://?action=3&channel_code=eccc&channel_name=eccc")); // 欧冠
 //        intent.setData(Uri.parse("tenvideo2://?action=3&channel_code=cba&channel_name=cba"));   //CBA
 //        intent.setData(Uri.parse("tenvideo2://?action=3&channel_code=nba&channel_name=nba")); // NBA
 
 
-        intent.setData(Uri.parse("tenvideo2://?action=3&channel_code=competitions&channel_name=competitions"));  //电视剧
+//        intent.setData(Uri.parse("tenvideo2://?action=3&channel_code=competitions&channel_name=competitions"));  //电视剧
 
 
         try {
@@ -41,6 +41,42 @@ public class JumpToApplication {
             e.printStackTrace();
             Toast.makeText(context, "未找到应用", Toast.LENGTH_SHORT).show();
         }
+    }
 
+    public static void playVideo(Context context, String id) {
+        // 视频播放
+        Intent intent = new Intent("com.tencent.qqlivetv.open");
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);//可选
+        intent.setData(Uri.parse("tenvideo2://tvrecommendation/%s?action=1&cover_id=" + id)); // 播放详情页
+        try {
+            context.startActivity(intent);
+        } catch (ActivityNotFoundException e) {
+            e.printStackTrace();
+            Toast.makeText(context, "未找到应用", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    public static void turnToSearch(Context context) {
+        Intent intent = new Intent("com.tencent.qqlivetv.open");
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent.setData(Uri.parse("tenvideo2://?action=9"));
+        try {
+            context.startActivity(intent);
+        } catch (ActivityNotFoundException e) {
+            e.printStackTrace();
+            Toast.makeText(context, "未找到应用", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    public static void turnToCategory(Context context, String tag) {
+        Intent intent = new Intent("com.tencent.qqlivetv.open");
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent.setData(Uri.parse("tenvideo2://?action=3&channel_code=" + tag + "&channel_name=" + tag));
+        try {
+            context.startActivity(intent);
+        } catch (ActivityNotFoundException e) {
+            e.printStackTrace();
+            Toast.makeText(context, "未找到应用", Toast.LENGTH_SHORT).show();
+        }
     }
 }

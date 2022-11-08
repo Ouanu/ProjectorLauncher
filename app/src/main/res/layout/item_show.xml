@@ -4,12 +4,11 @@
     android:id="@+id/image"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_gravity="center"
     android:clickable="true"
-    android:foreground="@drawable/video_card_selector_tv"
     android:focusable="true"
-    android:translationZ="10dp"
-    app:cardBackgroundColor="@color/background_color"
-    app:cardCornerRadius="10dp">
+    android:layout_centerVertical="true"
+    android:foreground="@drawable/video_card_selector_show"
+    app:cardBackgroundColor="@color/white"
+    app:cardCornerRadius="3dp">
 
 </com.android.projectorlauncher.ui.design.PosterCardView>

@@ -7,4 +7,11 @@
     <color name="self_2">#FE7A15</color>
     <color name="background_color">#262626</color>
     <color name="self_3">#2E7178</color>
+    <color name="self_4">#35BBCA</color>
+    <color name="self_5">#8518FF</color>
+    <color name="self_5_un_focus">#808518FF</color>
+    <color name="self_6">#016BB5</color>
+    <color name="self_6_un_focus">#80016BB5</color>
+    <color name="self_7">#FF4318</color>
+    <color name="self_7_un_focus">#80FF4318</color>
 </resources>

@@ -77,6 +77,16 @@ public class PosterCardView extends CardView {
                 .into(imageView);
     }
 
+    public void setImageResource(String res) {
+        Glide.with(imageView)
+                .load(res)
+                .error(R.color.none)
+                .transform(new CenterCrop(), new RoundedCorners(10))
+                .skipMemoryCache(true)//跳过内存缓存
+                .diskCacheStrategy(DiskCacheStrategy.NONE)//不缓冲disk硬盘中
+                .into(imageView);
+    }
+
     public ImageView getImageView() {
         return imageView;
     }
