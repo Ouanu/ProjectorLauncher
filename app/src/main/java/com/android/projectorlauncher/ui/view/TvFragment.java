@@ -1,8 +1,9 @@
 package com.android.projectorlauncher.ui.view;
 
+import android.annotation.SuppressLint;
+import android.content.Context;
 import android.graphics.Rect;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,21 +13,33 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.view.ViewCompat;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.MutableLiveData;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.android.projectorlauncher.R;
+import com.android.projectorlauncher.bean.VideoCard;
 import com.android.projectorlauncher.databinding.FragmentTvBinding;
 import com.android.projectorlauncher.databinding.ItemTvBinding;
+import com.android.projectorlauncher.presenter.TvPresenter;
 import com.google.android.material.tabs.TabLayout;
-import java.util.Arrays;
+
+import java.util.ArrayList;
 import java.util.List;
 
-public class TvFragment extends Fragment {
+public class TvFragment extends Fragment implements TvView, View.OnClickListener {
 
-    private final List<Integer> resList = Arrays.asList(R.drawable.uncharted, R.drawable.moon_man, R.drawable.batman);
-    FragmentTvBinding tvBinding;
-    View headView;
-    View tailView;
+    private FragmentTvBinding tvBinding;
+    private View headView;
+    private TvPresenter presenter;
+    private final MutableLiveData<List<VideoCard>> cards = new MutableLiveData<>();
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        cards.setValue(new ArrayList<>());
+        presenter = new TvPresenter(requireActivity());
+        presenter.setView(this);
+    }
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -45,13 +58,28 @@ public class TvFragment extends Fragment {
                 outRect.right = 7;
             }
         });
+        tvBinding.category.setCardElevation(3f);
+        tvBinding.search.setCardElevation(3f);
         tvBinding.recommend1.setImageResource(R.drawable.moon_man);
         tvBinding.recommend2.setImageResource(R.drawable.batman);
+
+        setFocus();
+        setClick();
+        return tvBinding.getRoot();
+    }
+
+    private void setClick() {
+        tvBinding.recommend.setOnClickListener(this);
+        tvBinding.recommend1.setOnClickListener(this);
+        tvBinding.recommend2.setOnClickListener(this);
+        tvBinding.search.setOnClickListener(this);
+        tvBinding.category.setOnClickListener(this);
+    }
+
+    private void setFocus() {
         tvBinding.recommend.setOnFocusChangeListener(new CardAnimationOnFocusChange());
         tvBinding.recommend1.setOnFocusChangeListener(new CardAnimationOnFocusChange());
         tvBinding.recommend2.setOnFocusChangeListener(new CardAnimationOnFocusChange());
-        tvBinding.category.setCardElevation(3f);
-        tvBinding.search.setCardElevation(3f);
         tvBinding.category.setOnFocusChangeListener((v, hasFocus) -> {
             if (hasFocus) {
                 tvBinding.category.setCardBackgroundColor(getResources().getColor(R.color.self_6, null));
@@ -90,10 +118,21 @@ public class TvFragment extends Fragment {
                         .start();
             }
         });
-
-        return tvBinding.getRoot();
     }
-
+    @Override
+    public void onClick(View v) {
+        if (v == tvBinding.recommend) {
+            presenter.turnVideoDetailPage(0);
+        } else if (v == tvBinding.recommend1) {
+            presenter.turnVideoDetailPage(1);
+        } else if (v == tvBinding.recommend2) {
+            presenter.turnVideoDetailPage(2);
+        } else if (v == tvBinding.search) {
+            presenter.turnToSearchPage();
+        } else if (v == tvBinding.category) {
+            presenter.turnToTvCategoryPage();
+        }
+    }
     @Override
     public void onResume() {
         super.onResume();
@@ -107,7 +146,7 @@ public class TvFragment extends Fragment {
         tvBinding.getRoot().getViewTreeObserver().removeOnGlobalFocusChangeListener(changeListener);
     }
 
-    private ViewTreeObserver.OnGlobalFocusChangeListener changeListener = new ViewTreeObserver.OnGlobalFocusChangeListener() {
+    private final ViewTreeObserver.OnGlobalFocusChangeListener changeListener = new ViewTreeObserver.OnGlobalFocusChangeListener() {
         @Override
         public void onGlobalFocusChanged(View oldFocus, View newFocus) {
             if (oldFocus instanceof TabLayout.TabView && !(newFocus instanceof TabLayout.TabView)) {
@@ -116,18 +155,46 @@ public class TvFragment extends Fragment {
         }
     };
 
-    class TvViewHolder extends RecyclerView.ViewHolder{
+    @SuppressLint("NotifyDataSetChanged")
+    @Override
+    public void update(VideoCard r1, VideoCard r2, VideoCard r3, List<VideoCard> videoCards) {
+        if (r1 != null) {
+            tvBinding.recommend.setImageResource(r1.getImgSrc());
+        }
+        if (r2 != null) {
+            tvBinding.recommend1.setImageResource(r2.getImgSrc());
+        }
+        if (r2 != null) {
+            tvBinding.recommend2.setImageResource(r3.getImgSrc());
+        }
+        if (videoCards != null) {
+            cards.setValue(videoCards);
+            if (tvBinding.recyclerView.getAdapter() != null)
+                tvBinding.recyclerView.getAdapter().notifyDataSetChanged();
+        }
+    }
+
+    class TvViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         ItemTvBinding binding;
+        int index = -1;
         public TvViewHolder(@NonNull View itemView) {
             super(itemView);
             binding = ItemTvBinding.bind(itemView);
             itemView.setOnFocusChangeListener(new CardAnimationOnFocusChange());
             ViewGroup.LayoutParams layoutParams = new ViewGroup.LayoutParams((int) (tvBinding.recyclerView.getWidth() / 8.5), (int) (tvBinding.recyclerView.getHeight() * 0.93));
             binding.getRoot().setLayoutParams(layoutParams);
+            itemView.setOnClickListener(this);
         }
 
-        public void bind(int resId) {
-            binding.image.setImageResource(resId);
+        public void bind(int position) {
+            if (cards.getValue() == null) return;
+            binding.image.setImageResource(presenter.getRecommendsImage(position));
+            index = position;
+        }
+
+        @Override
+        public void onClick(View v) {
+            presenter.fromRecommendsToVideoDetailPage(index);
         }
     }
 
@@ -144,17 +211,18 @@ public class TvFragment extends Fragment {
         public void onBindViewHolder(@NonNull TvViewHolder holder, int position) {
             if (position == 0) {
                 headView = holder.itemView;
-            } else if(position == 7) {
-                tailView = holder.itemView;
+            } else if(cards.getValue() != null && position == cards.getValue().size() - 1) {
+                View tailView = holder.itemView;
                 headView.setNextFocusLeftId(tailView.getId());
                 tailView.setNextFocusRightId(headView.getId());
             }
-            holder.bind(resList.get(position % 3));
+            holder.bind(position);
         }
 
         @Override
         public int getItemCount() {
-            return 8;
+            if (cards.getValue() == null) return 0;
+            return cards.getValue().size();
         }
     }
 

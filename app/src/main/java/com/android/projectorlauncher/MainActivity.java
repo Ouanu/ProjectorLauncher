@@ -8,7 +8,6 @@ import androidx.viewpager2.widget.ViewPager2;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.View;
@@ -16,10 +15,8 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.android.projectorlauncher.databinding.ActivityMainBinding;
-import com.android.projectorlauncher.presenter.MainPresenter;
 import com.android.projectorlauncher.ui.view.MatchFragment;
 import com.android.projectorlauncher.ui.view.MovieFragment;
-import com.android.projectorlauncher.ui.view.PagerFragment;
 import com.android.projectorlauncher.ui.view.ShowFragment;
 import com.android.projectorlauncher.ui.view.TvFragment;
 import com.google.android.material.tabs.TabLayout;
@@ -36,11 +33,10 @@ public class MainActivity extends AppCompatActivity {
 
     private final int normalSize = 18;
     private View selectView = null;
-    private MainPresenter presenter;
-    private MovieFragment fragment = new MovieFragment();
-    private TvFragment tvFragment = new TvFragment();
-    private ShowFragment showFragment = new ShowFragment();
-    private MatchFragment matchFragment = new MatchFragment();
+    private final MovieFragment fragment = new MovieFragment();
+    private final TvFragment tvFragment = new TvFragment();
+    private final ShowFragment showFragment = new ShowFragment();
+    private final MatchFragment matchFragment = new MatchFragment();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,13 +44,8 @@ public class MainActivity extends AppCompatActivity {
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         initView();
-        initPresenter();
-    }
 
-    private void initPresenter() {
-        presenter = new MainPresenter(this, fragments);
     }
-
     private void initView() {
         int cnt = 0;
         for (String title : titles) {
@@ -74,8 +65,6 @@ public class MainActivity extends AppCompatActivity {
             cnt++;
         }
         binding.tabLayout.getViewTreeObserver().addOnGlobalFocusChangeListener((oldFocus, newFocus) -> {
-            Log.d("ViewTreeObserver", "initView: " + oldFocus + " " + newFocus);
-            Log.d("ViewTreeObserver", "initView: " + selectView);
             if(!(oldFocus instanceof TabLayout.TabView) && newFocus instanceof TabLayout.TabView && selectView != null) {
                 selectView.setFocusable(true);
                 selectView.requestFocus();
@@ -93,7 +82,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         binding.viewPager.registerOnPageChangeCallback(changeCallback);
-        binding.viewPager.setUserInputEnabled(false);
+//        binding.viewPager.setUserInputEnabled(false);
         mediator = new TabLayoutMediator(binding.tabLayout, binding.viewPager, (tab, position) -> {
             TextView tabView = new TextView(MainActivity.this);
             tabView.setText(titles.get(position));
@@ -116,7 +105,6 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
-        Log.d("MovieFragment", "onKeyDown: " + keyCode + "  " + event.getAction());
         return super.onKeyDown(keyCode, event);
     }
 

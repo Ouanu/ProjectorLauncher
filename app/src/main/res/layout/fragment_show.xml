@@ -8,7 +8,6 @@
         android:id="@+id/recycler_view"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:background="@color/self_5"
         android:descendantFocusability="beforeDescendants"
         android:nextFocusDown="@id/recommend_1"
         app:layout_constraintStart_toStartOf="parent"

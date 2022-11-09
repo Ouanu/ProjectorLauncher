@@ -7,34 +7,34 @@ import android.os.Message;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-
 import com.android.projectorlauncher.bean.Tag;
 import com.android.projectorlauncher.bean.VideoCard;
-import com.android.projectorlauncher.ui.view.MovieView;
+import com.android.projectorlauncher.ui.view.TvView;
 import com.android.projectorlauncher.utils.JsonUtils;
 import com.android.projectorlauncher.utils.JumpToApplication;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class MoviePresenter {
+public class TvPresenter {
     private final List<VideoCard> cards = new ArrayList<>();
     private final Activity activity;
-    private final MovieHandler handler;
-    private MovieView view;
-    public MoviePresenter(Activity activity) {
-        handler = new MovieHandler(activity.getMainLooper());
+    private final TvHandler handler;
+    private TvView view;
+    private List<VideoCard> recommends = new ArrayList<>();
+    public TvPresenter(Activity activity) {
+        handler = new TvHandler(activity.getMainLooper());
         this.activity = activity;
         init();
     }
 
     // 初始化数据
     private void init() {
-        JsonUtils.downloadJson(activity, Tag.MOVIE, handler);
+        JsonUtils.downloadJson(activity, Tag.TV, handler);
     }
 
     // 获得MovieFragment接口
-    public void setView(MovieView view) {
+    public void setView(TvView view) {
         this.view = view;
     }
 
@@ -49,9 +49,9 @@ public class MoviePresenter {
         JumpToApplication.turnToSearch(activity);
     }
 
-    // 跳转到电影分类频道
-    public void turnToMovieCategoryPage() {
-        JumpToApplication.turnToCategory(activity, "movie");
+    // 跳转到电视剧分类频道
+    public void turnToTvCategoryPage() {
+        JumpToApplication.turnToCategory(activity, "tv");
     }
 
     // 获取视频封面地址
@@ -60,19 +60,32 @@ public class MoviePresenter {
         return cards.get(index).getImgSrc();
     }
 
-    private class MovieHandler extends Handler {
-        public MovieHandler(@NonNull Looper looper) {
+    // 获取推荐列表图片
+    public String getRecommendsImage(int index) {
+        return getImage(index + 3);
+    }
+
+    // 推荐列表跳转到指定的视频详情页面
+    public void fromRecommendsToVideoDetailPage(int index) {
+        turnVideoDetailPage(index + 3);
+    }
+
+
+    private class TvHandler extends Handler {
+        public TvHandler(@NonNull Looper looper) {
             super(looper);
         }
 
         @Override
         public void handleMessage(@NonNull Message msg) {
             if (msg.what == JsonUtils.DOWNLOAD_SUCCESS) {
-                cards.addAll(JsonUtils.readVideoCards(activity, Tag.MOVIE));
+                cards.addAll(JsonUtils.readVideoCards(activity, Tag.TV));
+                recommends.addAll(cards.subList(3, cards.size()));
             } else {
                 Toast.makeText(activity, "请检查网络", Toast.LENGTH_SHORT).show();
+//                recommends.clear();
             }
-            view.update();
+            view.update(cards.get(0), cards.get(1), cards.get(2), recommends);
         }
     }
 }

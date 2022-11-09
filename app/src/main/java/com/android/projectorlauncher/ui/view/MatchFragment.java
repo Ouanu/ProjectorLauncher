@@ -85,10 +85,39 @@ public class MatchFragment extends Fragment {
             ViewGroup.LayoutParams layoutParams = new ViewGroup.LayoutParams(binding.recyclerView.getHeight()/2, binding.recyclerView.getHeight()/2);
             matchBinding.cardView.setLayoutParams(layoutParams);
             matchBinding.cardView.setRadius(binding.recyclerView.getHeight()/4f);
-            itemView.setOnFocusChangeListener(new MatchAnimation());
+
         }
 
         public void bind(int position) {
+            if (position == imageList.size() - 1) {
+                matchBinding.cardView.setCardBackgroundColor(getContext().getColor(R.color.self_7_un_focus));
+            }
+            if (position < imageList.size() - 1) {
+                itemView.setOnFocusChangeListener(new MatchAnimation());
+            } else {
+                itemView.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+                    @Override
+                    public void onFocusChange(View v, boolean hasFocus) {
+                        if (hasFocus) {
+                            matchBinding.cardView.setCardBackgroundColor(getContext().getColor(R.color.self_7));
+                            ViewCompat.animate(v)
+                                    .scaleX(1.05f)
+                                    .scaleY(1.05f)
+                                    .setDuration(250)
+                                    .translationZ(1.2f)
+                                    .start();
+                        } else {
+                            matchBinding.cardView.setCardBackgroundColor(getContext().getColor(R.color.self_7_un_focus));
+                            ViewCompat.animate(v)
+                                    .scaleX(1f)
+                                    .scaleY(1f)
+                                    .setDuration(250)
+                                    .translationZ(1f)
+                                    .start();
+                        }
+                    }
+                });
+            }
             matchBinding.cardView.setImageResource(imageList.get(position));
         }
     }
@@ -104,6 +133,10 @@ public class MatchFragment extends Fragment {
 
         @Override
         public void onBindViewHolder(@NonNull MatchViewHolder holder, int position) {
+            if (position == 0)
+                holder.itemView.setNextFocusLeftId(holder.itemView.getId());
+            if(position == imageList.size() - 1)
+                holder.itemView.setNextFocusRightId(holder.itemView.getId());
             holder.bind(position);
         }
 
