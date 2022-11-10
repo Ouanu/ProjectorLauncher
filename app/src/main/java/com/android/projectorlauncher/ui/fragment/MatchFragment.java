@@ -1,4 +1,4 @@
-package com.android.projectorlauncher.ui.view;
+package com.android.projectorlauncher.ui.fragment;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -22,12 +22,13 @@ import com.android.projectorlauncher.bean.MatchCard;
 import com.android.projectorlauncher.databinding.FragmentMatchBinding;
 import com.android.projectorlauncher.databinding.ItemMatchBinding;
 import com.android.projectorlauncher.presenter.MatchPresenter;
+import com.android.projectorlauncher.ui.view.MatchView;
 import com.google.android.material.tabs.TabLayout;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class MatchFragment extends Fragment implements MatchView{
+public class MatchFragment extends Fragment implements MatchView {
     private FragmentMatchBinding binding;
     private MatchPresenter presenter;
     private final MutableLiveData<List<MatchCard>> matchCards = new MutableLiveData<>();

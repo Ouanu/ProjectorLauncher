@@ -7,29 +7,30 @@ import android.os.Message;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+
 import com.android.projectorlauncher.bean.Tag;
 import com.android.projectorlauncher.bean.VideoCard;
-import com.android.projectorlauncher.ui.view.TvView;
+import com.android.projectorlauncher.ui.view.ComicsView;
 import com.android.projectorlauncher.utils.JsonUtils;
 import com.android.projectorlauncher.utils.JumpToApplication;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class TvPresenter {
+public class ComicsPresenter {
     private final List<VideoCard> cards = new ArrayList<>();
     private final Activity activity;
-    private final TvHandler handler;
-    private TvView view;
+    private final ComicHandler handler;
+    private ComicsView view;
     private final List<VideoCard> recommends = new ArrayList<>();
-    public TvPresenter(Activity activity) {
-        handler = new TvHandler(activity.getMainLooper());
+    public ComicsPresenter(Activity activity) {
+        handler = new ComicHandler(activity.getMainLooper());
         this.activity = activity;
     }
 
     // 初始化数据
     public void init() {
-        JsonUtils.downloadJson(activity, Tag.TV, handler);
+        JsonUtils.downloadJson(activity, Tag.COMICS, handler);
     }
 
     public int sizeOfCards() {
@@ -37,7 +38,7 @@ public class TvPresenter {
     }
 
     // 获得MovieFragment接口
-    public void setView(TvView view) {
+    public void setView(ComicsView view) {
         this.view = view;
     }
 
@@ -54,7 +55,7 @@ public class TvPresenter {
 
     // 跳转到电视剧分类频道
     public void turnToTvCategoryPage() {
-        JumpToApplication.turnToCategory(activity, "tv");
+        JumpToApplication.turnToCategory(activity, "cartoon");
     }
 
     // 获取视频封面地址
@@ -74,8 +75,8 @@ public class TvPresenter {
     }
 
 
-    private class TvHandler extends Handler {
-        public TvHandler(@NonNull Looper looper) {
+    private class ComicHandler extends Handler {
+        public ComicHandler(@NonNull Looper looper) {
             super(looper);
         }
 
@@ -84,7 +85,7 @@ public class TvPresenter {
             if (msg.what == JsonUtils.DOWNLOAD_SUCCESS) {
                 cards.clear();
                 recommends.clear();
-                cards.addAll(JsonUtils.readCards(activity, Tag.TV, VideoCard.class));
+                cards.addAll(JsonUtils.readCards(activity, Tag.COMICS, VideoCard.class));
                 recommends.addAll(cards.subList(3, cards.size()));
             } else {
                 Toast.makeText(activity, "请检查网络", Toast.LENGTH_SHORT).show();
@@ -93,6 +94,7 @@ public class TvPresenter {
             if (cards.size() > 3) {
                 view.update(cards.get(0), cards.get(1), cards.get(2), recommends);
             }
+
         }
     }
 }

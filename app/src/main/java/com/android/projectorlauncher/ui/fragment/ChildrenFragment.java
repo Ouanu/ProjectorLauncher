@@ -1,4 +1,4 @@
-package com.android.projectorlauncher.ui.view;
+package com.android.projectorlauncher.ui.fragment;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -16,27 +16,29 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.MutableLiveData;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
 import com.android.projectorlauncher.R;
 import com.android.projectorlauncher.bean.VideoCard;
 import com.android.projectorlauncher.databinding.FragmentTvBinding;
 import com.android.projectorlauncher.databinding.ItemTvBinding;
-import com.android.projectorlauncher.presenter.TvPresenter;
+import com.android.projectorlauncher.presenter.ChildrenPresenter;
+import com.android.projectorlauncher.ui.view.ChildrenView;
 import com.google.android.material.tabs.TabLayout;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class TvFragment extends Fragment implements TvView, View.OnClickListener {
+public class ChildrenFragment extends Fragment implements ChildrenView, View.OnClickListener {
 
     private FragmentTvBinding tvBinding;
     private View headView;
-    private TvPresenter presenter;
+    private ChildrenPresenter presenter;
     private final MutableLiveData<List<VideoCard>> cards = new MutableLiveData<>();
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
         cards.setValue(new ArrayList<>());
-        presenter = new TvPresenter(requireActivity());
+        presenter = new ChildrenPresenter(requireActivity());
         presenter.setView(this);
     }
 
@@ -44,7 +46,6 @@ public class TvFragment extends Fragment implements TvView, View.OnClickListener
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         tvBinding = FragmentTvBinding.inflate(inflater, container, false);
-        tvBinding.recommend.setImageResource(R.drawable.uncharted);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
         layoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
         tvBinding.recyclerView.setLayoutManager(layoutManager);
@@ -60,8 +61,6 @@ public class TvFragment extends Fragment implements TvView, View.OnClickListener
         });
         tvBinding.category.setCardElevation(3f);
         tvBinding.search.setCardElevation(3f);
-        tvBinding.recommend1.setImageResource(R.drawable.moon_man);
-        tvBinding.recommend2.setImageResource(R.drawable.batman);
 
         setFocus();
         setClick();

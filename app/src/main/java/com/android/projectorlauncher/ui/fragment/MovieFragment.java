@@ -1,4 +1,4 @@
-package com.android.projectorlauncher.ui.view;
+package com.android.projectorlauncher.ui.fragment;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -14,6 +14,7 @@ import androidx.fragment.app.Fragment;
 import com.android.projectorlauncher.R;
 import com.android.projectorlauncher.databinding.FragmentMovieBinding;
 import com.android.projectorlauncher.presenter.MoviePresenter;
+import com.android.projectorlauncher.ui.view.MovieView;
 import com.bumptech.glide.Glide;
 import com.google.android.material.tabs.TabLayout;
 
@@ -185,7 +186,7 @@ public class MovieFragment extends Fragment implements View.OnClickListener, Mov
                         .setDuration(300)
                         .translationZ(1.2f)
                         .start();
-                ((CardView)v).setCardBackgroundColor(requireContext().getColor(R.color.self_5));
+                ((CardView)v).setCardBackgroundColor(v.getContext().getColor(R.color.self_5));
                 selectView = v;
             } else {
                 ViewCompat.animate(v)
@@ -194,7 +195,7 @@ public class MovieFragment extends Fragment implements View.OnClickListener, Mov
                         .setDuration(300)
                         .translationZ(1f)
                         .start();
-                ((CardView)v).setCardBackgroundColor(requireContext().getColor(R.color.self_5_un_focus));
+                ((CardView)v).setCardBackgroundColor(v.getContext().getColor(R.color.self_5_un_focus));
             }
         }
     }

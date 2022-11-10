@@ -17,6 +17,7 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <TextView
+            android:id="@+id/time"
             android:layout_width="wrap_content"
             android:layout_height="50dp"
             android:layout_marginStart="30dp"
@@ -26,6 +27,7 @@
             android:textSize="20sp" />
 
         <ImageView
+            android:id="@+id/netStat"
             android:layout_width="20dp"
             android:layout_height="20dp"
             android:layout_alignParentRight="true"
@@ -42,12 +44,11 @@
         android:descendantFocusability="afterDescendants"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/relative"
-        app:tabGravity="center"
+        app:tabGravity="start"
         app:tabIndicatorHeight="3dp"
         app:tabIndicatorColor="@color/self_4"
         app:tabIndicator="@drawable/tab_style"
         app:tabIndicatorFullWidth="false"
-        app:tabMinWidth="20dp"
         app:tabMode="scrollable"
         app:tabTextColor="@color/white" />
 

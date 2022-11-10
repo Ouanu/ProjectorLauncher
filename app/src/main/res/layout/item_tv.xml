@@ -10,6 +10,6 @@
     android:focusable="true"
     android:translationZ="10dp"
     app:cardBackgroundColor="@color/background_color"
-    app:cardCornerRadius="10dp">
+    app:cardCornerRadius="3dp">
 
 </com.android.projectorlauncher.ui.design.PosterCardView>

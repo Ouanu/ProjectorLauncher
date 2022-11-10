@@ -5,6 +5,12 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 import androidx.viewpager2.widget.ViewPager2;
+
+import android.annotation.SuppressLint;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
@@ -15,19 +21,24 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.android.projectorlauncher.databinding.ActivityMainBinding;
-import com.android.projectorlauncher.ui.view.MatchFragment;
-import com.android.projectorlauncher.ui.view.MovieFragment;
-import com.android.projectorlauncher.ui.view.ShowFragment;
-import com.android.projectorlauncher.ui.view.TvFragment;
+import com.android.projectorlauncher.ui.fragment.ChildrenFragment;
+import com.android.projectorlauncher.ui.fragment.ComicsFragment;
+import com.android.projectorlauncher.ui.fragment.MatchFragment;
+import com.android.projectorlauncher.ui.fragment.MovieFragment;
+import com.android.projectorlauncher.ui.fragment.ShowFragment;
+import com.android.projectorlauncher.ui.fragment.TvFragment;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
+
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
     ActivityMainBinding binding;
-    private final List<String> titles = Arrays.asList("电影", "剧集", "综艺", "热门赛事");
+    private final List<String> titles = Arrays.asList("电影", "剧集", "综艺", "动漫", "少儿", "体育");
     private final ArrayList<Fragment> fragments = new ArrayList<>();
     private TabLayoutMediator mediator;
 
@@ -37,6 +48,19 @@ public class MainActivity extends AppCompatActivity {
     private final TvFragment tvFragment = new TvFragment();
     private final ShowFragment showFragment = new ShowFragment();
     private final MatchFragment matchFragment = new MatchFragment();
+    private final ComicsFragment comicsFragment = new ComicsFragment();
+    private final ChildrenFragment childrenFragment = new ChildrenFragment();
+    private final TimeBroadcast receiver  = new TimeBroadcast();
+    private class TimeBroadcast extends BroadcastReceiver {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if (binding != null) {
+                @SuppressLint("SimpleDateFormat")
+                SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm");
+                binding.time.setText(dateFormat.format(new Date(System.currentTimeMillis())));
+            }
+        }
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,20 +68,27 @@ public class MainActivity extends AppCompatActivity {
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         initView();
-
+        IntentFilter filter = new IntentFilter();
+        filter.addAction(Intent.ACTION_TIME_TICK);
+        registerReceiver(receiver, filter);
     }
+
     private void initView() {
         int cnt = 0;
-        for (String title : titles) {
+        for (String ignored : titles) {
             if (cnt == titles.size()) {
                 break;
             }
             if (cnt == 0) {
                 fragments.add(fragment);
-            } else if (cnt == 1){
+            } else if (cnt == 1) {
                 fragments.add(tvFragment);
-            } else if (cnt == 2){
+            } else if (cnt == 2) {
                 fragments.add(showFragment);
+            } else if (cnt == 3) {
+                fragments.add(comicsFragment);
+            } else if (cnt == 4) {
+                fragments.add(childrenFragment);
             } else {
                 fragments.add(matchFragment);
             }
@@ -65,7 +96,7 @@ public class MainActivity extends AppCompatActivity {
             cnt++;
         }
         binding.tabLayout.getViewTreeObserver().addOnGlobalFocusChangeListener((oldFocus, newFocus) -> {
-            if(!(oldFocus instanceof TabLayout.TabView) && newFocus instanceof TabLayout.TabView && selectView != null) {
+            if (!(oldFocus instanceof TabLayout.TabView) && newFocus instanceof TabLayout.TabView && selectView != null) {
                 selectView.setFocusable(true);
                 selectView.requestFocus();
             }
@@ -76,6 +107,7 @@ public class MainActivity extends AppCompatActivity {
             public Fragment createFragment(int position) {
                 return fragments.get(position);
             }
+
             @Override
             public int getItemCount() {
                 return fragments.size();
@@ -100,6 +132,9 @@ public class MainActivity extends AppCompatActivity {
         mediator.attach();
         binding.tabLayout.setFocusable(true);
 //        binding.tabLayout.requestFocus();
+        @SuppressLint("SimpleDateFormat")
+        SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm");
+        binding.time.setText(dateFormat.format(new Date(System.currentTimeMillis())));
 
     }
 
@@ -156,6 +191,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onDestroy() {
+        unregisterReceiver(receiver);
         mediator.detach();
         binding.viewPager.unregisterOnPageChangeCallback(changeCallback);
         super.onDestroy();

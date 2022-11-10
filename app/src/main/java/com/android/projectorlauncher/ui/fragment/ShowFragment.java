@@ -1,4 +1,4 @@
-package com.android.projectorlauncher.ui.view;
+package com.android.projectorlauncher.ui.fragment;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -23,6 +23,7 @@ import com.android.projectorlauncher.bean.VideoCard;
 import com.android.projectorlauncher.databinding.FragmentShowBinding;
 import com.android.projectorlauncher.databinding.ItemShowBinding;
 import com.android.projectorlauncher.presenter.ShowPresenter;
+import com.android.projectorlauncher.ui.view.ShowView;
 import com.google.android.material.tabs.TabLayout;
 
 import java.util.ArrayList;
