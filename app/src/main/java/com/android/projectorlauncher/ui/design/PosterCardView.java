@@ -50,8 +50,7 @@ public class PosterCardView extends CardView {
         Glide.with(imageView)
                 .load(resId)
                 .error(R.color.none)
-                .transform(new CenterCrop(), new RoundedCorners(10))
-                .skipMemoryCache(true)//跳过内存缓存
+                .centerCrop()
                 .diskCacheStrategy(DiskCacheStrategy.NONE)//不缓冲disk硬盘中
                 .into(imageView);
     }
@@ -61,8 +60,7 @@ public class PosterCardView extends CardView {
         Glide.with(imageView)
                 .load(res)
                 .error(R.color.none)
-                .transform(new CenterCrop(), new RoundedCorners(10))
-                .skipMemoryCache(true)//跳过内存缓存
+                .centerCrop()
                 .diskCacheStrategy(DiskCacheStrategy.NONE)//不缓冲disk硬盘中
                 .into(imageView);
     }
@@ -71,8 +69,7 @@ public class PosterCardView extends CardView {
         Glide.with(imageView)
                 .load(res)
                 .error(R.color.none)
-                .transform(new CenterCrop(), new RoundedCorners(10))
-                .skipMemoryCache(true)//跳过内存缓存
+                .centerCrop()
                 .diskCacheStrategy(DiskCacheStrategy.NONE)//不缓冲disk硬盘中
                 .into(imageView);
     }
@@ -81,8 +78,7 @@ public class PosterCardView extends CardView {
         Glide.with(imageView)
                 .load(res)
                 .error(R.color.none)
-                .transform(new CenterCrop(), new RoundedCorners(10))
-                .skipMemoryCache(true)//跳过内存缓存
+                .centerCrop()
                 .diskCacheStrategy(DiskCacheStrategy.NONE)//不缓冲disk硬盘中
                 .into(imageView);
     }

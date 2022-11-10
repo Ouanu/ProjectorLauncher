@@ -1,5 +1,7 @@
 package com.android.projectorlauncher.ui.view;
 
+import android.annotation.SuppressLint;
+import android.content.Context;
 import android.graphics.Rect;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -11,29 +13,31 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.view.ViewCompat;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.MutableLiveData;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.android.projectorlauncher.R;
+import com.android.projectorlauncher.bean.MatchCard;
 import com.android.projectorlauncher.databinding.FragmentMatchBinding;
 import com.android.projectorlauncher.databinding.ItemMatchBinding;
+import com.android.projectorlauncher.presenter.MatchPresenter;
 import com.google.android.material.tabs.TabLayout;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class MatchFragment extends Fragment {
+public class MatchFragment extends Fragment implements MatchView{
     private FragmentMatchBinding binding;
-    private List<Integer> imageList = new ArrayList<>();
+    private MatchPresenter presenter;
+    private final MutableLiveData<List<MatchCard>> matchCards = new MutableLiveData<>();
 
     @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        imageList.add(R.drawable.cba);
-        imageList.add(R.drawable.nba);
-        imageList.add(R.drawable.uefa);
-        imageList.add(R.drawable.more_category);
-
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        presenter = new MatchPresenter(requireActivity());
+        matchCards.setValue(new ArrayList<>());
+        presenter.setView(this);
     }
 
     @Nullable
@@ -56,7 +60,7 @@ public class MatchFragment extends Fragment {
         return binding.getRoot();
     }
 
-    private ViewTreeObserver.OnGlobalFocusChangeListener changeListener = new ViewTreeObserver.OnGlobalFocusChangeListener() {
+    private final ViewTreeObserver.OnGlobalFocusChangeListener changeListener = new ViewTreeObserver.OnGlobalFocusChangeListener() {
         @Override
         public void onGlobalFocusChanged(View oldFocus, View newFocus) {
             if (oldFocus instanceof TabLayout.TabView && !(newFocus instanceof TabLayout.TabView)) {
@@ -69,6 +73,9 @@ public class MatchFragment extends Fragment {
     public void onResume() {
         super.onResume();
         binding.getRoot().getViewTreeObserver().addOnGlobalFocusChangeListener(changeListener);
+        if (matchCards.getValue() == null || matchCards.getValue().size() == 0 || presenter.sizeOfCards() == 0) {
+            presenter.init();
+        }
     }
 
     @Override
@@ -77,48 +84,61 @@ public class MatchFragment extends Fragment {
         binding.getRoot().getViewTreeObserver().removeOnGlobalFocusChangeListener(changeListener);
     }
 
-    class MatchViewHolder extends RecyclerView.ViewHolder {
+    @SuppressLint("NotifyDataSetChanged")
+    @Override
+    public void update(List<MatchCard> cards) {
+        matchCards.setValue(cards);
+        if (binding.recyclerView.getAdapter() == null) return;
+        binding.recyclerView.getAdapter().notifyDataSetChanged();
+    }
+
+    class MatchViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         ItemMatchBinding matchBinding;
+        int index = 0;
         public MatchViewHolder(@NonNull View itemView) {
             super(itemView);
             matchBinding = ItemMatchBinding.bind(itemView);
             ViewGroup.LayoutParams layoutParams = new ViewGroup.LayoutParams(binding.recyclerView.getHeight()/2, binding.recyclerView.getHeight()/2);
             matchBinding.cardView.setLayoutParams(layoutParams);
             matchBinding.cardView.setRadius(binding.recyclerView.getHeight()/4f);
-
+            itemView.setOnClickListener(this);
         }
 
         public void bind(int position) {
-            if (position == imageList.size() - 1) {
-                matchBinding.cardView.setCardBackgroundColor(getContext().getColor(R.color.self_7_un_focus));
+            if (matchCards.getValue() == null) return;
+            index = position;
+            if (position == matchCards.getValue().size() - 1) {
+                matchBinding.cardView.setCardBackgroundColor(requireContext().getColor(R.color.self_7_un_focus));
             }
-            if (position < imageList.size() - 1) {
+            if (position < matchCards.getValue().size() - 1) {
                 itemView.setOnFocusChangeListener(new MatchAnimation());
             } else {
-                itemView.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-                    @Override
-                    public void onFocusChange(View v, boolean hasFocus) {
-                        if (hasFocus) {
-                            matchBinding.cardView.setCardBackgroundColor(getContext().getColor(R.color.self_7));
-                            ViewCompat.animate(v)
-                                    .scaleX(1.05f)
-                                    .scaleY(1.05f)
-                                    .setDuration(250)
-                                    .translationZ(1.2f)
-                                    .start();
-                        } else {
-                            matchBinding.cardView.setCardBackgroundColor(getContext().getColor(R.color.self_7_un_focus));
-                            ViewCompat.animate(v)
-                                    .scaleX(1f)
-                                    .scaleY(1f)
-                                    .setDuration(250)
-                                    .translationZ(1f)
-                                    .start();
-                        }
+                itemView.setOnFocusChangeListener((v, hasFocus) -> {
+                    if (hasFocus) {
+                        matchBinding.cardView.setCardBackgroundColor(requireContext().getColor(R.color.self_7));
+                        ViewCompat.animate(v)
+                                .scaleX(1.05f)
+                                .scaleY(1.05f)
+                                .setDuration(250)
+                                .translationZ(1.2f)
+                                .start();
+                    } else {
+                        matchBinding.cardView.setCardBackgroundColor(requireContext().getColor(R.color.self_7_un_focus));
+                        ViewCompat.animate(v)
+                                .scaleX(1f)
+                                .scaleY(1f)
+                                .setDuration(250)
+                                .translationZ(1f)
+                                .start();
                     }
                 });
             }
-            matchBinding.cardView.setImageResource(imageList.get(position));
+            matchBinding.cardView.setImageResource(matchCards.getValue().get(position).getImgSrc());
+        }
+
+        @Override
+        public void onClick(View v) {
+            presenter.turnToChannel(index);
         }
     }
 
@@ -135,18 +155,19 @@ public class MatchFragment extends Fragment {
         public void onBindViewHolder(@NonNull MatchViewHolder holder, int position) {
             if (position == 0)
                 holder.itemView.setNextFocusLeftId(holder.itemView.getId());
-            if(position == imageList.size() - 1)
+            if(matchCards.getValue() != null && position == matchCards.getValue().size() - 1)
                 holder.itemView.setNextFocusRightId(holder.itemView.getId());
             holder.bind(position);
         }
 
         @Override
         public int getItemCount() {
-            return imageList.size();
+            if (matchCards.getValue() == null) return 0;
+            return matchCards.getValue().size();
         }
     }
 
-    class MatchAnimation implements View.OnFocusChangeListener {
+    static class MatchAnimation implements View.OnFocusChangeListener {
 
         @Override
         public void onFocusChange(View v, boolean hasFocus) {

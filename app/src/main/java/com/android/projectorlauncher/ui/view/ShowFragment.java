@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Rect;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,6 +18,7 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.android.projectorlauncher.R;
 import com.android.projectorlauncher.bean.VideoCard;
 import com.android.projectorlauncher.databinding.FragmentShowBinding;
 import com.android.projectorlauncher.databinding.ItemShowBinding;
@@ -60,6 +62,7 @@ public class ShowFragment extends Fragment implements ShowView, View.OnClickList
 
         setFocus();
         setClick();
+        Log.d("ShowFragment", "onCreateView: ========");
         return showBinding.getRoot();
     }
 
@@ -77,8 +80,44 @@ public class ShowFragment extends Fragment implements ShowView, View.OnClickList
         showBinding.recommend2.setOnFocusChangeListener(new ShowAnimation());
         showBinding.recommend3.setOnFocusChangeListener(new ShowAnimation());
         showBinding.recommend4.setOnFocusChangeListener(new ShowAnimation());
-        showBinding.category.setOnFocusChangeListener(new ShowAnimation());
-        showBinding.search.setOnFocusChangeListener(new ShowAnimation());
+        showBinding.category.setOnFocusChangeListener((v, hasFocus) -> {
+            if (hasFocus) {
+                ViewCompat.animate(v)
+                        .scaleX(1.05f)
+                        .scaleY(1.05f)
+                        .setDuration(250)
+                        .translationZ(1.2f)
+                        .start();
+                showBinding.category.setCardBackgroundColor(requireContext().getColor(R.color.self_2));
+            } else {
+                ViewCompat.animate(v)
+                        .scaleX(1f)
+                        .scaleY(1f)
+                        .setDuration(250)
+                        .translationZ(1f)
+                        .start();
+                showBinding.category.setCardBackgroundColor(requireContext().getColor(R.color.self_1));
+            }
+        });
+        showBinding.search.setOnFocusChangeListener((v, hasFocus) -> {
+            if (hasFocus) {
+                ViewCompat.animate(v)
+                        .scaleX(1.05f)
+                        .scaleY(1.05f)
+                        .setDuration(250)
+                        .translationZ(1.2f)
+                        .start();
+                showBinding.search.setCardBackgroundColor(requireContext().getColor(R.color.self_2));
+            } else {
+                ViewCompat.animate(v)
+                        .scaleX(1f)
+                        .scaleY(1f)
+                        .setDuration(250)
+                        .translationZ(1f)
+                        .start();
+                showBinding.search.setCardBackgroundColor(requireContext().getColor(R.color.self_1));
+            }
+        });
     }
 
     @Override
@@ -101,12 +140,14 @@ public class ShowFragment extends Fragment implements ShowView, View.OnClickList
     private final ViewTreeObserver.OnGlobalFocusChangeListener changeListener = new ViewTreeObserver.OnGlobalFocusChangeListener() {
         @Override
         public void onGlobalFocusChanged(View oldFocus, View newFocus) {
+            Log.d("ShowFragment", "onGlobalFocusChanged: " + oldFocus + "   " + newFocus);
             if (oldFocus instanceof TabLayout.TabView && !(newFocus instanceof TabLayout.TabView)) {
                 showBinding.recyclerView.requestFocus();
             }
             if(newFocus instanceof RecyclerView) {
-                selectView.requestFocus();
+                if (selectView != null) selectView.requestFocus();
             }
+
         }
     };
 
@@ -115,6 +156,9 @@ public class ShowFragment extends Fragment implements ShowView, View.OnClickList
         super.onResume();
         showBinding.getRoot().getViewTreeObserver().addOnGlobalFocusChangeListener(changeListener);
         showBinding.recyclerView.requestFocus();
+        if (videoCards.getValue() == null || videoCards.getValue().size() == 0 || presenter.sizeOfCards() == 0) {
+            presenter.init();
+        }
     }
 
     @Override
@@ -136,8 +180,6 @@ public class ShowFragment extends Fragment implements ShowView, View.OnClickList
             showBinding.recyclerView.getAdapter().notifyDataSetChanged();
         }
     }
-
-
 
     class ShowViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         ItemShowBinding binding;
@@ -218,7 +260,7 @@ public class ShowFragment extends Fragment implements ShowView, View.OnClickList
                     selectView = holder.itemView;
                 holder.itemView.setNextFocusLeftId(holder.itemView.getId());
             }
-            if (position == getItemCount()-1) {
+            if (videoCards.getValue() != null && position == videoCards.getValue().size()-1) {
                 holder.itemView.setNextFocusRightId(holder.itemView.getId());
             }
             holder.bind(position);
@@ -226,7 +268,9 @@ public class ShowFragment extends Fragment implements ShowView, View.OnClickList
 
         @Override
         public int getItemCount() {
-            return 5;
+            if (videoCards.getValue() != null)
+                return videoCards.getValue().size();
+            return 0;
         }
     }
 }

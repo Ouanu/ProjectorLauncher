@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
+import android.util.Log;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -26,12 +27,15 @@ public class ShowPresenter {
     public ShowPresenter(Activity activity) {
         handler = new ShowHandler(activity.getMainLooper());
         this.activity = activity;
-        init();
     }
 
     // 初始化数据
-    private void init() {
+    public void init() {
         JsonUtils.downloadJson(activity, Tag.SHOW, handler);
+    }
+
+    public int sizeOfCards() {
+        return cards.size();
     }
 
     // 获得MovieFragment接口
@@ -80,13 +84,19 @@ public class ShowPresenter {
         @Override
         public void handleMessage(@NonNull Message msg) {
             if (msg.what == JsonUtils.DOWNLOAD_SUCCESS) {
-                cards.addAll(JsonUtils.readVideoCards(activity, Tag.SHOW));
+                cards.clear();
+                recommends.clear();
+                cards.addAll(JsonUtils.readCards(activity, Tag.SHOW, VideoCard.class));
                 recommends.addAll(cards.subList(4, cards.size()));
+                Log.d("ShowPresenter", "handleMessage: " + recommends.size() + "   " + cards.size());
             } else {
                 Toast.makeText(activity, "请检查网络", Toast.LENGTH_SHORT).show();
 //                recommends.clear();
             }
-            view.update(cards.get(0), cards.get(1), cards.get(2), cards.get(3), recommends);
+            if (cards.size() >= 3) {
+                view.update(cards.get(0), cards.get(1), cards.get(2), cards.get(3), recommends);
+            }
+
         }
     }
 }

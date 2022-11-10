@@ -25,12 +25,16 @@ public class MoviePresenter {
     public MoviePresenter(Activity activity) {
         handler = new MovieHandler(activity.getMainLooper());
         this.activity = activity;
-        init();
     }
 
     // 初始化数据
-    private void init() {
+    public void init() {
         JsonUtils.downloadJson(activity, Tag.MOVIE, handler);
+    }
+
+    // 列表大小
+    public int sizeOfCards() {
+        return cards.size();
     }
 
     // 获得MovieFragment接口
@@ -68,7 +72,8 @@ public class MoviePresenter {
         @Override
         public void handleMessage(@NonNull Message msg) {
             if (msg.what == JsonUtils.DOWNLOAD_SUCCESS) {
-                cards.addAll(JsonUtils.readVideoCards(activity, Tag.MOVIE));
+                cards.clear();
+                cards.addAll(JsonUtils.readCards(activity, Tag.MOVIE, VideoCard.class));
             } else {
                 Toast.makeText(activity, "请检查网络", Toast.LENGTH_SHORT).show();
             }

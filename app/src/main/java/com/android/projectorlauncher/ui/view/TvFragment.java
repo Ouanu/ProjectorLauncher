@@ -138,6 +138,9 @@ public class TvFragment extends Fragment implements TvView, View.OnClickListener
         super.onResume();
         tvBinding.getRoot().getViewTreeObserver().addOnGlobalFocusChangeListener(changeListener);
         tvBinding.recommend.requestFocus();
+        if (cards.getValue() == null || cards.getValue().size() == 0 || presenter.sizeOfCards() == 0) {
+            presenter.init();
+        }
     }
 
     @Override

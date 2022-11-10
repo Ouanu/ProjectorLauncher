@@ -63,6 +63,9 @@ public class MovieFragment extends Fragment implements View.OnClickListener, Mov
         super.onResume();
         movieBinding.recommend1.requestFocus();
         movieBinding.getRoot().getViewTreeObserver().addOnGlobalFocusChangeListener(focusChangeListener);
+        if (presenter.sizeOfCards() == 0) {
+            presenter.init();
+        }
     }
 
     @Override

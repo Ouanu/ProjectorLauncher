@@ -21,16 +21,19 @@ public class TvPresenter {
     private final Activity activity;
     private final TvHandler handler;
     private TvView view;
-    private List<VideoCard> recommends = new ArrayList<>();
+    private final List<VideoCard> recommends = new ArrayList<>();
     public TvPresenter(Activity activity) {
         handler = new TvHandler(activity.getMainLooper());
         this.activity = activity;
-        init();
     }
 
     // 初始化数据
-    private void init() {
+    public void init() {
         JsonUtils.downloadJson(activity, Tag.TV, handler);
+    }
+
+    public int sizeOfCards() {
+        return cards.size();
     }
 
     // 获得MovieFragment接口
@@ -79,7 +82,9 @@ public class TvPresenter {
         @Override
         public void handleMessage(@NonNull Message msg) {
             if (msg.what == JsonUtils.DOWNLOAD_SUCCESS) {
-                cards.addAll(JsonUtils.readVideoCards(activity, Tag.TV));
+                cards.clear();
+                recommends.clear();
+                cards.addAll(JsonUtils.readCards(activity, Tag.TV, VideoCard.class));
                 recommends.addAll(cards.subList(3, cards.size()));
             } else {
                 Toast.makeText(activity, "请检查网络", Toast.LENGTH_SHORT).show();

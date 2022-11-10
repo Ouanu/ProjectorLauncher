@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto">
@@ -8,8 +9,10 @@
         android:id="@+id/recycler_view"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:focusable="true"
         android:descendantFocusability="beforeDescendants"
         android:nextFocusDown="@id/recommend_1"
+        android:layout_marginHorizontal="15dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -31,7 +34,8 @@
         app:layout_constraintHorizontal_bias="1"
         app:layout_constraintWidth_percent="0.15"
         app:layout_constraintVertical_bias="0.5"
-        app:layout_constraintHeight_percent="0.5"/>
+        app:layout_constraintHeight_percent="0.5"
+        android:contentDescription="@string/left_arrow" />
 
     <com.android.projectorlauncher.ui.design.PosterCardView
         android:id="@+id/recommend_1"
@@ -143,7 +147,8 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:src="@drawable/more_category"
-            android:scaleType="centerCrop"/>
+            android:scaleType="centerCrop"
+            android:contentDescription="@string/more_category" />
     </androidx.cardview.widget.CardView>
 
     <androidx.cardview.widget.CardView
@@ -172,6 +177,8 @@
             android:layout_height="match_parent"
             android:src="@drawable/search"
             android:paddingEnd="5dp"
-            android:scaleType="centerInside"/>
+            android:scaleType="centerInside"
+            android:contentDescription="@string/search"
+            tools:ignore="RtlSymmetry" />
     </androidx.cardview.widget.CardView>
 </androidx.constraintlayout.widget.ConstraintLayout>
