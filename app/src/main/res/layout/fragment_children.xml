@@ -13,7 +13,7 @@
         android:layout_marginVertical="20dp"
         android:clickable="true"
         android:focusable="true"
-        android:foreground="@drawable/video_card_selector_tv"
+        android:foreground="@drawable/video_card_selector_children"
         android:nextFocusLeft="@id/category"
         android:nextFocusRight="@id/search"
         android:nextFocusDown="@id/recycler_view"
@@ -56,7 +56,7 @@
             android:nextFocusLeft="@id/recommend"
             android:nextFocusRight="@id/category"
             android:nextFocusDown="@id/recommend_1"
-            android:background="@drawable/video_card_search_tv_selector"/>
+            android:background="@drawable/video_card_search_children_selector"/>
     </androidx.cardview.widget.CardView>
 
     <androidx.cardview.widget.CardView
@@ -87,7 +87,7 @@
             android:nextFocusLeft="@id/search"
             android:nextFocusRight="@id/recommend"
             android:nextFocusDown="@id/recommend_2"
-            android:background="@drawable/video_card_search_tv_selector"/>
+            android:background="@drawable/video_card_search_children_selector"/>
     </androidx.cardview.widget.CardView>
 
     <com.android.projectorlauncher.ui.design.PosterCardView
@@ -102,7 +102,7 @@
         android:nextFocusDown="@id/recycler_view"
         app:cardBackgroundColor="@color/background_color"
         app:cardCornerRadius="3dp"
-        android:foreground="@drawable/video_card_selector_tv"
+        android:foreground="@drawable/video_card_selector_children"
         app:layout_constraintBottom_toBottomOf="@id/recommend"
         app:layout_constraintEnd_toEndOf="@id/search_card"
         app:layout_constraintHeight_percent="0.26"
@@ -122,7 +122,7 @@
         android:nextFocusDown="@id/recycler_view"
         app:cardBackgroundColor="@color/background_color"
         app:cardCornerRadius="3dp"
-        android:foreground="@drawable/video_card_selector_tv"
+        android:foreground="@drawable/video_card_selector_children"
         app:layout_constraintBottom_toBottomOf="@id/recommend"
         app:layout_constraintEnd_toEndOf="@id/category_card"
         app:layout_constraintHeight_percent="0.26"

@@ -16,10 +16,9 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.MutableLiveData;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
-import com.android.projectorlauncher.R;
 import com.android.projectorlauncher.bean.VideoCard;
-import com.android.projectorlauncher.databinding.FragmentTvBinding;
+import com.android.projectorlauncher.databinding.FragmentChildrenBinding;
+import com.android.projectorlauncher.databinding.ItemChildrenBinding;
 import com.android.projectorlauncher.databinding.ItemTvBinding;
 import com.android.projectorlauncher.presenter.ChildrenPresenter;
 import com.android.projectorlauncher.ui.view.ChildrenView;
@@ -30,7 +29,7 @@ import java.util.List;
 
 public class ChildrenFragment extends Fragment implements ChildrenView, View.OnClickListener {
 
-    private FragmentTvBinding tvBinding;
+    private FragmentChildrenBinding tvBinding;
     private View headView;
     private ChildrenPresenter presenter;
     private final MutableLiveData<List<VideoCard>> cards = new MutableLiveData<>();
@@ -45,7 +44,7 @@ public class ChildrenFragment extends Fragment implements ChildrenView, View.OnC
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        tvBinding = FragmentTvBinding.inflate(inflater, container, false);
+        tvBinding = FragmentChildrenBinding.inflate(inflater, container, false);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
         layoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
         tvBinding.recyclerView.setLayoutManager(layoutManager);
@@ -59,8 +58,6 @@ public class ChildrenFragment extends Fragment implements ChildrenView, View.OnC
                 outRect.right = 7;
             }
         });
-        tvBinding.category.setCardElevation(3f);
-        tvBinding.search.setCardElevation(3f);
 
         setFocus();
         setClick();
@@ -81,16 +78,14 @@ public class ChildrenFragment extends Fragment implements ChildrenView, View.OnC
         tvBinding.recommend2.setOnFocusChangeListener(new CardAnimationOnFocusChange());
         tvBinding.category.setOnFocusChangeListener((v, hasFocus) -> {
             if (hasFocus) {
-                tvBinding.category.setCardBackgroundColor(getResources().getColor(R.color.self_6, null));
-                ViewCompat.animate(v)
+                ViewCompat.animate(tvBinding.categoryCard)
                         .scaleX(1.05f)
                         .scaleY(1.05f)
                         .setDuration(300)
                         .translationZ(1f)
                         .start();
             } else {
-                tvBinding.category.setCardBackgroundColor(getResources().getColor(R.color.self_6_un_focus, null));
-                ViewCompat.animate(v)
+                ViewCompat.animate(tvBinding.categoryCard)
                         .scaleX(1f)
                         .scaleY(1f)
                         .setDuration(300)
@@ -100,16 +95,14 @@ public class ChildrenFragment extends Fragment implements ChildrenView, View.OnC
         });
         tvBinding.search.setOnFocusChangeListener((v, hasFocus) -> {
             if (hasFocus) {
-                tvBinding.search.setCardBackgroundColor(getResources().getColor(R.color.self_6, null));
-                ViewCompat.animate(v)
+                ViewCompat.animate(tvBinding.searchCard)
                         .scaleX(1.05f)
                         .scaleY(1.05f)
                         .setDuration(300)
                         .translationZ(1.2f)
                         .start();
             } else {
-                tvBinding.search.setCardBackgroundColor(getResources().getColor(R.color.self_6_un_focus, null));
-                ViewCompat.animate(v)
+                ViewCompat.animate(tvBinding.searchCard)
                         .scaleX(1f)
                         .scaleY(1f)
                         .setDuration(300)
@@ -177,11 +170,11 @@ public class ChildrenFragment extends Fragment implements ChildrenView, View.OnC
     }
 
     class TvViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        ItemTvBinding binding;
+        ItemChildrenBinding binding;
         int index = -1;
         public TvViewHolder(@NonNull View itemView) {
             super(itemView);
-            binding = ItemTvBinding.bind(itemView);
+            binding = ItemChildrenBinding.bind(itemView);
             itemView.setOnFocusChangeListener(new CardAnimationOnFocusChange());
             ViewGroup.LayoutParams layoutParams = new ViewGroup.LayoutParams((int) (tvBinding.recyclerView.getWidth() / 8.5), (int) (tvBinding.recyclerView.getHeight() * 0.93));
             binding.getRoot().setLayoutParams(layoutParams);

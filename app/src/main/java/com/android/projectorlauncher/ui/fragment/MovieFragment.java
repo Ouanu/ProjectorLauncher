@@ -70,8 +70,8 @@ public class MovieFragment extends Fragment implements View.OnClickListener, Mov
     }
 
     @Override
-    public void onStop() {
-        super.onStop();
+    public void onPause() {
+        super.onPause();
         movieBinding.getRoot().getViewTreeObserver().removeOnGlobalFocusChangeListener(focusChangeListener);
     }
 

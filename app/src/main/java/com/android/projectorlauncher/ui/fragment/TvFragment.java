@@ -16,7 +16,6 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.MutableLiveData;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import com.android.projectorlauncher.R;
 import com.android.projectorlauncher.bean.VideoCard;
 import com.android.projectorlauncher.databinding.FragmentTvBinding;
 import com.android.projectorlauncher.databinding.ItemTvBinding;
@@ -58,8 +57,8 @@ public class TvFragment extends Fragment implements TvView, View.OnClickListener
                 outRect.right = 7;
             }
         });
-        tvBinding.category.setCardElevation(3f);
-        tvBinding.search.setCardElevation(3f);
+//        tvBinding.category.setCardElevation(3f);
+//        tvBinding.search.setCardElevation(3f);
 
         setFocus();
         setClick();
@@ -80,16 +79,14 @@ public class TvFragment extends Fragment implements TvView, View.OnClickListener
         tvBinding.recommend2.setOnFocusChangeListener(new CardAnimationOnFocusChange());
         tvBinding.category.setOnFocusChangeListener((v, hasFocus) -> {
             if (hasFocus) {
-                tvBinding.category.setCardBackgroundColor(getResources().getColor(R.color.self_6, null));
-                ViewCompat.animate(v)
+                ViewCompat.animate(tvBinding.categoryCard)
                         .scaleX(1.05f)
                         .scaleY(1.05f)
                         .setDuration(300)
                         .translationZ(1f)
                         .start();
             } else {
-                tvBinding.category.setCardBackgroundColor(getResources().getColor(R.color.self_6_un_focus, null));
-                ViewCompat.animate(v)
+                ViewCompat.animate(tvBinding.categoryCard)
                         .scaleX(1f)
                         .scaleY(1f)
                         .setDuration(300)
@@ -99,16 +96,14 @@ public class TvFragment extends Fragment implements TvView, View.OnClickListener
         });
         tvBinding.search.setOnFocusChangeListener((v, hasFocus) -> {
             if (hasFocus) {
-                tvBinding.search.setCardBackgroundColor(getResources().getColor(R.color.self_6, null));
-                ViewCompat.animate(v)
+                ViewCompat.animate(tvBinding.searchCard)
                         .scaleX(1.05f)
                         .scaleY(1.05f)
                         .setDuration(300)
                         .translationZ(1.2f)
                         .start();
             } else {
-                tvBinding.search.setCardBackgroundColor(getResources().getColor(R.color.self_6_un_focus, null));
-                ViewCompat.animate(v)
+                ViewCompat.animate(tvBinding.searchCard)
                         .scaleX(1f)
                         .scaleY(1f)
                         .setDuration(300)

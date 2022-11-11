@@ -13,14 +13,18 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.Color;
 import android.graphics.Typeface;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.projectorlauncher.databinding.ActivityMainBinding;
+import com.android.projectorlauncher.ui.fragment.ApplicationFragment;
 import com.android.projectorlauncher.ui.fragment.ChildrenFragment;
 import com.android.projectorlauncher.ui.fragment.ComicsFragment;
 import com.android.projectorlauncher.ui.fragment.MatchFragment;
@@ -38,10 +42,9 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
     ActivityMainBinding binding;
-    private final List<String> titles = Arrays.asList("电影", "剧集", "综艺", "动漫", "少儿", "体育");
+    private final List<String> titles = Arrays.asList("电影", "剧集", "综艺", "动漫", "少儿", "体育", "应用");
     private final ArrayList<Fragment> fragments = new ArrayList<>();
     private TabLayoutMediator mediator;
-
     private final int normalSize = 18;
     private View selectView = null;
     private final MovieFragment fragment = new MovieFragment();
@@ -50,8 +53,8 @@ public class MainActivity extends AppCompatActivity {
     private final MatchFragment matchFragment = new MatchFragment();
     private final ComicsFragment comicsFragment = new ComicsFragment();
     private final ChildrenFragment childrenFragment = new ChildrenFragment();
-    private final TimeBroadcast receiver  = new TimeBroadcast();
-    private class TimeBroadcast extends BroadcastReceiver {
+    private final ApplicationFragment applicationFragment = new ApplicationFragment();
+    private final BroadcastReceiver receiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
             if (binding != null) {
@@ -60,7 +63,33 @@ public class MainActivity extends AppCompatActivity {
                 binding.time.setText(dateFormat.format(new Date(System.currentTimeMillis())));
             }
         }
-    }
+    };
+    private final BroadcastReceiver receiver1 = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if (isNetworkConnected(context)) {
+                Toast.makeText(context, "网络已连接", Toast.LENGTH_SHORT).show();
+                if (binding != null) {
+                    binding.netStat.setImageResource(R.drawable.ic_baseline_signal_cellular_4_bar_24);
+                }
+            } else {
+                Toast.makeText(context, "网络已断开", Toast.LENGTH_SHORT).show();
+                if (binding != null) {
+                    binding.netStat.setImageResource(R.drawable.ic_baseline_signal_cellular_off_24);
+                }
+            }
+
+        }
+
+        public boolean isNetworkConnected(Context context) {
+            ConnectivityManager connManager = (ConnectivityManager) context.getSystemService(CONNECTIVITY_SERVICE);
+            NetworkInfo activeNetworkInfo = connManager.getActiveNetworkInfo();
+            if (activeNetworkInfo == null || !activeNetworkInfo.isConnected()) {
+                return false;
+            }
+            return activeNetworkInfo.getDetailedState() == NetworkInfo.DetailedState.CONNECTED;
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,9 +97,17 @@ public class MainActivity extends AppCompatActivity {
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         initView();
+        initBroadcast();
+    }
+
+    private void initBroadcast() {
         IntentFilter filter = new IntentFilter();
         filter.addAction(Intent.ACTION_TIME_TICK);
         registerReceiver(receiver, filter);
+        IntentFilter filter1 = new IntentFilter();
+        filter1.addAction("android.net.conn.CONNECTIVITY_CHANGE");
+        filter1.addCategory(Intent.CATEGORY_DEFAULT);
+        registerReceiver(receiver1, filter1);
     }
 
     private void initView() {
@@ -85,12 +122,14 @@ public class MainActivity extends AppCompatActivity {
                 fragments.add(tvFragment);
             } else if (cnt == 2) {
                 fragments.add(showFragment);
-            } else if (cnt == 3) {
+            } else if (cnt == 3 || cnt == 7) {
                 fragments.add(comicsFragment);
             } else if (cnt == 4) {
                 fragments.add(childrenFragment);
-            } else {
+            } else if (cnt == 5) {
                 fragments.add(matchFragment);
+            } else {
+                fragments.add(applicationFragment);
             }
 
             cnt++;
@@ -101,6 +140,7 @@ public class MainActivity extends AppCompatActivity {
                 selectView.requestFocus();
             }
         });
+
         binding.viewPager.setAdapter(new FragmentStateAdapter(getSupportFragmentManager(), getLifecycle()) {
             @NonNull
             @Override
@@ -114,7 +154,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         binding.viewPager.registerOnPageChangeCallback(changeCallback);
-//        binding.viewPager.setUserInputEnabled(false);
+        binding.viewPager.setUserInputEnabled(false);
         mediator = new TabLayoutMediator(binding.tabLayout, binding.viewPager, (tab, position) -> {
             TextView tabView = new TextView(MainActivity.this);
             tabView.setText(titles.get(position));
@@ -130,6 +170,7 @@ public class MainActivity extends AppCompatActivity {
 
         });
         mediator.attach();
+
         binding.tabLayout.setFocusable(true);
 //        binding.tabLayout.requestFocus();
         @SuppressLint("SimpleDateFormat")
@@ -168,6 +209,12 @@ public class MainActivity extends AppCompatActivity {
                     } else if (position == 2) {
                         tabView.setTextColor(getColor(R.color.self_2));
                         binding.tabLayout.setSelectedTabIndicatorColor(getColor(R.color.self_2));
+                    } else if (position == 3) {
+                        tabView.setTextColor(getColor(R.color.self_4));
+                        binding.tabLayout.setSelectedTabIndicatorColor(getColor(R.color.self_4));
+                    } else if (position == 4) {
+                        tabView.setTextColor(getColor(R.color.self_8));
+                        binding.tabLayout.setSelectedTabIndicatorColor(getColor(R.color.self_8));
                     } else {
                         tabView.setTextColor(getColor(R.color.self_7));
                         binding.tabLayout.setSelectedTabIndicatorColor(getColor(R.color.self_7));
@@ -183,7 +230,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-//        binding.tabLayout.setFocusable(true);
+        binding.tabLayout.setFocusable(true);
         binding.viewPager.clearFocus();
         binding.tabLayout.requestFocus();
         super.onBackPressed();
@@ -192,6 +239,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         unregisterReceiver(receiver);
+        unregisterReceiver(receiver1);
         mediator.detach();
         binding.viewPager.unregisterOnPageChangeCallback(changeCallback);
         super.onDestroy();

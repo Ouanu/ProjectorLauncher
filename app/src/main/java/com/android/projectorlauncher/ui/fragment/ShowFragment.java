@@ -8,7 +8,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewTreeObserver;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -24,7 +23,6 @@ import com.android.projectorlauncher.databinding.FragmentShowBinding;
 import com.android.projectorlauncher.databinding.ItemShowBinding;
 import com.android.projectorlauncher.presenter.ShowPresenter;
 import com.android.projectorlauncher.ui.view.ShowView;
-import com.google.android.material.tabs.TabLayout;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -138,25 +136,9 @@ public class ShowFragment extends Fragment implements ShowView, View.OnClickList
         }
     }
 
-    private final ViewTreeObserver.OnGlobalFocusChangeListener changeListener = new ViewTreeObserver.OnGlobalFocusChangeListener() {
-        @Override
-        public void onGlobalFocusChanged(View oldFocus, View newFocus) {
-            Log.d("ShowFragment", "onGlobalFocusChanged: " + oldFocus + "   " + newFocus);
-            if (oldFocus instanceof TabLayout.TabView && !(newFocus instanceof TabLayout.TabView)) {
-                showBinding.recyclerView.requestFocus();
-            }
-            if(newFocus instanceof RecyclerView) {
-                if (selectView != null) selectView.requestFocus();
-            }
-
-        }
-    };
-
     @Override
     public void onResume() {
         super.onResume();
-        showBinding.getRoot().getViewTreeObserver().addOnGlobalFocusChangeListener(changeListener);
-        showBinding.recyclerView.requestFocus();
         if (videoCards.getValue() == null || videoCards.getValue().size() == 0 || presenter.sizeOfCards() == 0) {
             presenter.init();
         }
@@ -165,7 +147,6 @@ public class ShowFragment extends Fragment implements ShowView, View.OnClickList
     @Override
     public void onPause() {
         super.onPause();
-        showBinding.getRoot().getViewTreeObserver().removeOnGlobalFocusChangeListener(changeListener);
     }
 
     @SuppressLint("NotifyDataSetChanged")
@@ -257,8 +238,10 @@ public class ShowFragment extends Fragment implements ShowView, View.OnClickList
         @Override
         public void onBindViewHolder(@NonNull ShowViewHolder holder, int position) {
             if (position == 0) {
-                if(selectView == null)
+                if(selectView == null){
                     selectView = holder.itemView;
+                    selectView.requestFocus();
+                }
                 holder.itemView.setNextFocusLeftId(holder.itemView.getId());
             }
             if (videoCards.getValue() != null && position == videoCards.getValue().size()-1) {
