@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="60dp"
+    android:layout_marginHorizontal="150dp"
+    android:layout_marginVertical="8dp"
+    android:focusable="true"
+    android:background="@drawable/item_wifi_selector">
+
+    <ImageView
+        android:id="@+id/iv_wifi"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_alignParentStart="true"
+        android:layout_centerVertical="true"
+        android:layout_marginStart="20dp"
+        android:src="@drawable/wifi_strong"
+        android:contentDescription="wifi icon" />
+
+    <TextView
+        android:id="@+id/wifi_name"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_toStartOf="@id/lock"
+        android:layout_toEndOf="@id/iv_wifi"
+        android:fontFamily="sans-serif-medium"
+        android:gravity="center_vertical|start"
+        android:paddingHorizontal="20dp"
+        android:singleLine="true"
+        android:text="测试网络ChinaNet-5G-F8C8"
+        android:textColor="@color/white"
+        android:textSize="20sp"
+        android:textStyle="bold" />
+
+<!--    <TextView-->
+<!--        android:id="@+id/wifi_Capabilities"-->
+<!--        android:layout_width="0dp"-->
+<!--        android:layout_height="match_parent"-->
+<!--        android:maxWidth="200dp"-->
+<!--        android:layout_toStartOf="@id/btn_turn"-->
+<!--        android:fontFamily="sans-serif-medium"-->
+<!--        android:gravity="center_vertical|end"-->
+<!--        android:paddingHorizontal="20dp"-->
+<!--        android:text="WPS"-->
+<!--        android:textColor="@color/white"-->
+<!--        android:textSize="20sp"-->
+<!--        android:textStyle="bold"-->
+<!--        android:singleLine="true" />-->
+    <ImageView
+        android:id="@+id/lock"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_centerVertical="true"
+        android:layout_marginEnd="20dp"
+        android:layout_toStartOf="@id/btn_turn"
+        android:scaleType="centerInside"
+        android:src="@drawable/wifi_key" />
+
+    <ImageView
+        android:id="@+id/btn_turn"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_alignParentEnd="true"
+        android:layout_centerVertical="true"
+        android:layout_marginEnd="20dp"
+        android:src="@drawable/wifi_in_selector" />
+
+</RelativeLayout>

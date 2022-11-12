@@ -29,6 +29,7 @@ import com.android.projectorlauncher.ui.fragment.ChildrenFragment;
 import com.android.projectorlauncher.ui.fragment.ComicsFragment;
 import com.android.projectorlauncher.ui.fragment.MatchFragment;
 import com.android.projectorlauncher.ui.fragment.MovieFragment;
+import com.android.projectorlauncher.ui.fragment.SettingsFragment;
 import com.android.projectorlauncher.ui.fragment.ShowFragment;
 import com.android.projectorlauncher.ui.fragment.TvFragment;
 import com.google.android.material.tabs.TabLayout;
@@ -42,7 +43,7 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
     ActivityMainBinding binding;
-    private final List<String> titles = Arrays.asList("电影", "剧集", "综艺", "动漫", "少儿", "体育", "应用");
+    private final List<String> titles = Arrays.asList("电影", "剧集", "综艺", "动漫", "少儿", "体育", "应用", "设置");
     private final ArrayList<Fragment> fragments = new ArrayList<>();
     private TabLayoutMediator mediator;
     private final int normalSize = 18;
@@ -54,6 +55,7 @@ public class MainActivity extends AppCompatActivity {
     private final ComicsFragment comicsFragment = new ComicsFragment();
     private final ChildrenFragment childrenFragment = new ChildrenFragment();
     private final ApplicationFragment applicationFragment = new ApplicationFragment();
+    private final SettingsFragment settingsFragment = new SettingsFragment();
     private final BroadcastReceiver receiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -111,29 +113,14 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void initView() {
-        int cnt = 0;
-        for (String ignored : titles) {
-            if (cnt == titles.size()) {
-                break;
-            }
-            if (cnt == 0) {
-                fragments.add(fragment);
-            } else if (cnt == 1) {
-                fragments.add(tvFragment);
-            } else if (cnt == 2) {
-                fragments.add(showFragment);
-            } else if (cnt == 3 || cnt == 7) {
-                fragments.add(comicsFragment);
-            } else if (cnt == 4) {
-                fragments.add(childrenFragment);
-            } else if (cnt == 5) {
-                fragments.add(matchFragment);
-            } else {
-                fragments.add(applicationFragment);
-            }
-
-            cnt++;
-        }
+        fragments.add(fragment);
+        fragments.add(tvFragment);
+        fragments.add(showFragment);
+        fragments.add(comicsFragment);
+        fragments.add(childrenFragment);
+        fragments.add(matchFragment);
+        fragments.add(applicationFragment);
+        fragments.add(settingsFragment);
         binding.tabLayout.getViewTreeObserver().addOnGlobalFocusChangeListener((oldFocus, newFocus) -> {
             if (!(oldFocus instanceof TabLayout.TabView) && newFocus instanceof TabLayout.TabView && selectView != null) {
                 selectView.setFocusable(true);
@@ -153,8 +140,9 @@ public class MainActivity extends AppCompatActivity {
                 return fragments.size();
             }
         });
+
         binding.viewPager.registerOnPageChangeCallback(changeCallback);
-        binding.viewPager.setUserInputEnabled(false);
+//        binding.viewPager.setUserInputEnabled(false);
         mediator = new TabLayoutMediator(binding.tabLayout, binding.viewPager, (tab, position) -> {
             TextView tabView = new TextView(MainActivity.this);
             tabView.setText(titles.get(position));
