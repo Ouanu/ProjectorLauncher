@@ -3,9 +3,11 @@ package com.android.projectorlauncher.ui.fragment;
 import android.content.Context;
 import android.graphics.Rect;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -17,6 +19,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.android.projectorlauncher.R;
 import com.android.projectorlauncher.databinding.ItemSettingsBinding;
 import com.android.projectorlauncher.databinding.FragmentSettingsBinding;
+import com.google.android.material.tabs.TabLayout;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -58,6 +61,19 @@ public class SettingsFragment extends Fragment {
         });
         getParentFragmentManager().beginTransaction().add(R.id.container_frameLayout, new WifiFragment()).commit();
         return settingsBinding.getRoot();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        settingsBinding.getRoot().getViewTreeObserver().addOnGlobalFocusChangeListener(new ViewTreeObserver.OnGlobalFocusChangeListener() {
+            @Override
+            public void onGlobalFocusChanged(View oldFocus, View newFocus) {
+                if (oldFocus instanceof TabLayout.TabView && !(newFocus instanceof TabLayout.TabView)) {
+                    settingsBinding.recyclerView.requestFocus();
+                }
+            }
+        });
     }
 
     class SettingsViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {

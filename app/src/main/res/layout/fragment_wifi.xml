@@ -11,16 +11,16 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:gravity="center"
-            android:text="WIFI设置"
-            android:textColor="@color/white"
-            android:textSize="28sp"
-            android:textStyle="bold"
-            android:typeface="sans" />
+<!--        <TextView-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_marginTop="10dp"-->
+<!--            android:gravity="center"-->
+<!--            android:text="WIFI设置"-->
+<!--            android:textColor="@color/white"-->
+<!--            android:textSize="28sp"-->
+<!--            android:textStyle="bold"-->
+<!--            android:typeface="sans" />-->
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -73,6 +73,7 @@
                 android:layout_centerVertical="true"
                 android:layout_marginEnd="20dp"
                 android:layout_toStartOf="@id/btn_refresh"
+                android:nextFocusUp="@id/recycler_view"
                 android:background="@drawable/btn_wifi_background_focus"
                 android:focusable="true"
                 android:fontFamily="sans-serif"
@@ -121,6 +122,7 @@
         </RelativeLayout>
 
         <TextView
+            android:id="@+id/connected_wifi_list"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
@@ -130,8 +132,7 @@
             android:text="连接过的网络"
             android:textColor="@color/white"
             android:textSize="22sp"
-            android:textStyle="bold"
-            android:typeface="sans" />
+            android:textStyle="bold" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/save_recycleView"

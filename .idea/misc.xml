@@ -15,6 +15,12 @@
         <entry key="..\:/project/ProjectorLauncher/app/src/main/res/drawable/btn_wifi_background_enable_focus.xml" value="0.1" />
         <entry key="..\:/project/ProjectorLauncher/app/src/main/res/drawable/btn_wifi_background_focus.xml" value="0.1095" />
         <entry key="..\:/project/ProjectorLauncher/app/src/main/res/drawable/btn_wifi_background_stop_focus.xml" value="0.1" />
+        <entry key="..\:/project/ProjectorLauncher/app/src/main/res/drawable/btn_wifi_enable_focus.xml" value="0.1585" />
+        <entry key="..\:/project/ProjectorLauncher/app/src/main/res/drawable/btn_wifi_enable_unfocus.xml" value="0.1585" />
+        <entry key="..\:/project/ProjectorLauncher/app/src/main/res/drawable/btn_wifi_focus.xml" value="0.1585" />
+        <entry key="..\:/project/ProjectorLauncher/app/src/main/res/drawable/btn_wifi_stop_focus.xml" value="0.1585" />
+        <entry key="..\:/project/ProjectorLauncher/app/src/main/res/drawable/btn_wifi_stop_unfocus.xml" value="0.1585" />
+        <entry key="..\:/project/ProjectorLauncher/app/src/main/res/drawable/btn_wifi_unfocus.xml" value="0.1585" />
         <entry key="..\:/project/ProjectorLauncher/app/src/main/res/drawable/card_background.xml" value="0.243" />
         <entry key="..\:/project/ProjectorLauncher/app/src/main/res/drawable/edit_background.xml" value="0.1" />
         <entry key="..\:/project/ProjectorLauncher/app/src/main/res/drawable/item_active.xml" value="0.1" />
@@ -25,7 +31,10 @@
         <entry key="..\:/project/ProjectorLauncher/app/src/main/res/drawable/item_option_un_focus.xml" value="0.1" />
         <entry key="..\:/project/ProjectorLauncher/app/src/main/res/drawable/item_select_background.xml" value="0.1" />
         <entry key="..\:/project/ProjectorLauncher/app/src/main/res/drawable/item_wifi_connected.xml" value="0.1025" />
+        <entry key="..\:/project/ProjectorLauncher/app/src/main/res/drawable/item_wifi_connected_focus.xml" value="0.1585" />
+        <entry key="..\:/project/ProjectorLauncher/app/src/main/res/drawable/item_wifi_focus.xml" value="0.1585" />
         <entry key="..\:/project/ProjectorLauncher/app/src/main/res/drawable/item_wifi_not_focus.xml" value="0.1" />
+        <entry key="..\:/project/ProjectorLauncher/app/src/main/res/drawable/item_wifi_selector.xml" value="0.1585" />
         <entry key="..\:/project/ProjectorLauncher/app/src/main/res/drawable/tab_focus_selector.xml" value="0.1" />
         <entry key="..\:/project/ProjectorLauncher/app/src/main/res/drawable/tab_focuse.xml" value="0.1" />
         <entry key="..\:/project/ProjectorLauncher/app/src/main/res/drawable/tab_style.xml" value="0.231" />

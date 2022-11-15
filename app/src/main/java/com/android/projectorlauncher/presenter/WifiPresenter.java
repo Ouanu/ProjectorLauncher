@@ -7,6 +7,8 @@ import android.net.wifi.ScanResult;
 import android.net.wifi.WifiConfiguration;
 import android.net.wifi.WifiManager;
 
+import com.android.projectorlauncher.ui.fragment.WifiFragment;
+import com.android.projectorlauncher.ui.view.WifiView;
 import com.android.projectorlauncher.utils.WifiManagerUtils;
 
 import java.util.ArrayList;
@@ -15,12 +17,14 @@ import java.util.List;
 public class WifiPresenter {
     private Activity activity;
     private WifiManager wifiManager;
-    private List<ScanResult> nearbyResults = new ArrayList<>();
-    private List<ScanResult> saveResults = new ArrayList<>();
+    private List<ScanResult> nearbyResults;
+    private List<ScanResult> saveResults;
+    private WifiView view;
 
-    public WifiPresenter(Activity activity) {
-        this.activity = activity;
+    public WifiPresenter(WifiFragment fragment) {
+        this.activity = fragment.requireActivity();
         wifiManager = (WifiManager) activity.getSystemService(Context.WIFI_SERVICE);
+        view = fragment;
     }
 
     /**
@@ -56,14 +60,20 @@ public class WifiPresenter {
         clearNetworks();
         nearbyResults = WifiManagerUtils.scanResults(wifiManager);
         saveResults = WifiManagerUtils.getSaveWifiList(nearbyResults, WifiManagerUtils.getConfiguredNetworks(activity, wifiManager));
+        view.update();
     }
 
     /**
      * 清空列表
      */
     public void clearNetworks() {
-        nearbyResults.clear();
-        saveResults.clear();
+        if (nearbyResults != null) {
+            nearbyResults.clear();
+        }
+        if (saveResults != null) {
+            saveResults.clear();
+        }
+
     }
 
     public List<ScanResult> getNearbyResults() {

@@ -8,6 +8,7 @@ import android.content.IntentFilter;
 import android.net.wifi.ScanResult;
 import android.net.wifi.WifiManager;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,6 +21,7 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.android.projectorlauncher.R;
 import com.android.projectorlauncher.databinding.FragmentWifiBinding;
 import com.android.projectorlauncher.databinding.ItemWifiBinding;
 import com.android.projectorlauncher.presenter.WifiPresenter;
@@ -27,25 +29,27 @@ import com.android.projectorlauncher.ui.view.WifiView;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class WifiFragment extends Fragment implements View.OnClickListener, WifiView {
     private FragmentWifiBinding wifiBinding;
     private WifiPresenter presenter;
-    private BroadcastReceiver receiver = new BroadcastReceiver() {
+    private final BroadcastReceiver receiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            if (intent.getAction() == WifiManager.SCAN_RESULTS_AVAILABLE_ACTION) {
+            if (intent.getAction().equals(WifiManager.SCAN_RESULTS_AVAILABLE_ACTION)) {
+                Log.d("WifiFragment", "onReceive: 刷新数据");
                 presenter.updateNetworks();
             }
         }
     };
-    private MutableLiveData<List<ScanResult>> nearbyList = new MutableLiveData<>();
-    private MutableLiveData<List<ScanResult>> saveList = new MutableLiveData<>();
+    private final MutableLiveData<List<ScanResult>> nearbyList = new MutableLiveData<>();
+    private final MutableLiveData<List<ScanResult>> saveList = new MutableLiveData<>();
 
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
-        presenter = new WifiPresenter(requireActivity());
+        presenter = new WifiPresenter(this);
         nearbyList.setValue(new ArrayList<>());
         saveList.setValue(new ArrayList<>());
     }
@@ -58,8 +62,8 @@ public class WifiFragment extends Fragment implements View.OnClickListener, Wifi
         onFocus();
         wifiBinding.wifiRecycleView.setLayoutManager(new LinearLayoutManager(requireActivity()));
         wifiBinding.saveRecycleView.setLayoutManager(new LinearLayoutManager(requireActivity()));
-        wifiBinding.wifiRecycleView.setAdapter(new WifiAdapter(nearbyList.getValue()));
-        wifiBinding.saveRecycleView.setAdapter(new WifiAdapter(saveList.getValue()));
+        wifiBinding.wifiRecycleView.setAdapter(new WifiAdapter(nearbyList));
+        wifiBinding.saveRecycleView.setAdapter(new WifiAdapter(saveList));
         return wifiBinding.getRoot();
     }
 
@@ -84,6 +88,18 @@ public class WifiFragment extends Fragment implements View.OnClickListener, Wifi
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+        if (presenter.isWifiEnabled()) {
+            wifiBinding.btnSwitch.setBackgroundResource(R.drawable.btn_wifi_background_enable_focus);
+            wifiBinding.btnSwitch.setText("停用");
+        } else {
+            wifiBinding.btnSwitch.setBackgroundResource(R.drawable.btn_wifi_background_focus);
+            wifiBinding.btnSwitch.setText("启用");
+        }
+    }
+
+    @Override
     public void onClick(View v) {
         if (v == wifiBinding.btnRefresh) {
             presenter.refreshNearbyNetworks();
@@ -99,6 +115,14 @@ public class WifiFragment extends Fragment implements View.OnClickListener, Wifi
     public void update() {
         nearbyList.setValue(presenter.getNearbyResults());
         saveList.setValue(presenter.getSaveResults());
+        if (saveList.getValue() != null && saveList.getValue().size() == 0) {
+            wifiBinding.saveRecycleView.setVisibility(View.GONE);
+            wifiBinding.connectedWifiList.setVisibility(View.GONE);
+        } else {
+            wifiBinding.saveRecycleView.setVisibility(View.VISIBLE);
+            wifiBinding.connectedWifiList.setVisibility(View.VISIBLE);
+        }
+        Log.d("WifiFragment", "update: nearbyList=" + Objects.requireNonNull(nearbyList.getValue()).size() + "  saveList=" + Objects.requireNonNull(saveList.getValue()).size());
         if (wifiBinding.wifiRecycleView.getAdapter() != null) {
             wifiBinding.wifiRecycleView.getAdapter().notifyDataSetChanged();
         }
@@ -107,21 +131,29 @@ public class WifiFragment extends Fragment implements View.OnClickListener, Wifi
         }
     }
 
-    class WifiViewHolder extends RecyclerView.ViewHolder {
+    static class WifiViewHolder extends RecyclerView.ViewHolder {
         ItemWifiBinding binding;
 
         public WifiViewHolder(@NonNull View itemView) {
             super(itemView);
             binding = ItemWifiBinding.bind(itemView);
-
+        }
+        public void bind(ScanResult result) {
+            binding.wifiName.setText(result.SSID);
+            if (result.capabilities.contains("WPA-PSK") || result.capabilities.contains("WPA2-PSK") || result.capabilities.contains("WEP")) {
+                binding.lock.setVisibility(View.VISIBLE);
+            } else {
+                binding.lock.setVisibility(View.INVISIBLE);
+            }
+            Log.d("WifiFragment", "bind: " + result.level);
         }
     }
 
     class WifiAdapter extends RecyclerView.Adapter<WifiViewHolder> {
 
-        private final List<ScanResult> results;
+        private MutableLiveData<List<ScanResult>> results;
 
-        public WifiAdapter(List<ScanResult> results) {
+        public WifiAdapter(MutableLiveData<List<ScanResult>> results) {
             this.results = results;
         }
 
@@ -134,16 +166,16 @@ public class WifiFragment extends Fragment implements View.OnClickListener, Wifi
 
         @Override
         public void onBindViewHolder(@NonNull WifiViewHolder holder, int position) {
-
+            holder.bind(results.getValue().get(position));
         }
 
         @Override
         public int getItemCount() {
-            return results.size();
+            return results.getValue().size();
         }
     }
 
-    class WifiAnimation implements View.OnFocusChangeListener {
+    static class WifiAnimation implements View.OnFocusChangeListener {
 
         @Override
         public void onFocusChange(View v, boolean hasFocus) {
