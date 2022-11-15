@@ -42,7 +42,7 @@
             android:nextFocusUp="@id/connect"
             android:nextFocusDown="@id/passwd"
             android:scaleType="centerCrop"
-            android:src="@drawable/back_selector" />
+            android:src="@drawable/back_wifi_selector" />
 
         <EditText
             android:id="@+id/passwd"

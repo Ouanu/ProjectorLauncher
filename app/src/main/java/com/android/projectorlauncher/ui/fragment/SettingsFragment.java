@@ -56,7 +56,7 @@ public class SettingsFragment extends Fragment {
 //                outRect.bottom = 10;
             }
         });
-        getParentFragmentManager().beginTransaction().add(R.id.container_frameLayout, new WIFIFragment()).commit();
+        getParentFragmentManager().beginTransaction().add(R.id.container_frameLayout, new WifiFragment()).commit();
         return settingsBinding.getRoot();
     }
 

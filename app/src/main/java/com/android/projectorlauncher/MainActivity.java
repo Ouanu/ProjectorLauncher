@@ -15,7 +15,9 @@ import android.graphics.Color;
 import android.graphics.Typeface;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.net.wifi.WifiManager;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.View;
@@ -32,6 +34,7 @@ import com.android.projectorlauncher.ui.fragment.MovieFragment;
 import com.android.projectorlauncher.ui.fragment.SettingsFragment;
 import com.android.projectorlauncher.ui.fragment.ShowFragment;
 import com.android.projectorlauncher.ui.fragment.TvFragment;
+import com.android.projectorlauncher.utils.WifiManagerUtils;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 
@@ -100,7 +103,9 @@ public class MainActivity extends AppCompatActivity {
         setContentView(binding.getRoot());
         initView();
         initBroadcast();
+
     }
+
 
     private void initBroadcast() {
         IntentFilter filter = new IntentFilter();
