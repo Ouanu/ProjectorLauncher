@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="500dp"
+    android:layout_height="400dp"
+    android:background="@drawable/dialog_add_network_background"
+    android:gravity="center_vertical"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="400dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="70dp"
+        android:layout_marginTop="50dp"
+        android:gravity="start|center_vertical"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="100dp"
+            android:layout_height="45dp"
+            android:fontFamily="sans-serif"
+            android:gravity="end|center_vertical"
+            android:text="@string/wifi_ssid"
+            android:textColor="@color/black"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+        <EditText
+            android:id="@+id/ssid"
+            android:layout_width="240dp"
+            android:layout_height="45dp"
+            android:layout_marginHorizontal="30dp"
+            android:background="@drawable/edit_background"
+            android:focusable="true"
+            android:gravity="center"
+            android:inputType="text"
+            android:singleLine="true"
+            android:textColor="@color/self_5"
+            android:textColorHint="@color/self_5"
+            android:textSize="23sp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/passwd_name"
+        android:layout_width="400dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="70dp"
+        android:layout_marginTop="10dp"
+        android:gravity="start|center_vertical"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="100dp"
+            android:layout_height="45dp"
+            android:gravity="end|center_vertical"
+            android:text="@string/passwd"
+            android:textColor="@color/black"
+            android:textSize="20sp"
+            android:typeface="sans" />
+
+        <EditText
+            android:id="@+id/passwd"
+            android:layout_width="240dp"
+            android:layout_height="45dp"
+            android:layout_marginHorizontal="30dp"
+            android:background="@drawable/edit_background"
+            android:focusable="true"
+            android:gravity="center"
+            android:inputType="textPassword"
+            android:singleLine="true"
+            android:textColor="@color/self_5"
+            android:textColorHint="@color/self_5"
+            android:textSize="23sp" />
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_width="360dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="70dp"
+        android:layout_marginTop="30dp"
+        android:background="@drawable/edit_background"
+        android:gravity="start|center_vertical"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="100dp"
+            android:layout_height="match_parent"
+            android:fontFamily="sans-serif"
+            android:gravity="center_vertical|end"
+            android:text="@string/security"
+            android:textColor="@color/self_4"
+            android:textSize="22sp" />
+
+        <Spinner
+            android:id="@+id/spinner"
+            android:layout_width="100dp"
+            android:layout_height="35dp"
+            android:layout_marginStart="100dp"
+            android:background="@drawable/safe_selector"
+            android:entries="@array/wep_resource"
+            android:focusable="true"
+            android:gravity="center"
+            android:popupBackground="@drawable/item_select_background"
+            android:popupTheme="@color/self_2" />
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/connect"
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="50dp"
+        android:layout_marginBottom="50dp"
+        android:background="@drawable/item_select_background"
+        android:focusable="true"
+        android:fontFamily="sans-serif"
+        android:gravity="center"
+        android:paddingHorizontal="40dp"
+        android:text="@string/connect"
+        android:textColor="@color/black"
+        android:textSize="21sp" />
+
+
+</LinearLayout>

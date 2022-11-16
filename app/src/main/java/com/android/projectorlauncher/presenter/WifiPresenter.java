@@ -3,9 +3,18 @@ package com.android.projectorlauncher.presenter;
 import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.LinkProperties;
+import android.net.Network;
+import android.net.NetworkCapabilities;
+import android.net.NetworkInfo;
+import android.net.NetworkRequest;
 import android.net.wifi.ScanResult;
 import android.net.wifi.WifiConfiguration;
 import android.net.wifi.WifiManager;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import com.android.projectorlauncher.ui.fragment.WifiFragment;
 import com.android.projectorlauncher.ui.view.WifiView;
@@ -17,6 +26,7 @@ import java.util.List;
 public class WifiPresenter {
     private Activity activity;
     private WifiManager wifiManager;
+    private ConnectivityManager connectivityManager;
     private List<ScanResult> nearbyResults;
     private List<ScanResult> saveResults;
     private WifiView view;
@@ -24,7 +34,9 @@ public class WifiPresenter {
     public WifiPresenter(WifiFragment fragment) {
         this.activity = fragment.requireActivity();
         wifiManager = (WifiManager) activity.getSystemService(Context.WIFI_SERVICE);
+        connectivityManager = (ConnectivityManager) activity.getSystemService(Context.CONNECTIVITY_SERVICE);
         view = fragment;
+        setConnectChangeListener();
     }
 
     /**
@@ -72,6 +84,41 @@ public class WifiPresenter {
         }
         if (saveResults != null) {
             saveResults.clear();
+        }
+    }
+
+    public String getConnectSSID() {
+        return wifiManager.getConnectionInfo().getSSID();
+    }
+
+    public void setConnectChangeListener() {
+        connectivityManager.requestNetwork(new NetworkRequest.Builder().build(), new ConnectivityManager.NetworkCallback() {
+
+            @Override
+            public void onCapabilitiesChanged(@NonNull Network network, @NonNull NetworkCapabilities networkCapabilities) {
+                super.onCapabilitiesChanged(network, networkCapabilities);
+                if (networkCapabilities != null) {
+                    setWifiConnectState(true, networkCapabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI));
+                }
+            }
+
+            @Override
+            public void onLinkPropertiesChanged(@NonNull Network network, @NonNull LinkProperties linkProperties) {
+                super.onLinkPropertiesChanged(network, linkProperties);
+            }
+
+            @Override
+            public void onBlockedStatusChanged(@NonNull Network network, boolean blocked) {
+                super.onBlockedStatusChanged(network, blocked);
+            }
+        });
+    }
+
+    public void setWifiConnectState(boolean isConnected, boolean isWifi) {
+        if (isConnected && isWifi) {
+            view.wifiConnectState(true);
+        } else {
+            view.wifiConnectState(false);
         }
     }
 

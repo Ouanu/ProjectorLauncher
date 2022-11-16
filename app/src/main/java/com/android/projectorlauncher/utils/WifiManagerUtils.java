@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.pm.PackageManager;
 import android.net.wifi.ScanResult;
 import android.net.wifi.WifiConfiguration;
+import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import android.util.Log;
 
@@ -15,15 +16,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+@SuppressWarnings("deprecation")
 public class WifiManagerUtils {
-    private WifiManager manager;
-    private Context context;
-
-    public WifiManagerUtils(Context context) {
-        this.context = context;
-        manager = (WifiManager) context.getApplicationContext().getSystemService(Context.WIFI_SERVICE);
-
-    }
 
     public static void searchWifi(WifiManager manager) {
         if (!manager.isWifiEnabled()) {
@@ -59,8 +53,7 @@ public class WifiManagerUtils {
         if (ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             return new ArrayList<>();
         }
-        List<WifiConfiguration> configurations = manager.getConfiguredNetworks();
-        return configurations;
+        return manager.getConfiguredNetworks();
     }
 
     /**
@@ -85,6 +78,13 @@ public class WifiManagerUtils {
         scanResults.clear();
         scanResults.addAll(nearbyResults);
         return saveResults;
+    }
+
+    public static void connectWifi(WifiManager manager, WifiConfiguration configuration) {
+        int id = manager.addNetwork(configuration);
+        WifiInfo connectionInfo = manager.getConnectionInfo();
+        manager.disableNetwork(connectionInfo.getNetworkId());
+        manager.enableNetwork(id, true);
     }
 
     /**

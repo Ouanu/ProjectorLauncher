@@ -3,9 +3,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="550dp"
     android:layout_height="220dp"
-    android:orientation="vertical"
-    android:gravity="center"
     android:background="@drawable/dialog_wifi_background"
+    android:gravity="center"
+    android:orientation="vertical"
     android:paddingHorizontal="30dp">
 
 
@@ -14,21 +14,22 @@
         android:layout_width="wrap_content"
         android:layout_height="30dp"
         android:layout_marginTop="20dp"
+        android:fontFamily="sans-serif"
         android:gravity="center"
         android:text="WIFI"
-        android:textColor="@color/self_7"
-        android:textSize="22sp"/>
+        android:textColor="@color/white"
+        android:textSize="22sp" />
 
     <RelativeLayout
         android:id="@+id/layout"
         android:layout_width="400dp"
         android:layout_height="46dp"
         android:layout_marginTop="10dp"
-        app:layout_constraintTop_toBottomOf="@id/name"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:background="@drawable/edit_background"
         android:gravity="center_vertical"
-        android:background="@drawable/edit_background">
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/name">
 
         <ImageView
             android:id="@+id/back"
@@ -51,15 +52,16 @@
             android:layout_centerInParent="true"
             android:layout_marginHorizontal="30dp"
             android:background="@color/none"
+            android:fontFamily="sans-serif"
             android:gravity="center"
             android:inputType="textPassword"
             android:nextFocusLeft="@id/back"
             android:nextFocusRight="@id/checkPasswd"
             android:nextFocusUp="@id/back"
             android:nextFocusDown="@id/checkPasswd"
-            android:text=""
-            android:textColor="@color/self_5"
-            android:textSize="22sp"/>
+            android:text="123"
+            android:textColor="@color/self_4"
+            android:textSize="22sp" />
 
 
         <CheckBox
@@ -69,14 +71,14 @@
             android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"
             android:layout_marginEnd="10dp"
+            android:fontFamily="sans-serif"
             android:gravity="end|center_vertical"
             android:nextFocusUp="@id/passwd"
             android:nextFocusDown="@id/connect"
             android:text="显示密码"
-            android:textColor="@color/self_5"
+            android:textColor="@color/self_4"
             android:textSize="13sp"
-            android:textStyle="bold"
-            android:typeface="sans" />
+            android:textStyle="bold" />
     </RelativeLayout>
 
     <Button
@@ -86,11 +88,12 @@
         android:layout_marginHorizontal="130dp"
         android:layout_marginVertical="20dp"
         android:background="@drawable/item_select_background"
+        android:fontFamily="sans-serif"
+        android:gravity="center"
         android:nextFocusUp="@id/checkPasswd"
         android:nextFocusDown="@id/back"
-        android:text="连接"
-        android:textColor="@color/self_7"
-        android:gravity="center"
+        android:text="@string/connect"
+        android:textColor="@color/background_color"
         android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

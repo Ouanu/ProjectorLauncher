@@ -5,9 +5,12 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.wifi.ScanResult;
 import android.net.wifi.WifiManager;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -25,6 +28,7 @@ import com.android.projectorlauncher.R;
 import com.android.projectorlauncher.databinding.FragmentWifiBinding;
 import com.android.projectorlauncher.databinding.ItemWifiBinding;
 import com.android.projectorlauncher.presenter.WifiPresenter;
+import com.android.projectorlauncher.ui.dialog.WIFIDialog;
 import com.android.projectorlauncher.ui.view.WifiView;
 
 import java.util.ArrayList;
@@ -34,7 +38,6 @@ import java.util.Objects;
 public class WifiFragment extends Fragment implements View.OnClickListener, WifiView {
     private FragmentWifiBinding wifiBinding;
     private WifiPresenter presenter;
-
     private final MutableLiveData<List<ScanResult>> nearbyList = new MutableLiveData<>();
     private final MutableLiveData<List<ScanResult>> saveList = new MutableLiveData<>();
     private final BroadcastReceiver receiver = new BroadcastReceiver() {
@@ -43,8 +46,7 @@ public class WifiFragment extends Fragment implements View.OnClickListener, Wifi
             if (intent.getAction().equals(WifiManager.SCAN_RESULTS_AVAILABLE_ACTION)) {
                 Log.d("WifiFragment", "onReceive: 刷新数据");
                 presenter.updateNetworks();
-            }
-            if (intent.getAction().equals(WifiManager.WIFI_STATE_CHANGED_ACTION)) {
+            } else if (intent.getAction().equals(WifiManager.WIFI_STATE_CHANGED_ACTION)) {
 
                 int wifiState = intent.getIntExtra(WifiManager.EXTRA_WIFI_STATE, 0);
                 switch (wifiState) {
@@ -65,6 +67,7 @@ public class WifiFragment extends Fragment implements View.OnClickListener, Wifi
             }
         }
     };
+
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
@@ -103,6 +106,8 @@ public class WifiFragment extends Fragment implements View.OnClickListener, Wifi
         super.onStart();
         IntentFilter filter = new IntentFilter();
         filter.addAction(WifiManager.SCAN_RESULTS_AVAILABLE_ACTION);
+        filter.addAction(WifiManager.NETWORK_STATE_CHANGED_ACTION);
+        filter.addAction(WifiManager.WIFI_STATE_CHANGED_ACTION);
         requireActivity().registerReceiver(receiver, filter);
     }
 
@@ -156,14 +161,32 @@ public class WifiFragment extends Fragment implements View.OnClickListener, Wifi
         }
     }
 
-    static class WifiViewHolder extends RecyclerView.ViewHolder {
+    @Override
+    public void wifiConnectState(boolean isWifiConnected) {
+        if (wifiBinding == null) {
+            return;
+        }
+        if (isWifiConnected) {
+            wifiBinding.ipTitle.setText(R.string.not_connected_to_wifi_network);
+            wifiBinding.address.setText("");
+        } else {
+            wifiBinding.ipTitle.setText(R.string.network_connected);
+            wifiBinding.address.setText(presenter.getConnectSSID());
+        }
+    }
+
+    class WifiViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         ItemWifiBinding binding;
+        ScanResult result;
 
         public WifiViewHolder(@NonNull View itemView) {
             super(itemView);
             binding = ItemWifiBinding.bind(itemView);
+            itemView.setOnClickListener(this);
         }
+
         public void bind(ScanResult result) {
+            this.result = result;
             binding.wifiName.setText(result.SSID);
             if (result.capabilities.contains("WPA-PSK") || result.capabilities.contains("WPA2-PSK") || result.capabilities.contains("WEP")) {
                 binding.lock.setVisibility(View.VISIBLE);
@@ -171,6 +194,20 @@ public class WifiFragment extends Fragment implements View.OnClickListener, Wifi
                 binding.lock.setVisibility(View.INVISIBLE);
             }
             Log.d("WifiFragment", "bind: " + result.level);
+        }
+
+        @Override
+        public void onClick(View v) {
+            if (result.capabilities.contains("WPA-PSK") || result.capabilities.contains("WPA2-PSK") || result.capabilities.contains("WEP")) {
+                Bundle bundle = new Bundle();
+                bundle.putString("SSID", result.SSID);
+                bundle.putString("capabilities", result.capabilities);
+                WIFIDialog dialog = new WIFIDialog();
+                dialog.setArguments(bundle);
+                dialog.show(getParentFragmentManager(), "wifi-tag");
+            } else {
+                binding.lock.setVisibility(View.INVISIBLE);
+            }
         }
     }
 

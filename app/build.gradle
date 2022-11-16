@@ -13,17 +13,37 @@ android {
         versionName "1.1"
 
     }
+    signingConfigs {
+        release {
+            storeFile file("D:\\Android Studio\\key\\projector_sign\\key.jks")
+            storePassword 'flytothemoon'
+            keyAlias 'key_sign'
+            keyPassword 'flytothemoon'
+        }
 
+        debug {
+            storeFile file("D:\\Android Studio\\key\\projector_sign\\key.jks")
+            storePassword 'flytothemoon'
+            keyAlias 'key_sign'
+            keyPassword 'flytothemoon'
+        }
+    }
     buildTypes {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.release
+        }
+        debug {
+            signingConfig signingConfigs.debug
         }
     }
 
     viewBinding {
         enabled=true
     }
+
+
 }
 
 dependencies {
