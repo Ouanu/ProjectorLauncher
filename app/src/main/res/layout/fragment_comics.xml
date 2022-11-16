@@ -130,7 +130,7 @@
         app:layout_constraintTop_toBottomOf="@id/category_card"
         app:layout_constraintVertical_bias="1" />
 
-    <androidx.recyclerview.widget.RecyclerView
+    <androidx.leanback.widget.HorizontalGridView
         android:id="@+id/recycler_view"
         android:layout_width="0dp"
         android:layout_height="0dp"

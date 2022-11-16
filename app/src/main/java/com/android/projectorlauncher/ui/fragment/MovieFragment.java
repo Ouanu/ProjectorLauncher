@@ -23,19 +23,6 @@ public class MovieFragment extends Fragment implements View.OnClickListener, Mov
     private int lastIndex = 0;
     private FragmentMovieBinding movieBinding;
     private MoviePresenter presenter;
-    private View selectView;
-    private final ViewTreeObserver.OnGlobalFocusChangeListener focusChangeListener = new ViewTreeObserver.OnGlobalFocusChangeListener() {
-        @Override
-        public void onGlobalFocusChanged(View oldFocus, View newFocus) {
-            if (oldFocus instanceof TabLayout.TabView && !(newFocus instanceof TabLayout.TabView)) {
-                if (selectView != null)
-                    selectView.requestFocus();
-                else
-                    movieBinding.recommend1.requestFocus();
-            }
-
-        }
-    };
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -63,7 +50,6 @@ public class MovieFragment extends Fragment implements View.OnClickListener, Mov
     public void onResume() {
         super.onResume();
         movieBinding.recommend1.requestFocus();
-        movieBinding.getRoot().getViewTreeObserver().addOnGlobalFocusChangeListener(focusChangeListener);
         if (presenter.sizeOfCards() == 0) {
             presenter.init();
         }
@@ -72,7 +58,6 @@ public class MovieFragment extends Fragment implements View.OnClickListener, Mov
     @Override
     public void onPause() {
         super.onPause();
-        movieBinding.getRoot().getViewTreeObserver().removeOnGlobalFocusChangeListener(focusChangeListener);
     }
 
     //设置图片
@@ -163,7 +148,6 @@ public class MovieFragment extends Fragment implements View.OnClickListener, Mov
                         .centerCrop()
                         .into(movieBinding.image);
                 lastIndex = currentIndex;
-                selectView = v;
             } else {
                 ViewCompat.animate(v)
                         .scaleX(1f)
@@ -187,7 +171,6 @@ public class MovieFragment extends Fragment implements View.OnClickListener, Mov
                         .translationZ(1.2f)
                         .start();
                 ((CardView)v).setCardBackgroundColor(v.getContext().getColor(R.color.self_5));
-                selectView = v;
             } else {
                 ViewCompat.animate(v)
                         .scaleX(1f)

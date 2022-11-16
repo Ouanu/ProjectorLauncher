@@ -7,14 +7,11 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewTreeObserver;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.view.ViewCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.MutableLiveData;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.android.projectorlauncher.bean.VideoCard;
 import com.android.projectorlauncher.databinding.FragmentChildrenBinding;
@@ -22,15 +19,12 @@ import com.android.projectorlauncher.databinding.ItemChildrenBinding;
 import com.android.projectorlauncher.databinding.ItemTvBinding;
 import com.android.projectorlauncher.presenter.ChildrenPresenter;
 import com.android.projectorlauncher.ui.view.ChildrenView;
-import com.google.android.material.tabs.TabLayout;
-
 import java.util.ArrayList;
 import java.util.List;
 
 public class ChildrenFragment extends Fragment implements ChildrenView, View.OnClickListener {
 
     private FragmentChildrenBinding tvBinding;
-    private View headView;
     private ChildrenPresenter presenter;
     private final MutableLiveData<List<VideoCard>> cards = new MutableLiveData<>();
     @Override
@@ -45,9 +39,6 @@ public class ChildrenFragment extends Fragment implements ChildrenView, View.OnC
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         tvBinding = FragmentChildrenBinding.inflate(inflater, container, false);
-        LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
-        layoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
-        tvBinding.recyclerView.setLayoutManager(layoutManager);
         tvBinding.recyclerView.setAdapter(new TvAdapter());
         tvBinding.recyclerView.addItemDecoration(new RecyclerView.ItemDecoration() {
             @Override
@@ -128,7 +119,6 @@ public class ChildrenFragment extends Fragment implements ChildrenView, View.OnC
     @Override
     public void onResume() {
         super.onResume();
-        tvBinding.getRoot().getViewTreeObserver().addOnGlobalFocusChangeListener(changeListener);
         tvBinding.recommend.requestFocus();
         if (cards.getValue() == null || cards.getValue().size() == 0 || presenter.sizeOfCards() == 0) {
             presenter.init();
@@ -138,17 +128,9 @@ public class ChildrenFragment extends Fragment implements ChildrenView, View.OnC
     @Override
     public void onPause() {
         super.onPause();
-        tvBinding.getRoot().getViewTreeObserver().removeOnGlobalFocusChangeListener(changeListener);
     }
 
-    private final ViewTreeObserver.OnGlobalFocusChangeListener changeListener = new ViewTreeObserver.OnGlobalFocusChangeListener() {
-        @Override
-        public void onGlobalFocusChanged(View oldFocus, View newFocus) {
-            if (oldFocus instanceof TabLayout.TabView && !(newFocus instanceof TabLayout.TabView)) {
-                tvBinding.recommend.requestFocus();
-            }
-        }
-    };
+
 
     @SuppressLint("NotifyDataSetChanged")
     @Override
@@ -204,13 +186,6 @@ public class ChildrenFragment extends Fragment implements ChildrenView, View.OnC
 
         @Override
         public void onBindViewHolder(@NonNull TvViewHolder holder, int position) {
-            if (position == 0) {
-                headView = holder.itemView;
-            } else if(cards.getValue() != null && position == cards.getValue().size() - 1) {
-                View tailView = holder.itemView;
-                headView.setNextFocusLeftId(tailView.getId());
-                tailView.setNextFocusRightId(headView.getId());
-            }
             holder.bind(position);
         }
 

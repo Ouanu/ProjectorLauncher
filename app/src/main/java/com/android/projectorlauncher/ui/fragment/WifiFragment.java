@@ -176,7 +176,7 @@ public class WifiFragment extends Fragment implements View.OnClickListener, Wifi
 
     class WifiAdapter extends RecyclerView.Adapter<WifiViewHolder> {
 
-        private MutableLiveData<List<ScanResult>> results;
+        private final MutableLiveData<List<ScanResult>> results;
 
         public WifiAdapter(MutableLiveData<List<ScanResult>> results) {
             this.results = results;
@@ -191,11 +191,15 @@ public class WifiFragment extends Fragment implements View.OnClickListener, Wifi
 
         @Override
         public void onBindViewHolder(@NonNull WifiViewHolder holder, int position) {
+            if (results.getValue() == null) {
+                return;
+            }
             holder.bind(results.getValue().get(position));
         }
 
         @Override
         public int getItemCount() {
+            if (results.getValue() == null) return 0;
             return results.getValue().size();
         }
     }

@@ -7,8 +7,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewTreeObserver;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.view.ViewCompat;
@@ -16,14 +14,12 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.MutableLiveData;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.android.projectorlauncher.R;
 import com.android.projectorlauncher.bean.MatchCard;
 import com.android.projectorlauncher.databinding.FragmentMatchBinding;
 import com.android.projectorlauncher.databinding.ItemMatchBinding;
 import com.android.projectorlauncher.presenter.MatchPresenter;
 import com.android.projectorlauncher.ui.view.MatchView;
-import com.google.android.material.tabs.TabLayout;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -61,19 +57,9 @@ public class MatchFragment extends Fragment implements MatchView {
         return binding.getRoot();
     }
 
-    private final ViewTreeObserver.OnGlobalFocusChangeListener changeListener = new ViewTreeObserver.OnGlobalFocusChangeListener() {
-        @Override
-        public void onGlobalFocusChanged(View oldFocus, View newFocus) {
-            if (oldFocus instanceof TabLayout.TabView && !(newFocus instanceof TabLayout.TabView)) {
-                binding.recyclerView.requestFocus();
-            }
-        }
-    };
-
     @Override
     public void onResume() {
         super.onResume();
-        binding.getRoot().getViewTreeObserver().addOnGlobalFocusChangeListener(changeListener);
         if (matchCards.getValue() == null || matchCards.getValue().size() == 0 || presenter.sizeOfCards() == 0) {
             presenter.init();
         }
@@ -82,7 +68,6 @@ public class MatchFragment extends Fragment implements MatchView {
     @Override
     public void onPause() {
         super.onPause();
-        binding.getRoot().getViewTreeObserver().removeOnGlobalFocusChangeListener(changeListener);
     }
 
     @SuppressLint("NotifyDataSetChanged")

@@ -46,34 +46,40 @@ public class SettingsFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         settingsBinding = FragmentSettingsBinding.inflate(inflater, container, false);
-        LinearLayoutManager layoutManager = new LinearLayoutManager(requireContext());
-        layoutManager.setOrientation(RecyclerView.VERTICAL);
-//        settingsBinding.recyclerViewSettings.setLayoutManager(layoutManager);
         settingsBinding.recyclerViewSettings.setAdapter(new SettingsAdapter());
         settingsBinding.recyclerViewSettings.addItemDecoration(new RecyclerView.ItemDecoration() {
             @Override
             public void getItemOffsets(@NonNull Rect outRect, @NonNull View view, @NonNull RecyclerView parent, @NonNull RecyclerView.State state) {
-//                outRect.right = 5;
-//                outRect.left = 5;
-//                outRect.top = 10;
-//                outRect.bottom = 10;
+                outRect.right = 5;
+                outRect.left = 5;
             }
         });
         getParentFragmentManager().beginTransaction().add(R.id.container_frameLayout, new WifiFragment()).commit();
         return settingsBinding.getRoot();
     }
 
+    class SettingsGlobalFocusChange implements ViewTreeObserver.OnGlobalFocusChangeListener {
+
+        @Override
+        public void onGlobalFocusChanged(View oldFocus, View newFocus) {
+//            Log.d("SettingsGlobalFocusChange", "onGlobalFocusChanged: " + oldFocus + " \n " + newFocus);
+        }
+    }
+
+
+    private SettingsGlobalFocusChange globalFocusChange = new SettingsGlobalFocusChange();
+
     @Override
     public void onResume() {
         super.onResume();
-        settingsBinding.getRoot().getViewTreeObserver().addOnGlobalFocusChangeListener(new ViewTreeObserver.OnGlobalFocusChangeListener() {
-            @Override
-            public void onGlobalFocusChanged(View oldFocus, View newFocus) {
-                if (oldFocus instanceof TabLayout.TabView && !(newFocus instanceof TabLayout.TabView)) {
-                    settingsBinding.recyclerViewSettings.requestFocus();
-                }
-            }
-        });
+        settingsBinding.recyclerViewSettings.requestFocus();
+        settingsBinding.getRoot().getViewTreeObserver().addOnGlobalFocusChangeListener(globalFocusChange);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        settingsBinding.getRoot().getViewTreeObserver().removeOnGlobalFocusChangeListener(globalFocusChange);
     }
 
     class SettingsViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
@@ -88,6 +94,11 @@ public class SettingsFragment extends Fragment {
         public void bind(int position) {
             this.position = position;
             binding.option.setText(options.get(position));
+            if (position == 0) {
+                itemView.setNextFocusUpId(R.id.tabLayout);
+                Log.d("SettingsFragment", "bind: " + itemView.getNextFocusUpId());
+
+            }
         }
 
         @Override

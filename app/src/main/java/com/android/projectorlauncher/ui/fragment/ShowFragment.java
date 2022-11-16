@@ -45,9 +45,6 @@ public class ShowFragment extends Fragment implements ShowView, View.OnClickList
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         showBinding = FragmentShowBinding.inflate(inflater, container, false);
-        LinearLayoutManager layout = new LinearLayoutManager(requireContext());
-        layout.setOrientation(LinearLayoutManager.HORIZONTAL);
-        showBinding.recyclerView.setLayoutManager(layout);
         showBinding.recyclerView.setAdapter(new ShowAdapter());
         showBinding.recyclerView.addItemDecoration(new RecyclerView.ItemDecoration() {
             @Override

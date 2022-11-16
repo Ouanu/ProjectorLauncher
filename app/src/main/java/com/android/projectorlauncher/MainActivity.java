@@ -2,23 +2,19 @@ package com.android.projectorlauncher;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.view.ViewCompat;
 import androidx.fragment.app.Fragment;
-import androidx.viewpager2.adapter.FragmentStateAdapter;
-import androidx.viewpager2.widget.ViewPager2;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.annotation.SuppressLint;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.graphics.Color;
-import android.graphics.Typeface;
+import android.graphics.Rect;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.net.wifi.WifiManager;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,6 +22,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.projectorlauncher.databinding.ActivityMainBinding;
+import com.android.projectorlauncher.databinding.ItemMainTabBinding;
 import com.android.projectorlauncher.ui.fragment.ApplicationFragment;
 import com.android.projectorlauncher.ui.fragment.ChildrenFragment;
 import com.android.projectorlauncher.ui.fragment.ComicsFragment;
@@ -34,23 +31,21 @@ import com.android.projectorlauncher.ui.fragment.MovieFragment;
 import com.android.projectorlauncher.ui.fragment.SettingsFragment;
 import com.android.projectorlauncher.ui.fragment.ShowFragment;
 import com.android.projectorlauncher.ui.fragment.TvFragment;
-import com.android.projectorlauncher.utils.WifiManagerUtils;
-import com.google.android.material.tabs.TabLayout;
-import com.google.android.material.tabs.TabLayoutMediator;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
+import kotlin.collections.AbstractMutableMap;
 
 public class MainActivity extends AppCompatActivity {
     ActivityMainBinding binding;
     private final List<String> titles = Arrays.asList("电影", "剧集", "综艺", "动漫", "少儿", "体育", "应用", "设置");
     private final ArrayList<Fragment> fragments = new ArrayList<>();
-    private TabLayoutMediator mediator;
-    private final int normalSize = 18;
-    private View selectView = null;
     private final MovieFragment fragment = new MovieFragment();
     private final TvFragment tvFragment = new TvFragment();
     private final ShowFragment showFragment = new ShowFragment();
@@ -59,6 +54,8 @@ public class MainActivity extends AppCompatActivity {
     private final ChildrenFragment childrenFragment = new ChildrenFragment();
     private final ApplicationFragment applicationFragment = new ApplicationFragment();
     private final SettingsFragment settingsFragment = new SettingsFragment();
+    private Map<Boolean, String> map = new HashMap<>();
+    private TextView lastTextView = null;
     private final BroadcastReceiver receiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -126,50 +123,25 @@ public class MainActivity extends AppCompatActivity {
         fragments.add(matchFragment);
         fragments.add(applicationFragment);
         fragments.add(settingsFragment);
-        binding.tabLayout.getViewTreeObserver().addOnGlobalFocusChangeListener((oldFocus, newFocus) -> {
-            if (!(oldFocus instanceof TabLayout.TabView) && newFocus instanceof TabLayout.TabView && selectView != null) {
-                selectView.setFocusable(true);
-                selectView.requestFocus();
-            }
-        });
 
-        binding.viewPager.setAdapter(new FragmentStateAdapter(getSupportFragmentManager(), getLifecycle()) {
-            @NonNull
+        binding.tabLayout.setAdapter(new TabAdapter());
+        binding.tabLayout.addItemDecoration(new RecyclerView.ItemDecoration() {
             @Override
-            public Fragment createFragment(int position) {
-                return fragments.get(position);
-            }
-
-            @Override
-            public int getItemCount() {
-                return fragments.size();
+            public void getItemOffsets(@NonNull Rect outRect, @NonNull View view, @NonNull RecyclerView parent, @NonNull RecyclerView.State state) {
+                outRect.left = 8;
+                outRect.right = 8;
+                outRect.top = 5;
+                outRect.bottom = 5;
             }
         });
-
-        binding.viewPager.registerOnPageChangeCallback(changeCallback);
-//        binding.viewPager.setUserInputEnabled(false);
-        mediator = new TabLayoutMediator(binding.tabLayout, binding.viewPager, (tab, position) -> {
-            TextView tabView = new TextView(MainActivity.this);
-            tabView.setText(titles.get(position));
-            tabView.setTextSize(normalSize);
-            tabView.setTextColor(Color.WHITE);
-            tabView.setFocusable(true);
-            tabView.setPadding(10, 0, 10, 0);
-            tabView.setGravity(Gravity.CENTER);
-            tab.setCustomView(tabView);
-            tab.view.setDescendantFocusability(ViewGroup.FOCUS_BLOCK_DESCENDANTS);
-            tab.view.setNextFocusDownId(R.id.viewPager);
-            tab.view.setGravity(Gravity.CENTER);
-
-        });
-        mediator.attach();
-
-        binding.tabLayout.setFocusable(true);
-//        binding.tabLayout.requestFocus();
         @SuppressLint("SimpleDateFormat")
         SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm");
         binding.time.setText(dateFormat.format(new Date(System.currentTimeMillis())));
 
+
+        getSupportFragmentManager().beginTransaction()
+                .add(R.id.container_pager, fragment)
+                .commit();
     }
 
     @Override
@@ -177,55 +149,103 @@ public class MainActivity extends AppCompatActivity {
         return super.onKeyDown(keyCode, event);
     }
 
-    private final ViewPager2.OnPageChangeCallback changeCallback = new ViewPager2.OnPageChangeCallback() {
-        @Override
-        public void onPageSelected(int position) {
-            int tabCount = binding.tabLayout.getTabCount();
-            for (int i = 0; i < tabCount; i++) {
-                TabLayout.Tab tab = binding.tabLayout.getTabAt(i);
-                if (tab == null) return;
-                TextView tabView = (TextView) tab.getCustomView();
-                if (tabView == null) return;
-                if (tab.getPosition() == position) {
-                    int activeSize = 25;
-                    tabView.setTextSize(activeSize);
-                    tabView.setTypeface(Typeface.DEFAULT_BOLD);
-                    selectView = tab.view;
-                    tab.view.setFocusable(true);
-                    tab.view.requestFocus();
-                    if (position == 0) {
-                        tabView.setTextColor(getColor(R.color.self_5));
-                        binding.tabLayout.setSelectedTabIndicatorColor(getColor(R.color.self_5));
-                    } else if (position == 1) {
-                        tabView.setTextColor(getColor(R.color.self_6));
-                        binding.tabLayout.setSelectedTabIndicatorColor(getColor(R.color.self_6));
-                    } else if (position == 2) {
-                        tabView.setTextColor(getColor(R.color.self_2));
-                        binding.tabLayout.setSelectedTabIndicatorColor(getColor(R.color.self_2));
-                    } else if (position == 3) {
-                        tabView.setTextColor(getColor(R.color.self_4));
-                        binding.tabLayout.setSelectedTabIndicatorColor(getColor(R.color.self_4));
-                    } else if (position == 4) {
-                        tabView.setTextColor(getColor(R.color.self_8));
-                        binding.tabLayout.setSelectedTabIndicatorColor(getColor(R.color.self_8));
-                    } else {
-                        tabView.setTextColor(getColor(R.color.self_7));
-                        binding.tabLayout.setSelectedTabIndicatorColor(getColor(R.color.self_7));
-                    }
-                } else {
-                    tabView.setTextSize(normalSize);
-                    tabView.setTypeface(Typeface.DEFAULT);
-                    tabView.setTextColor(getColor(R.color.white));
-                }
-            }
+
+    class TabViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+        ItemMainTabBinding tabBinding;
+        int position = 0;
+        public TabViewHolder(@NonNull View itemView) {
+            super(itemView);
+            tabBinding = ItemMainTabBinding.bind(itemView);
+            itemView.setOnClickListener(this);
         }
-    };
+
+        public void bind(int position) {
+            this.position = position;
+            tabBinding.mainTabText.setText(titles.get(position));
+            itemView.setOnFocusChangeListener((v, hasFocus) -> {
+                map.put(hasFocus, v.getTag().toString());
+                if (hasFocus) {
+                    ViewCompat.animate(itemView)
+                            .scaleX(1.1f)
+                            .scaleY(1.1f)
+                            .setDuration(250)
+                            .start();
+                } else {
+                    ViewCompat.animate(itemView)
+                            .scaleX(1.0f)
+                            .scaleY(1.0f)
+                            .setDuration(250)
+                            .start();
+                }
+            });
+        }
+
+        @Override
+        public void onClick(View v) {
+            if (lastTextView == null) {
+                lastTextView = tabBinding.mainTabText;
+            } else {
+                lastTextView.setTextColor(getColor(R.color.white));
+                ViewCompat.animate(lastTextView)
+                        .scaleX(1.0f)
+                        .scaleY(1.0f)
+                        .setDuration(250)
+                        .start();
+            }
+            if (position == 0) {
+                tabBinding.mainTabText.setTextColor(getColor(R.color.self_5));
+            } else if (position == 1) {
+                tabBinding.mainTabText.setTextColor(getColor(R.color.self_6));
+            } else if (position == 2) {
+                tabBinding.mainTabText.setTextColor(getColor(R.color.self_2));
+            } else if (position == 3) {
+                tabBinding.mainTabText.setTextColor(getColor(R.color.self_4));
+            } else if (position == 4) {
+                tabBinding.mainTabText.setTextColor(getColor(R.color.self_8));
+            } else if (position == 5) {
+                tabBinding.mainTabText.setTextColor(getColor(R.color.self_9));
+            } else {
+                tabBinding.mainTabText.setTextColor(getColor(R.color.self_7));
+            }
+            lastTextView = tabBinding.mainTabText;
+            ViewCompat.animate(lastTextView)
+                    .scaleX(1.2f)
+                    .scaleY(1.2f)
+                    .setDuration(250)
+                    .start();
+            switchFragment(position);
+        }
+
+        private void switchFragment(int position) {
+            getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.container_pager, fragments.get(position))
+                    .commit();
+        }
+    }
+
+    class TabAdapter extends RecyclerView.Adapter<TabViewHolder> {
+
+        @NonNull
+        @Override
+        public TabViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+            ItemMainTabBinding tabBinding = ItemMainTabBinding.inflate(getLayoutInflater(), parent, false);
+            return new TabViewHolder(tabBinding.getRoot());
+        }
+
+        @Override
+        public void onBindViewHolder(@NonNull TabViewHolder holder, int position) {
+            holder.itemView.setTag(titles.get(position));
+            holder.bind(position);
+        }
+
+        @Override
+        public int getItemCount() {
+            return titles.size();
+        }
+    }
 
     @Override
     public void onBackPressed() {
-        binding.tabLayout.setFocusable(true);
-        binding.viewPager.clearFocus();
-        binding.tabLayout.requestFocus();
         super.onBackPressed();
     }
 
@@ -233,8 +253,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onDestroy() {
         unregisterReceiver(receiver);
         unregisterReceiver(receiver1);
-        mediator.detach();
-        binding.viewPager.unregisterOnPageChangeCallback(changeCallback);
+
         super.onDestroy();
     }
 }
