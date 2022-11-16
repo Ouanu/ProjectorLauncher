@@ -34,6 +34,9 @@ import java.util.Objects;
 public class WifiFragment extends Fragment implements View.OnClickListener, WifiView {
     private FragmentWifiBinding wifiBinding;
     private WifiPresenter presenter;
+
+    private final MutableLiveData<List<ScanResult>> nearbyList = new MutableLiveData<>();
+    private final MutableLiveData<List<ScanResult>> saveList = new MutableLiveData<>();
     private final BroadcastReceiver receiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -41,11 +44,27 @@ public class WifiFragment extends Fragment implements View.OnClickListener, Wifi
                 Log.d("WifiFragment", "onReceive: 刷新数据");
                 presenter.updateNetworks();
             }
+            if (intent.getAction().equals(WifiManager.WIFI_STATE_CHANGED_ACTION)) {
+
+                int wifiState = intent.getIntExtra(WifiManager.EXTRA_WIFI_STATE, 0);
+                switch (wifiState) {
+                    case WifiManager.WIFI_STATE_DISABLED:
+                        Log.d("WifiFragment", "onReceive: wifi 关闭");
+                        break;
+                    case WifiManager.WIFI_STATE_DISABLING:
+                        break;
+                    case WifiManager.WIFI_STATE_ENABLED:
+                        Log.d("WifiFragment", "onReceive: wifi 打开");
+                        break;
+                    case WifiManager.WIFI_STATE_ENABLING:
+                        break;
+                    case WifiManager.WIFI_STATE_UNKNOWN:
+                        break;
+                }
+                wifiStateChange();
+            }
         }
     };
-    private final MutableLiveData<List<ScanResult>> nearbyList = new MutableLiveData<>();
-    private final MutableLiveData<List<ScanResult>> saveList = new MutableLiveData<>();
-
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
@@ -90,13 +109,8 @@ public class WifiFragment extends Fragment implements View.OnClickListener, Wifi
     @Override
     public void onResume() {
         super.onResume();
-        if (presenter.isWifiEnabled()) {
-            wifiBinding.btnSwitch.setBackgroundResource(R.drawable.btn_wifi_background_enable_focus);
-            wifiBinding.btnSwitch.setText("停用");
-        } else {
-            wifiBinding.btnSwitch.setBackgroundResource(R.drawable.btn_wifi_background_focus);
-            wifiBinding.btnSwitch.setText("启用");
-        }
+        wifiStateChange();
+        presenter.refreshNearbyNetworks();
     }
 
     @Override
@@ -128,6 +142,17 @@ public class WifiFragment extends Fragment implements View.OnClickListener, Wifi
         }
         if (wifiBinding.saveRecycleView.getAdapter() != null) {
             wifiBinding.saveRecycleView.getAdapter().notifyDataSetChanged();
+        }
+    }
+
+    @Override
+    public void wifiStateChange() {
+        if (presenter.isWifiEnabled()) {
+            wifiBinding.btnSwitch.setBackgroundResource(R.drawable.btn_wifi_background_enable_focus);
+            wifiBinding.btnSwitch.setText("停用");
+        } else {
+            wifiBinding.btnSwitch.setBackgroundResource(R.drawable.btn_wifi_background_focus);
+            wifiBinding.btnSwitch.setText("启用");
         }
     }
 

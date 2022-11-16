@@ -48,9 +48,9 @@ public class SettingsFragment extends Fragment {
         settingsBinding = FragmentSettingsBinding.inflate(inflater, container, false);
         LinearLayoutManager layoutManager = new LinearLayoutManager(requireContext());
         layoutManager.setOrientation(RecyclerView.VERTICAL);
-        settingsBinding.recyclerView.setLayoutManager(layoutManager);
-        settingsBinding.recyclerView.setAdapter(new SettingsAdapter());
-        settingsBinding.recyclerView.addItemDecoration(new RecyclerView.ItemDecoration() {
+//        settingsBinding.recyclerViewSettings.setLayoutManager(layoutManager);
+        settingsBinding.recyclerViewSettings.setAdapter(new SettingsAdapter());
+        settingsBinding.recyclerViewSettings.addItemDecoration(new RecyclerView.ItemDecoration() {
             @Override
             public void getItemOffsets(@NonNull Rect outRect, @NonNull View view, @NonNull RecyclerView parent, @NonNull RecyclerView.State state) {
 //                outRect.right = 5;
@@ -70,7 +70,7 @@ public class SettingsFragment extends Fragment {
             @Override
             public void onGlobalFocusChanged(View oldFocus, View newFocus) {
                 if (oldFocus instanceof TabLayout.TabView && !(newFocus instanceof TabLayout.TabView)) {
-                    settingsBinding.recyclerView.requestFocus();
+                    settingsBinding.recyclerViewSettings.requestFocus();
                 }
             }
         });

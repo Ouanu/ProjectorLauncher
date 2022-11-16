@@ -73,7 +73,6 @@ public class WifiPresenter {
         if (saveResults != null) {
             saveResults.clear();
         }
-
     }
 
     public List<ScanResult> getNearbyResults() {

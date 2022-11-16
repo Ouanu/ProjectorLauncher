@@ -5,6 +5,7 @@
     android:layout_marginHorizontal="150dp"
     android:layout_marginVertical="8dp"
     android:focusable="true"
+    android:nextFocusLeft="@id/recycler_view_settings"
     android:background="@drawable/item_wifi_selector">
 
     <ImageView
