@@ -12,7 +12,6 @@ import androidx.annotation.Nullable;
 import androidx.core.view.ViewCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.MutableLiveData;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.android.projectorlauncher.R;
 import com.android.projectorlauncher.bean.MatchCard;
@@ -41,9 +40,6 @@ public class MatchFragment extends Fragment implements MatchView {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding = FragmentMatchBinding.inflate(inflater, container, false);
-        LinearLayoutManager layoutManager = new LinearLayoutManager(requireContext());
-        layoutManager.setOrientation(RecyclerView.HORIZONTAL);
-        binding.recyclerView.setLayoutManager(layoutManager);
         binding.recyclerView.setAdapter(new MatchAdapter());
         binding.recyclerView.addItemDecoration(new RecyclerView.ItemDecoration() {
             @Override
@@ -139,10 +135,6 @@ public class MatchFragment extends Fragment implements MatchView {
 
         @Override
         public void onBindViewHolder(@NonNull MatchViewHolder holder, int position) {
-            if (position == 0)
-                holder.itemView.setNextFocusLeftId(holder.itemView.getId());
-            if(matchCards.getValue() != null && position == matchCards.getValue().size() - 1)
-                holder.itemView.setNextFocusRightId(holder.itemView.getId());
             holder.bind(position);
         }
 

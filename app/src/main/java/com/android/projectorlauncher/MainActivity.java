@@ -178,6 +178,18 @@ public class MainActivity extends AppCompatActivity {
                             .start();
                 }
             });
+            if (position == 0) {
+                if (lastTextView == null) {
+                    lastTextView = tabBinding.mainTabText;
+                    lastTextView.setTextColor(getColor(R.color.self_5));
+                    ViewCompat.animate(lastTextView)
+                            .scaleX(1.3f)
+                            .scaleY(1.3f)
+                            .setDuration(250)
+                            .start();
+                    switchFragment(position);
+                }
+            }
         }
 
         @Override
@@ -209,8 +221,8 @@ public class MainActivity extends AppCompatActivity {
             }
             lastTextView = tabBinding.mainTabText;
             ViewCompat.animate(lastTextView)
-                    .scaleX(1.2f)
-                    .scaleY(1.2f)
+                    .scaleX(1.3f)
+                    .scaleY(1.3f)
                     .setDuration(250)
                     .start();
             switchFragment(position);

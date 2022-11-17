@@ -9,8 +9,7 @@
     android:nextFocusRight="@id/btn_switch"
     android:nextFocusLeft="@id/option"
     android:background="@drawable/item_option_selector"
-    android:text="画面设置"
-    android:textSize="25sp"
+    android:textSize="20sp"
     android:textStyle="bold">
 
 </TextView>

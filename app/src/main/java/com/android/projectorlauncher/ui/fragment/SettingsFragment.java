@@ -8,31 +8,33 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
+import android.widget.TextView;
 import android.widget.Toast;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.view.ViewCompat;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.android.projectorlauncher.R;
 import com.android.projectorlauncher.databinding.ItemSettingsBinding;
 import com.android.projectorlauncher.databinding.FragmentSettingsBinding;
-import com.google.android.material.tabs.TabLayout;
 
 import java.util.ArrayList;
 import java.util.List;
 
 
 public class SettingsFragment extends Fragment {
-    FragmentSettingsBinding settingsBinding;
-    private List<String> options = new ArrayList<>();
+    private FragmentSettingsBinding settingsBinding;
+    private final List<String> options = new ArrayList<>();
+    private TextView selectView = null;
+    private final SystemInfoFragment sf = new SystemInfoFragment();
+    private final WifiFragment wf = new WifiFragment();
 
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
         if (options.size() == 0) {
+            options.add("系统信息");
             options.add("无线网络");
             options.add("有线网络");
             options.add("画面设置");
@@ -50,24 +52,26 @@ public class SettingsFragment extends Fragment {
         settingsBinding.recyclerViewSettings.addItemDecoration(new RecyclerView.ItemDecoration() {
             @Override
             public void getItemOffsets(@NonNull Rect outRect, @NonNull View view, @NonNull RecyclerView parent, @NonNull RecyclerView.State state) {
-                outRect.right = 5;
-                outRect.left = 5;
+                outRect.right = 45;
+                outRect.left = 45;
+                outRect.top = 10;
+                outRect.bottom = 10;
             }
         });
-        getParentFragmentManager().beginTransaction().add(R.id.container_frameLayout, new WifiFragment()).commit();
+        getParentFragmentManager().beginTransaction().add(R.id.container_frameLayout, sf).commit();
         return settingsBinding.getRoot();
     }
 
-    class SettingsGlobalFocusChange implements ViewTreeObserver.OnGlobalFocusChangeListener {
+    static class SettingsGlobalFocusChange implements ViewTreeObserver.OnGlobalFocusChangeListener {
 
         @Override
         public void onGlobalFocusChanged(View oldFocus, View newFocus) {
-//            Log.d("SettingsGlobalFocusChange", "onGlobalFocusChanged: " + oldFocus + " \n " + newFocus);
+            Log.d("SettingsGlobalFocusChange", "onGlobalFocusChanged: " + oldFocus + " \n " + newFocus);
         }
     }
 
 
-    private SettingsGlobalFocusChange globalFocusChange = new SettingsGlobalFocusChange();
+    private final SettingsGlobalFocusChange globalFocusChange = new SettingsGlobalFocusChange();
 
     @Override
     public void onResume() {
@@ -85,6 +89,7 @@ public class SettingsFragment extends Fragment {
     class SettingsViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         ItemSettingsBinding binding;
         int position;
+
         public SettingsViewHolder(@NonNull View itemView) {
             super(itemView);
             binding = ItemSettingsBinding.bind(itemView);
@@ -96,14 +101,49 @@ public class SettingsFragment extends Fragment {
             binding.option.setText(options.get(position));
             if (position == 0) {
                 itemView.setNextFocusUpId(R.id.tabLayout);
-                Log.d("SettingsFragment", "bind: " + itemView.getNextFocusUpId());
-
+                if (selectView == null) {
+                    selectView = binding.option;
+                    ViewCompat.animate(selectView)
+                            .scaleX(1.2f)
+                            .scaleY(1.2f)
+                            .setDuration(250)
+                            .start();
+                }
             }
+
         }
 
         @Override
         public void onClick(View v) {
+            switch (position) {
+                case 0:
+                    getParentFragmentManager().beginTransaction()
+                            .replace(R.id.container_frameLayout, sf)
+                            .commit();
+                    break;
+                case 1:
+                    getParentFragmentManager().beginTransaction()
+                            .replace(R.id.container_frameLayout, wf)
+                            .commit();
+                    break;
+                default:
+                    break;
+
+            }
             Toast.makeText(requireContext(), options.get(position), Toast.LENGTH_SHORT).show();
+            if (selectView != null) {
+                ViewCompat.animate(selectView)
+                        .scaleX(1f)
+                        .scaleY(1f)
+                        .setDuration(250)
+                        .start();
+            }
+            selectView = binding.option;
+            ViewCompat.animate(selectView)
+                    .scaleX(1.2f)
+                    .scaleY(1.2f)
+                    .setDuration(250)
+                    .start();
         }
     }
 

@@ -1,6 +1,5 @@
 <resources>
 
     <style name="Theme.ProjectorLauncher" parent="@style/Theme.AppCompat.NoActionBar">
-        <item name="android:fontFamily">@font/notosanscjk_bold</item>
     </style>
 </resources>

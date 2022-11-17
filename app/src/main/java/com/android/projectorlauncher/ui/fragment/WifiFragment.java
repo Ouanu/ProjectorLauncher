@@ -5,17 +5,13 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.net.wifi.ScanResult;
 import android.net.wifi.WifiManager;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.view.ViewCompat;
@@ -23,14 +19,13 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.MutableLiveData;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.android.projectorlauncher.R;
 import com.android.projectorlauncher.databinding.FragmentWifiBinding;
 import com.android.projectorlauncher.databinding.ItemWifiBinding;
 import com.android.projectorlauncher.presenter.WifiPresenter;
+import com.android.projectorlauncher.ui.dialog.AddNetworkDialog;
 import com.android.projectorlauncher.ui.dialog.WIFIDialog;
 import com.android.projectorlauncher.ui.view.WifiView;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -47,20 +42,29 @@ public class WifiFragment extends Fragment implements View.OnClickListener, Wifi
                 Log.d("WifiFragment", "onReceive: 刷新数据");
                 presenter.updateNetworks();
             } else if (intent.getAction().equals(WifiManager.WIFI_STATE_CHANGED_ACTION)) {
-
                 int wifiState = intent.getIntExtra(WifiManager.EXTRA_WIFI_STATE, 0);
                 switch (wifiState) {
                     case WifiManager.WIFI_STATE_DISABLED:
                         Log.d("WifiFragment", "onReceive: wifi 关闭");
+                        wifiBinding.progressCircular.setVisibility(View.INVISIBLE);
+                        wifiBinding.btnSwitch.setVisibility(View.VISIBLE);
+                        presenter.refreshNearbyNetworks();
+                        presenter.setWifiConnectState(false);
                         break;
                     case WifiManager.WIFI_STATE_DISABLING:
+                    case WifiManager.WIFI_STATE_ENABLING:
+                        wifiBinding.progressCircular.setVisibility(View.VISIBLE);
+                        wifiBinding.btnSwitch.setVisibility(View.INVISIBLE);
                         break;
                     case WifiManager.WIFI_STATE_ENABLED:
                         Log.d("WifiFragment", "onReceive: wifi 打开");
-                        break;
-                    case WifiManager.WIFI_STATE_ENABLING:
+                        wifiBinding.progressCircular.setVisibility(View.INVISIBLE);
+                        wifiBinding.btnSwitch.setVisibility(View.VISIBLE);
+                        presenter.refreshNearbyNetworks();
                         break;
                     case WifiManager.WIFI_STATE_UNKNOWN:
+                        wifiBinding.progressCircular.setVisibility(View.INVISIBLE);
+                        wifiBinding.btnSwitch.setVisibility(View.VISIBLE);
                         break;
                 }
                 wifiStateChange();
@@ -71,7 +75,7 @@ public class WifiFragment extends Fragment implements View.OnClickListener, Wifi
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
-        presenter = new WifiPresenter(this);
+
         nearbyList.setValue(new ArrayList<>());
         saveList.setValue(new ArrayList<>());
     }
@@ -83,16 +87,68 @@ public class WifiFragment extends Fragment implements View.OnClickListener, Wifi
         onClick();
         onFocus();
         wifiBinding.wifiRecycleView.setLayoutManager(new LinearLayoutManager(requireActivity()));
-        wifiBinding.saveRecycleView.setLayoutManager(new LinearLayoutManager(requireActivity()));
         wifiBinding.wifiRecycleView.setAdapter(new WifiAdapter(nearbyList));
-        wifiBinding.saveRecycleView.setAdapter(new WifiAdapter(saveList));
         return wifiBinding.getRoot();
     }
 
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        presenter = new WifiPresenter(this);
+    }
+
     private void onFocus() {
-        wifiBinding.btnSwitch.setOnFocusChangeListener(new WifiAnimation());
-        wifiBinding.btnRefresh.setOnFocusChangeListener(new WifiAnimation());
-        wifiBinding.btnAddNetwork.setOnFocusChangeListener(new WifiAnimation());
+        wifiBinding.btnSwitch.setOnFocusChangeListener((v, hasFocus) -> {
+            if (hasFocus) {
+                ViewCompat.animate(v)
+                        .scaleX(1.05f)
+                        .scaleY(1.05f)
+                        .setDuration(250)
+                        .start();
+                wifiBinding.btnSwitch.setTextColor(requireContext().getColor(R.color.self_4));
+            } else {
+                ViewCompat.animate(v)
+                        .scaleX(1f)
+                        .scaleY(1f)
+                        .setDuration(250)
+                        .start();
+                wifiBinding.btnSwitch.setTextColor(requireContext().getColor(R.color.white));
+            }
+        });
+        wifiBinding.btnRefresh.setOnFocusChangeListener((v, hasFocus) -> {
+            if (hasFocus) {
+                ViewCompat.animate(v)
+                        .scaleX(1.05f)
+                        .scaleY(1.05f)
+                        .setDuration(250)
+                        .start();
+                wifiBinding.btnRefresh.setTextColor(requireContext().getColor(R.color.self_4));
+            } else {
+                ViewCompat.animate(v)
+                        .scaleX(1f)
+                        .scaleY(1f)
+                        .setDuration(250)
+                        .start();
+                wifiBinding.btnRefresh.setTextColor(requireContext().getColor(R.color.white));
+            }
+        });
+        wifiBinding.btnAddNetwork.setOnFocusChangeListener((v, hasFocus) -> {
+            if (hasFocus) {
+                ViewCompat.animate(v)
+                        .scaleX(1.05f)
+                        .scaleY(1.05f)
+                        .setDuration(250)
+                        .start();
+                wifiBinding.btnAddNetwork.setTextColor(requireContext().getColor(R.color.self_4));
+            } else {
+                ViewCompat.animate(v)
+                        .scaleX(1f)
+                        .scaleY(1f)
+                        .setDuration(250)
+                        .start();
+                wifiBinding.btnAddNetwork.setTextColor(requireContext().getColor(R.color.white));
+            }
+        });
     }
 
     private void onClick() {
@@ -124,8 +180,12 @@ public class WifiFragment extends Fragment implements View.OnClickListener, Wifi
             presenter.refreshNearbyNetworks();
         } else if (v == wifiBinding.btnSwitch) {
             presenter.changeWifiState();
+            wifiBinding.btnRefresh.requestFocus();
         } else if (v == wifiBinding.btnAddNetwork) {
-
+            AddNetworkDialog dialog = new AddNetworkDialog();
+            Bundle bundle = new Bundle();
+            dialog.setArguments(bundle);
+            dialog.show(getParentFragmentManager(), "add-network-tag");
         }
     }
 
@@ -134,19 +194,9 @@ public class WifiFragment extends Fragment implements View.OnClickListener, Wifi
     public void update() {
         nearbyList.setValue(presenter.getNearbyResults());
         saveList.setValue(presenter.getSaveResults());
-        if (saveList.getValue() != null && saveList.getValue().size() == 0) {
-            wifiBinding.saveRecycleView.setVisibility(View.GONE);
-            wifiBinding.connectedWifiList.setVisibility(View.GONE);
-        } else {
-            wifiBinding.saveRecycleView.setVisibility(View.VISIBLE);
-            wifiBinding.connectedWifiList.setVisibility(View.VISIBLE);
-        }
         Log.d("WifiFragment", "update: nearbyList=" + Objects.requireNonNull(nearbyList.getValue()).size() + "  saveList=" + Objects.requireNonNull(saveList.getValue()).size());
         if (wifiBinding.wifiRecycleView.getAdapter() != null) {
             wifiBinding.wifiRecycleView.getAdapter().notifyDataSetChanged();
-        }
-        if (wifiBinding.saveRecycleView.getAdapter() != null) {
-            wifiBinding.saveRecycleView.getAdapter().notifyDataSetChanged();
         }
     }
 
@@ -166,7 +216,7 @@ public class WifiFragment extends Fragment implements View.OnClickListener, Wifi
         if (wifiBinding == null) {
             return;
         }
-        if (isWifiConnected) {
+        if (!isWifiConnected) {
             wifiBinding.ipTitle.setText(R.string.not_connected_to_wifi_network);
             wifiBinding.address.setText("");
         } else {
@@ -175,7 +225,7 @@ public class WifiFragment extends Fragment implements View.OnClickListener, Wifi
         }
     }
 
-    class WifiViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    class WifiViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnFocusChangeListener {
         ItemWifiBinding binding;
         ScanResult result;
 
@@ -183,6 +233,7 @@ public class WifiFragment extends Fragment implements View.OnClickListener, Wifi
             super(itemView);
             binding = ItemWifiBinding.bind(itemView);
             itemView.setOnClickListener(this);
+            itemView.setOnFocusChangeListener(this);
         }
 
         public void bind(ScanResult result) {
@@ -192,6 +243,13 @@ public class WifiFragment extends Fragment implements View.OnClickListener, Wifi
                 binding.lock.setVisibility(View.VISIBLE);
             } else {
                 binding.lock.setVisibility(View.INVISIBLE);
+            }
+            if (result.level >= -55) {
+                binding.ivWifi.setImageResource(R.drawable.wifi_strong);
+            } else if (result.level >= -77) {
+                binding.ivWifi.setImageResource(R.drawable.wifi_middle);
+            } else {
+                binding.ivWifi.setImageResource(R.drawable.wifi_weak);
             }
             Log.d("WifiFragment", "bind: " + result.level);
         }
@@ -207,6 +265,25 @@ public class WifiFragment extends Fragment implements View.OnClickListener, Wifi
                 dialog.show(getParentFragmentManager(), "wifi-tag");
             } else {
                 binding.lock.setVisibility(View.INVISIBLE);
+            }
+        }
+
+        @Override
+        public void onFocusChange(View v, boolean hasFocus) {
+            if (hasFocus) {
+                ViewCompat.animate(v)
+                        .scaleX(1.05f)
+                        .scaleY(1.05f)
+                        .setDuration(250)
+                        .start();
+                binding.btnTurn.setImageResource(R.drawable.wifi_in_focus);
+            } else {
+                ViewCompat.animate(v)
+                        .scaleX(1f)
+                        .scaleY(1f)
+                        .setDuration(250)
+                        .start();
+                binding.btnTurn.setImageResource(R.drawable.wifi_in);
             }
         }
     }
@@ -238,26 +315,6 @@ public class WifiFragment extends Fragment implements View.OnClickListener, Wifi
         public int getItemCount() {
             if (results.getValue() == null) return 0;
             return results.getValue().size();
-        }
-    }
-
-    static class WifiAnimation implements View.OnFocusChangeListener {
-
-        @Override
-        public void onFocusChange(View v, boolean hasFocus) {
-            if (hasFocus) {
-                ViewCompat.animate(v)
-                        .scaleX(1.05f)
-                        .scaleY(1.05f)
-                        .setDuration(250)
-                        .start();
-            } else {
-                ViewCompat.animate(v)
-                        .scaleX(1f)
-                        .scaleY(1f)
-                        .setDuration(250)
-                        .start();
-            }
         }
     }
 

@@ -3,7 +3,6 @@
     android:id="@+id/scrollView"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/background_color"
     android:orientation="vertical">
 
     <LinearLayout
@@ -11,21 +10,10 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <!--        <TextView-->
-        <!--            android:layout_width="match_parent"-->
-        <!--            android:layout_height="wrap_content"-->
-        <!--            android:layout_marginTop="10dp"-->
-        <!--            android:gravity="center"-->
-        <!--            android:text="WIFI设置"-->
-        <!--            android:textColor="@color/white"-->
-        <!--            android:textSize="28sp"-->
-        <!--            android:textStyle="bold"-->
-        <!--            android:typeface="sans" />-->
-
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="53dp"
-            android:layout_marginHorizontal="160dp"
+            android:layout_marginHorizontal="100dp"
             android:layout_marginTop="20dp"
             android:background="@drawable/wifi_title_background"
             android:descendantFocusability="afterDescendants">
@@ -57,16 +45,14 @@
                 android:textSize="20sp" />
 
             <ProgressBar
-                android:id="@+id/progressBar"
-                style="@style/Widget.AppCompat.ProgressBar"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:id="@+id/progress_circular"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_alignStart="@id/btn_switch"
+                android:layout_alignEnd="@id/btn_switch"
                 android:layout_centerVertical="true"
-                android:layout_marginVertical="5dp"
-                android:layout_marginEnd="20dp"
-                android:layout_toStartOf="@id/btn_refresh"
-                android:fontFamily="sans-serif"
-                android:visibility="gone" />
+                android:indeterminateTint="@color/black"
+                android:visibility="invisible" />
 
             <Button
                 android:id="@+id/btn_switch"
@@ -75,11 +61,11 @@
                 android:layout_centerVertical="true"
                 android:layout_marginEnd="20dp"
                 android:layout_toStartOf="@id/btn_refresh"
-                android:nextFocusLeft="@id/recycler_view_settings"
                 android:background="@drawable/btn_wifi_background_focus"
                 android:focusable="true"
                 android:fontFamily="sans-serif"
                 android:gravity="center"
+                android:nextFocusLeft="@id/recycler_view_settings"
                 android:nextFocusUp="@id/recycler_view"
                 android:paddingHorizontal="20dp"
                 android:text="启用"
@@ -123,27 +109,6 @@
                 android:textSize="17sp"
                 android:textStyle="bold" />
         </RelativeLayout>
-
-        <TextView
-            android:id="@+id/connected_wifi_list"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginHorizontal="30dp"
-            android:layout_marginTop="10dp"
-            android:focusable="false"
-            android:text="连接过的网络"
-            android:textColor="@color/white"
-            android:textSize="22sp"
-            android:textStyle="bold" />
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/save_recycleView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="30dp"
-            android:layout_marginTop="10dp"
-            android:descendantFocusability="afterDescendants" />
 
         <TextView
             android:layout_width="wrap_content"

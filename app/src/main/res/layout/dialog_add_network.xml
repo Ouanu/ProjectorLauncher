@@ -29,14 +29,17 @@
             android:layout_width="240dp"
             android:layout_height="45dp"
             android:layout_marginHorizontal="30dp"
-            android:background="@drawable/edit_background"
+            android:background="@drawable/edit_background_selector"
             android:focusable="true"
             android:gravity="center"
             android:inputType="text"
             android:singleLine="true"
+            android:labelFor="@id/ssid"
+            android:imeOptions="actionDone"
             android:textColor="@color/self_5"
             android:textColorHint="@color/self_5"
-            android:textSize="23sp" />
+            android:textSize="23sp"
+            android:autofillHints="username" />
     </LinearLayout>
 
     <LinearLayout
@@ -62,14 +65,17 @@
             android:layout_width="240dp"
             android:layout_height="45dp"
             android:layout_marginHorizontal="30dp"
-            android:background="@drawable/edit_background"
+            android:background="@drawable/edit_background_selector"
             android:focusable="true"
             android:gravity="center"
+            android:imeOptions="actionDone"
             android:inputType="textPassword"
             android:singleLine="true"
             android:textColor="@color/self_5"
             android:textColorHint="@color/self_5"
-            android:textSize="23sp" />
+            android:textSize="23sp"
+            android:labelFor="@id/passwd"
+            android:autofillHints="password" />
     </LinearLayout>
 
 

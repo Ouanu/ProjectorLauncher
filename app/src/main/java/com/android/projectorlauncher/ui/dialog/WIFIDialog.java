@@ -84,7 +84,6 @@ public class WIFIDialog extends DialogFragment {
                     false,
                     capabilities);
             WifiManagerUtils.connectWifi((WifiManager) requireContext().getSystemService(Context.WIFI_SERVICE), wifiInfo);
-
             dismiss();
         });
     }
