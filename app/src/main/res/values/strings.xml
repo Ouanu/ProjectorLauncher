@@ -12,4 +12,10 @@
     <string name="passwd">密码:</string>
     <string name="security">安全性</string>
     <string name="connect">连接</string>
+    <string name="memory">内存空间: 1G</string>
+    <string name="storage">存储空间: 4G</string>
+    <string name="system_version">系统版本: 9.0</string>
+    <string name="software_version">软件版本: 1.0</string>
+    <string name="logo_name">产品名字</string>
+    <string name="settings">设置</string>
 </resources>
