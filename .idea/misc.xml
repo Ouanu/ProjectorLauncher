@@ -27,8 +27,11 @@
         <entry key="..\:/project/ProjectorLauncher/app/src/main/res/drawable/dialog_save_focus.xml" value="0.1155" />
         <entry key="..\:/project/ProjectorLauncher/app/src/main/res/drawable/dialog_save_un_focus.xml" value="0.1155" />
         <entry key="..\:/project/ProjectorLauncher/app/src/main/res/drawable/edit_background.xml" value="0.1" />
+        <entry key="..\:/project/ProjectorLauncher/app/src/main/res/drawable/edit_background_ethernet_focus.xml" value="0.217" />
+        <entry key="..\:/project/ProjectorLauncher/app/src/main/res/drawable/edit_background_ethernet_selector.xml" value="0.217" />
         <entry key="..\:/project/ProjectorLauncher/app/src/main/res/drawable/edit_background_focus.xml" value="0.1" />
         <entry key="..\:/project/ProjectorLauncher/app/src/main/res/drawable/edit_background_selector.xml" value="0.1" />
+        <entry key="..\:/project/ProjectorLauncher/app/src/main/res/drawable/edit_background_un_focus.xml" value="0.217" />
         <entry key="..\:/project/ProjectorLauncher/app/src/main/res/drawable/ic_baseline_signal_cellular_4_bar_24.xml" value="0.1" />
         <entry key="..\:/project/ProjectorLauncher/app/src/main/res/drawable/ic_baseline_signal_cellular_off_24.xml" value="0.1" />
         <entry key="..\:/project/ProjectorLauncher/app/src/main/res/drawable/item_active.xml" value="0.1" />
@@ -85,7 +88,8 @@
         <entry key="..\:/project/ProjectorLauncher/app/src/main/res/layout/fragment_application.xml" value="0.22" />
         <entry key="..\:/project/ProjectorLauncher/app/src/main/res/layout/fragment_children.xml" value="0.409375" />
         <entry key="..\:/project/ProjectorLauncher/app/src/main/res/layout/fragment_comics.xml" value="0.409375" />
-        <entry key="..\:/project/ProjectorLauncher/app/src/main/res/layout/fragment_ethernet.xml" value="0.1" />
+        <entry key="..\:/project/ProjectorLauncher/app/src/main/res/layout/fragment_ethernet.xml" value="0.33" />
+        <entry key="..\:/project/ProjectorLauncher/app/src/main/res/layout/fragment_home.xml" value="0.25" />
         <entry key="..\:/project/ProjectorLauncher/app/src/main/res/layout/fragment_match.xml" value="0.2" />
         <entry key="..\:/project/ProjectorLauncher/app/src/main/res/layout/fragment_movie.xml" value="0.29986962190352023" />
         <entry key="..\:/project/ProjectorLauncher/app/src/main/res/layout/fragment_pager.xml" value="0.22" />

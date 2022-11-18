@@ -20,18 +20,17 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.android.projectorlauncher.databinding.ActivityMainBinding;
 import com.android.projectorlauncher.databinding.ItemMainTabBinding;
 import com.android.projectorlauncher.ui.fragment.ApplicationFragment;
 import com.android.projectorlauncher.ui.fragment.ChildrenFragment;
 import com.android.projectorlauncher.ui.fragment.ComicsFragment;
+import com.android.projectorlauncher.ui.fragment.HomeFragment;
 import com.android.projectorlauncher.ui.fragment.MatchFragment;
 import com.android.projectorlauncher.ui.fragment.MovieFragment;
 import com.android.projectorlauncher.ui.fragment.SettingsFragment;
 import com.android.projectorlauncher.ui.fragment.ShowFragment;
 import com.android.projectorlauncher.ui.fragment.TvFragment;
-
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -39,13 +38,14 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
-import kotlin.collections.AbstractMutableMap;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements HomeFragment.OnListenerClick{
     ActivityMainBinding binding;
-    private final List<String> titles = Arrays.asList("电影", "剧集", "综艺", "动漫", "少儿", "体育", "应用", "设置");
+    private final List<String> titles = Arrays.asList("首页", "电影", "剧集", "综艺", "动漫", "少儿", "体育", "应用", "设置");
     private final ArrayList<Fragment> fragments = new ArrayList<>();
+    private final HomeFragment homeFragment = new HomeFragment();
     private final MovieFragment fragment = new MovieFragment();
     private final TvFragment tvFragment = new TvFragment();
     private final ShowFragment showFragment = new ShowFragment();
@@ -115,6 +115,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void initView() {
+        fragments.add(homeFragment);
         fragments.add(fragment);
         fragments.add(tvFragment);
         fragments.add(showFragment);
@@ -140,13 +141,21 @@ public class MainActivity extends AppCompatActivity {
 
 
         getSupportFragmentManager().beginTransaction()
-                .add(R.id.container_pager, fragment)
+                .add(R.id.container_pager, homeFragment)
                 .commit();
     }
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         return super.onKeyDown(keyCode, event);
+    }
+
+    @Override
+    public void turnToPager(int position) {
+        switchFragment(position);
+        ItemMainTabBinding tabBinding = ItemMainTabBinding.bind(Objects.requireNonNull(binding.tabLayout.getLayoutManager().findViewByPosition(position)));
+        tabBinding.getRoot().requestFocus();
+        setColor(tabBinding.mainTabText, position);
     }
 
 
@@ -194,45 +203,52 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         public void onClick(View v) {
-            if (lastTextView == null) {
-                lastTextView = tabBinding.mainTabText;
-            } else {
-                lastTextView.setTextColor(getColor(R.color.white));
-                ViewCompat.animate(lastTextView)
-                        .scaleX(1.0f)
-                        .scaleY(1.0f)
-                        .setDuration(250)
-                        .start();
-            }
-            if (position == 0) {
-                tabBinding.mainTabText.setTextColor(getColor(R.color.self_5));
-            } else if (position == 1) {
-                tabBinding.mainTabText.setTextColor(getColor(R.color.self_6));
-            } else if (position == 2) {
-                tabBinding.mainTabText.setTextColor(getColor(R.color.self_2));
-            } else if (position == 3) {
-                tabBinding.mainTabText.setTextColor(getColor(R.color.self_4));
-            } else if (position == 4) {
-                tabBinding.mainTabText.setTextColor(getColor(R.color.self_8));
-            } else if (position == 5) {
-                tabBinding.mainTabText.setTextColor(getColor(R.color.self_9));
-            } else {
-                tabBinding.mainTabText.setTextColor(getColor(R.color.self_7));
-            }
-            lastTextView = tabBinding.mainTabText;
-            ViewCompat.animate(lastTextView)
-                    .scaleX(1.3f)
-                    .scaleY(1.3f)
-                    .setDuration(250)
-                    .start();
+            setColor(tabBinding.mainTabText, position);
             switchFragment(position);
         }
 
-        private void switchFragment(int position) {
-            getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.container_pager, fragments.get(position))
-                    .commit();
+    }
+
+    private void setColor(TextView textView, int position) {
+        if (lastTextView == null) {
+            lastTextView = textView;
+        } else {
+            lastTextView.setTextColor(getColor(R.color.white));
+            ViewCompat.animate(lastTextView)
+                    .scaleX(1.0f)
+                    .scaleY(1.0f)
+                    .setDuration(250)
+                    .start();
         }
+        if (position == 0) {
+            textView.setTextColor(getColor(R.color.self_4));
+        } else if (position == 1) {
+            textView.setTextColor(getColor(R.color.self_5));
+        } else if (position == 2) {
+            textView.setTextColor(getColor(R.color.self_6));
+        } else if (position == 3) {
+            textView.setTextColor(getColor(R.color.self_2));
+        } else if (position == 4) {
+            textView.setTextColor(getColor(R.color.self_4));
+        } else if (position == 5) {
+            textView.setTextColor(getColor(R.color.self_8));
+        } else if (position == 6) {
+            textView.setTextColor(getColor(R.color.self_9));
+        } else {
+            textView.setTextColor(getColor(R.color.self_7));
+        }
+        lastTextView = textView;
+        ViewCompat.animate(lastTextView)
+                .scaleX(1.3f)
+                .scaleY(1.3f)
+                .setDuration(250)
+                .start();
+    }
+
+    private void switchFragment(int position) {
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.container_pager, fragments.get(position))
+                .commit();
     }
 
     class TabAdapter extends RecyclerView.Adapter<TabViewHolder> {

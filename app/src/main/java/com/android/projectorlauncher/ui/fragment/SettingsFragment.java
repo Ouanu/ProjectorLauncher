@@ -29,6 +29,7 @@ public class SettingsFragment extends Fragment {
     private TextView selectView = null;
     private final SystemInfoFragment sf = new SystemInfoFragment();
     private final WifiFragment wf = new WifiFragment();
+    private final EthernetFragment ef = new EthernetFragment();
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -124,6 +125,11 @@ public class SettingsFragment extends Fragment {
                 case 1:
                     getParentFragmentManager().beginTransaction()
                             .replace(R.id.container_frameLayout, wf)
+                            .commit();
+                    break;
+                case 2:
+                    getParentFragmentManager().beginTransaction()
+                            .replace(R.id.container_frameLayout, ef)
                             .commit();
                     break;
                 default:

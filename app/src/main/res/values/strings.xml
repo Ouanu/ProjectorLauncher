@@ -18,4 +18,12 @@
     <string name="software_version">软件版本: 1.0</string>
     <string name="logo_name">产品名字</string>
     <string name="settings">设置</string>
+    <string name="ip_mode">IP模式设置:</string>
+    <string name="ip_address">IP地址:</string>
+    <string name="subnet_mask">子网掩码:</string>
+    <string name="dns_address">DNS地址:</string>
+    <string name="static_ip">静态代理</string>
+    <string name="confirm">确认</string>
+    <string name="ethernet_settings">网口设置</string>
+    <string name="gateway">网关:</string>
 </resources>
