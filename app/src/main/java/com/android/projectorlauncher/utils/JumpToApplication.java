@@ -58,4 +58,17 @@ public class JumpToApplication {
         }
     }
 
+    //体育频道
+    public static void turnToHistory(Context context) {
+        Intent intent = new Intent("com.tencent.qqlivetv.open");
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent.setData(Uri.parse("tenvideo2://?action=10")); // 观看历史
+        try {
+            context.startActivity(intent);
+        } catch (ActivityNotFoundException e) {
+            e.printStackTrace();
+            Toast.makeText(context, "未找到应用", Toast.LENGTH_SHORT).show();
+        }
+    }
+
 }

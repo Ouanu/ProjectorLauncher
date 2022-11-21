@@ -3,8 +3,6 @@ package com.android.projectorlauncher.ui.fragment;
 import android.content.Context;
 import android.net.EthernetManager;
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -63,11 +61,7 @@ public class EthernetFragment extends Fragment implements View.OnClickListener {
     @Override
     public void onClick(View v) {
         if (v == ethernetBinding.btnSwitch) {
-            if (mode) {
-                mode = false;
-            } else {
-                mode = true;
-            }
+            mode = !mode;
             updateUI();
         } else if (v == ethernetBinding.connect) {
             if (mode) {

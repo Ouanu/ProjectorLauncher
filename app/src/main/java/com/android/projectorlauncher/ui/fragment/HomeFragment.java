@@ -5,14 +5,12 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.view.ViewCompat;
 import androidx.fragment.app.Fragment;
-
-import com.android.projectorlauncher.R;
 import com.android.projectorlauncher.databinding.FragmentHomeBinding;
+import com.android.projectorlauncher.utils.JumpToApplication;
 
 public class HomeFragment extends Fragment implements View.OnClickListener, View.OnFocusChangeListener {
     private FragmentHomeBinding homeBinding;
@@ -66,6 +64,10 @@ public class HomeFragment extends Fragment implements View.OnClickListener, View
             listener.turnToPager(3);
         } else if (v == homeBinding.settings) {
             listener.turnToPager(8);
+        } else if (v == homeBinding.recentWatch) {
+            JumpToApplication.turnToHistory(requireContext());
+        } else if (v == homeBinding.search) {
+            JumpToApplication.turnToSearch(requireContext());
         }
     }
 
