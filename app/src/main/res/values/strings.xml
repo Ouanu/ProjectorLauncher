@@ -26,4 +26,10 @@
     <string name="confirm">确认</string>
     <string name="ethernet_settings">网口设置</string>
     <string name="gateway">网关:</string>
+    <string name="mount">U盘已挂载:</string>
+    <string name="unmount">U盘取消挂载</string>
+    <string name="video">视频</string>
+    <string name="audio">音频</string>
+    <string name="picture">图片</string>
+    <string name="error">发生错误！！！！</string>
 </resources>

@@ -11,6 +11,7 @@ import android.util.Log;
 import android.widget.SeekBar;
 
 import androidx.annotation.NonNull;
+import androidx.lifecycle.MutableLiveData;
 
 import com.android.projectorlauncher.bean.MusicModel;
 
@@ -19,15 +20,17 @@ import java.lang.ref.WeakReference;
 
 public class MusicPlayerHelper implements MediaPlayer.OnBufferingUpdateListener, MediaPlayer.OnPreparedListener, MediaPlayer.OnCompletionListener, SeekBar.OnSeekBarChangeListener {
 
-    private static int MSG_CODE = 0x01;
-    private static long MSG_TIME = 1_000L;
-    private MediaPlayer player;
-    private SeekBar seekBar;
-    private MusicModel musicModel;
+    private static final int MSG_CODE = 0x01;
+    private static final long MSG_TIME = 1_000L;
+    private final MediaPlayer player;
+    private final SeekBar seekBar;
     private MediaPlayer.OnCompletionListener completionListener;
-    private MusicHelperHandler musicHandler;
+    private final MusicHelperHandler musicHandler;
+    private final MutableLiveData<Boolean> isPlay;
 
-    public MusicPlayerHelper(Context context, SeekBar seekBar) {
+    @SuppressWarnings("deprecation")
+    public MusicPlayerHelper(Context context, SeekBar seekBar, MutableLiveData<Boolean> isPlay) {
+        this.isPlay = isPlay;
         musicHandler = new MusicHelperHandler(context.getMainLooper(), this);
         player = new MediaPlayer();
         player.setAudioStreamType(AudioManager.STREAM_MUSIC);
@@ -37,6 +40,10 @@ public class MusicPlayerHelper implements MediaPlayer.OnBufferingUpdateListener,
 
         this.seekBar = seekBar;
         this.seekBar.setOnSeekBarChangeListener(this);
+    }
+
+    public void setCompletionListener(MediaPlayer.OnCompletionListener listener) {
+        completionListener = listener;
     }
 
     @Override
@@ -57,7 +64,6 @@ public class MusicPlayerHelper implements MediaPlayer.OnBufferingUpdateListener,
     }
 
     public void playMusic(MusicModel musicModel, Boolean isRestPlayer) {
-        this.musicModel = musicModel;
         if (isRestPlayer) {
             player.reset();
             if (!TextUtils.isEmpty(musicModel.getResSrc())) {
@@ -67,18 +73,26 @@ public class MusicPlayerHelper implements MediaPlayer.OnBufferingUpdateListener,
                     e.printStackTrace();
                 }
             }
-            player.prepareAsync();
+            try {
+                player.prepareAsync();
+            } catch (IllegalStateException e) {
+                e.printStackTrace();
+            }
         } else {
             player.start();
         }
         musicHandler.sendEmptyMessage(MSG_CODE);
     }
 
-    public void pause() {
+    public void autoPlay() {
         if (player.isPlaying()) {
             player.pause();
+            isPlay.setValue(false);
+            musicHandler.removeMessages(MSG_CODE);
+        } else {
+            player.start();
+            musicHandler.sendEmptyMessage(MSG_CODE);
         }
-        musicHandler.removeMessages(MSG_CODE);
     }
 
     public void stop() {
@@ -90,6 +104,32 @@ public class MusicPlayerHelper implements MediaPlayer.OnBufferingUpdateListener,
     public void destroy() {
         player.release();
         musicHandler.removeCallbacksAndMessages(null);
+    }
+
+    public void fastForward() {
+        int progress = seekBar.getProgress();
+        int duration = player.getDuration();
+        int max = seekBar.getMax();
+        if (max > progress + 5) {
+            progress += 5;
+        } else {
+            progress = max;
+        }
+        float msec = progress / (max * 1.0f) * duration;
+        player.seekTo((int) msec);
+    }
+
+    public void fastRewind() {
+        int progress = seekBar.getProgress();
+        int duration = player.getDuration();
+        int max = seekBar.getMax();
+        if (0 < progress - 5) {
+            progress -= 5;
+        } else {
+            progress = 0;
+        }
+        float msec = progress / (max * 1.0f) * duration;
+        player.seekTo((int) msec);
     }
 
     class MusicHelperHandler extends Handler {
@@ -107,14 +147,16 @@ public class MusicPlayerHelper implements MediaPlayer.OnBufferingUpdateListener,
                 int position = 0;
                 if (weakReference.get().player.isPlaying() && !weakReference.get().seekBar.isPressed()) {
                     if (weakReference.get().player.getDuration() > 0) {
-                        position = (int) (weakReference.get().seekBar.getMax() * weakReference.get().player.getCurrentPosition() / weakReference.get().player.getDuration() * 1.0f);
+                        int current = weakReference.get().player.getCurrentPosition();
+                        int duration = weakReference.get().player.getDuration();
+                        position = (int) (weakReference.get().seekBar.getMax() * current / duration * 1.0f);
                     }
                     Log.d("MusicPlayerHelper", "handleMessage: " + position);
                 }
                 weakReference.get().seekBar.setProgress(position);
+                isPlay.setValue(true);
                 sendEmptyMessageDelayed(MSG_CODE, MSG_TIME);
             }
-
         }
     }
 

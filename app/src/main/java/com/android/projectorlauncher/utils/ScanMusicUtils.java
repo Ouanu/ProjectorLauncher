@@ -14,6 +14,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 
 public class ScanMusicUtils {
 
@@ -49,7 +50,10 @@ public class ScanMusicUtils {
     public static List<MusicModel> getMusicList(String path) {
         File dir = new File(path);
         List<MusicModel> models = new ArrayList<>();
-        for (File file : dir.listFiles()) {
+        if (!dir.exists() || dir.listFiles() == null) {
+            return models;
+        }
+        for (File file : Objects.requireNonNull(dir.listFiles())) {
             if (file.getName().contains(".mp3") || file.getName().contains(".wav") || file.getName().contains(".flac")) {
                 MusicModel model = new MusicModel();
                 model.setName(getMusicName(file.getAbsolutePath()));

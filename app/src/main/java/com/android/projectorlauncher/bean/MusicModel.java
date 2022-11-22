@@ -1,17 +1,15 @@
 package com.android.projectorlauncher.bean;
 
-public class MusicModel {
-    private String name;
+public class MusicModel extends Model{
     private String author;
     private String duration;
-    private String resSrc;
     private String imageSrc;
 
     public MusicModel(String name, String author, String duration, String resSrc, String imageSrc) {
         this.name = name;
         this.author = author;
         this.duration = duration;
-        this.resSrc = resSrc;
+        this.src = resSrc;
         this.imageSrc = imageSrc;
     }
 
@@ -43,11 +41,11 @@ public class MusicModel {
     }
 
     public String getResSrc() {
-        return resSrc;
+        return src;
     }
 
     public void setResSrc(String resSrc) {
-        this.resSrc = resSrc;
+        this.src = resSrc;
     }
 
     public String getImageSrc() {
@@ -64,7 +62,7 @@ public class MusicModel {
                 "name='" + name + '\'' +
                 ", author='" + author + '\'' +
                 ", duration=" + duration +
-                ", resSrc='" + resSrc + '\'' +
+                ", resSrc='" + src + '\'' +
                 ", imageSrc='" + imageSrc + '\'' +
                 '}';
     }

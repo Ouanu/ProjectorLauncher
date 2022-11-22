@@ -1,7 +1,6 @@
 package com.android.projectorlauncher.ui.activity;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -9,16 +8,15 @@ import android.content.IntentFilter;
 import android.graphics.Rect;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.view.ViewCompat;
+import androidx.fragment.app.FragmentActivity;
+import androidx.lifecycle.MutableLiveData;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.android.projectorlauncher.R;
 import com.android.projectorlauncher.bean.MusicModel;
 import com.android.projectorlauncher.databinding.ActivityPlayBinding;
@@ -26,17 +24,18 @@ import com.android.projectorlauncher.databinding.ItemMusicBinding;
 import com.android.projectorlauncher.utils.FileUtils;
 import com.android.projectorlauncher.utils.MusicPlayerHelper;
 import com.android.projectorlauncher.utils.ScanMusicUtils;
-
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
 
-public class PlayActivity extends Activity {
+public class PlayActivity extends FragmentActivity implements View.OnClickListener {
     private ActivityPlayBinding playBinding;
     private MusicPlayerHelper helper;
-    private List<MusicModel> musicList = new ArrayList<>();
-    private BroadcastReceiver receiver = new BroadcastReceiver() {
+    private final List<MusicModel> musicList = new ArrayList<>();
+    private int chosenIndex = 0;
+    private final MutableLiveData<Boolean> isPlay = new MutableLiveData<>(false);
+    private final BroadcastReceiver receiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
             String action = intent.getAction();
@@ -45,11 +44,11 @@ public class PlayActivity extends Activity {
                     case Intent.ACTION_MEDIA_MOUNTED:
                         String mntPath = Objects.requireNonNull(intent.getData()).getPath();
                         if (!TextUtils.isEmpty(mntPath)) {
-                            Toast.makeText(context, "U盘已挂载:" + mntPath, Toast.LENGTH_SHORT).show();
+                            Toast.makeText(context, getString(R.string.mount) + mntPath, Toast.LENGTH_SHORT).show();
                         }
                         break;
                     case Intent.ACTION_MEDIA_REMOVED:
-                        Toast.makeText(context, "U盘取消挂载", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(context, getString(R.string.unmount), Toast.LENGTH_SHORT).show();
                         break;
                 }
             }
@@ -62,22 +61,39 @@ public class PlayActivity extends Activity {
         playBinding = ActivityPlayBinding.inflate(getLayoutInflater());
         setContentView(playBinding.getRoot());
 
-        IntentFilter filter = new IntentFilter();
-        filter.addAction(Intent.ACTION_MEDIA_MOUNTED);
-        filter.addAction(Intent.ACTION_MEDIA_REMOVED);
-        filter.addDataScheme("file");
-        registerReceiver(receiver, filter);
+        registerBroadcast();
+        helper = new MusicPlayerHelper(this, playBinding.seekbar, isPlay);
+        helper.setCompletionListener(mp -> {
+            if (musicList.size() - 1 > chosenIndex) {
+                chosenIndex ++;
+            } else {
+                chosenIndex = 0;
+            }
+            helper.playMusic(musicList.get(chosenIndex), true);
 
-        ScanMusicUtils.getMusicData(this);
-        helper = new MusicPlayerHelper(this, playBinding.seekbar);
-//        model.setResSrc("/storage/sdb1/南征北战NZBZ - 我的天空 (剧情版).mp3");
-//        helper.playMusic(model, true);
+        });
+        init();
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
         HashSet<String> usbDisk = FileUtils.getUsbDisk();
+        musicList.clear();
         for (String s : usbDisk) {
             musicList.addAll(ScanMusicUtils.getMusicList(s));
         }
+    }
 
+    @Override
+    protected void onDestroy() {
+        helper.stop();
+        helper.destroy();
+        unregisterReceiver(receiver);
+        super.onDestroy();
+    }
 
+    private void init() {
         playBinding.musicRecyclerview.setAdapter(new ItemPlayAdapter());
         playBinding.musicRecyclerview.addItemDecoration(new RecyclerView.ItemDecoration() {
             @Override
@@ -89,9 +105,55 @@ public class PlayActivity extends Activity {
             }
         });
 
+        playBinding.play.setOnClickListener(this);
+        playBinding.fastRewind.setOnClickListener(this);
+        playBinding.fastForward.setOnClickListener(this);
+        playBinding.skipPrevious.setOnClickListener(this);
+        playBinding.skipNext.setOnClickListener(this);
+        isPlay.observe(this, aBoolean -> updatePlayState());
+
     }
 
+    private void updatePlayState() {
+        if (Boolean.TRUE.equals(isPlay.getValue())) {
+            playBinding.play.setImageResource(R.drawable.pause);
+        } else {
+            playBinding.play.setImageResource(R.drawable.play_icon);
+        }
+    }
 
+    private void registerBroadcast() {
+        IntentFilter filter = new IntentFilter();
+        filter.addAction(Intent.ACTION_MEDIA_MOUNTED);
+        filter.addAction(Intent.ACTION_MEDIA_REMOVED);
+        filter.addDataScheme("file");
+        registerReceiver(receiver, filter);
+    }
+
+    @Override
+    public void onClick(View v) {
+        if (v == playBinding.play) {
+            helper.autoPlay();
+        } else if (v == playBinding.fastForward) {
+            helper.fastForward();
+        } else if (v == playBinding.fastRewind) {
+            helper.fastRewind();
+        } else if (v == playBinding.skipPrevious) {
+            if (chosenIndex - 1 > 0) {
+                chosenIndex --;
+            } else {
+                chosenIndex = musicList.size() - 1;
+            }
+            helper.playMusic(musicList.get(chosenIndex), true);
+        } else if (v == playBinding.skipNext) {
+            if (musicList.size() - 1 > chosenIndex) {
+                chosenIndex ++;
+            } else {
+                chosenIndex = 0;
+            }
+            helper.playMusic(musicList.get(chosenIndex), true);
+        }
+    }
 
     class ItemPlayViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnFocusChangeListener {
         ItemMusicBinding musicBinding;
@@ -106,10 +168,8 @@ public class PlayActivity extends Activity {
         @SuppressLint("SetTextI18n")
         public void bind(int position) {
             index = position;
-            StringBuilder builder = new StringBuilder();
-            builder.append(position + 1);
-            builder.append(musicList.get(position).getName());
-            musicBinding.name.setText(builder.toString());
+            String builder = (position + 1) + musicList.get(position).getName();
+            musicBinding.name.setText(builder);
             musicBinding.author.setText(musicList.get(position).getAuthor());
             musicBinding.duration.setText(musicList.get(position).getDuration());
 
@@ -118,6 +178,7 @@ public class PlayActivity extends Activity {
         @Override
         public void onClick(View v) {
             helper.playMusic(musicList.get(index), true);
+            chosenIndex = index;
         }
 
         @Override
@@ -143,6 +204,7 @@ public class PlayActivity extends Activity {
             }
         }
     }
+
 
     class ItemPlayAdapter extends RecyclerView.Adapter<ItemPlayViewHolder> {
 

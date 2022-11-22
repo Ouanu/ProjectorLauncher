@@ -10,6 +10,7 @@ import androidx.annotation.Nullable;
 import androidx.core.view.ViewCompat;
 import androidx.fragment.app.Fragment;
 import com.android.projectorlauncher.databinding.FragmentHomeBinding;
+import com.android.projectorlauncher.ui.dialog.CategoryDialog;
 import com.android.projectorlauncher.utils.JumpToApplication;
 
 public class HomeFragment extends Fragment implements View.OnClickListener, View.OnFocusChangeListener {
@@ -68,6 +69,9 @@ public class HomeFragment extends Fragment implements View.OnClickListener, View
             JumpToApplication.turnToHistory(requireContext());
         } else if (v == homeBinding.search) {
             JumpToApplication.turnToSearch(requireContext());
+        } else if (v == homeBinding.localResource) {
+            CategoryDialog dialog = new CategoryDialog();
+            dialog.show(getParentFragmentManager(), "category");
         }
     }
 

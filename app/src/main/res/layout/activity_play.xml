@@ -33,32 +33,32 @@
             android:id="@+id/title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
+            android:layout_above="@id/author"
             android:fontFamily="sans-serif-condensed"
             android:gravity="center"
             android:letterSpacing="0.05"
             android:text="BECAUSE OF YOU"
             android:textColor="@color/background_color"
-            android:textSize="26sp" />
+            android:textSize="30sp" />
 
         <TextView
             android:id="@+id/author"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/title"
+            android:layout_above="@id/image_background"
             android:layout_marginTop="20dp"
+            android:layout_marginBottom="50dp"
             android:fontFamily="sans-serif-condensed-light"
             android:gravity="center"
             android:letterSpacing="0.08"
             android:text="Kelly Clatkson"
             android:textColor="@color/background_color"
-            android:textSize="18sp" />
+            android:textSize="25sp" />
 
         <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/image_background"
-            android:layout_width="200dp"
-            android:layout_height="200dp"
-            android:layout_below="@id/author"
+            android:layout_width="250dp"
+            android:layout_height="250dp"
             android:layout_centerInParent="true"
             android:layout_gravity="center"
             android:layout_marginTop="40dp"
@@ -70,53 +70,55 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="200dp"
-            android:layout_below="@id/author"
             android:layout_centerInParent="true"
             android:layout_marginTop="40dp"
-            android:gravity="center_vertical"
+            android:gravity="center"
             android:orientation="horizontal">
 
             <com.google.android.material.imageview.ShapeableImageView
                 android:id="@+id/skip_previous"
-                android:layout_width="0dp"
-                android:layout_height="60dp"
-                android:layout_weight="1"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
                 android:scaleType="centerInside"
                 android:src="@drawable/skip_previous"
+                android:background="@drawable/play_background_selector"
                 app:shapeAppearanceOverlay="@style/circleImageStyle" />
 
             <com.google.android.material.imageview.ShapeableImageView
                 android:id="@+id/fast_rewind"
-                android:layout_width="0dp"
-                android:layout_height="60dp"
-                android:layout_weight="1"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:layout_marginHorizontal="40dp"
+                android:background="@drawable/play_background_selector"
                 android:scaleType="centerInside"
                 android:src="@drawable/fast_rewind"
                 app:shapeAppearanceOverlay="@style/circleImageStyle" />
 
             <com.google.android.material.imageview.ShapeableImageView
                 android:id="@+id/play"
-                android:layout_width="0dp"
-                android:layout_height="60dp"
-                android:layout_weight="2.5"
+                android:layout_width="85dp"
+                android:layout_height="85dp"
+                android:layout_marginHorizontal="70dp"
+                android:foreground="@drawable/play_background_selector"
                 android:scaleType="centerInside"
                 android:src="@drawable/play_icon"
                 app:shapeAppearanceOverlay="@style/circleImageStyle" />
 
             <com.google.android.material.imageview.ShapeableImageView
                 android:id="@+id/fast_forward"
-                android:layout_width="0dp"
-                android:layout_height="60dp"
-                android:layout_weight="1"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:layout_marginHorizontal="40dp"
+                android:background="@drawable/play_background_selector"
                 android:scaleType="centerInside"
                 android:src="@drawable/fast_forward"
                 app:shapeAppearanceOverlay="@style/circleImageStyle" />
 
             <com.google.android.material.imageview.ShapeableImageView
                 android:id="@+id/skip_next"
-                android:layout_width="0dp"
-                android:layout_height="60dp"
-                android:layout_weight="1"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:background="@drawable/play_background_selector"
                 android:scaleType="centerInside"
                 android:src="@drawable/skip_next"
                 app:shapeAppearanceOverlay="@style/circleImageStyle" />
@@ -131,7 +133,7 @@
             android:layout_marginHorizontal="70dp"
             android:layout_marginBottom="100dp"
             android:max="100"
-            android:progress="50"
+            android:progress="0"
             android:progressDrawable="@drawable/seekbar_background" />
     </RelativeLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
