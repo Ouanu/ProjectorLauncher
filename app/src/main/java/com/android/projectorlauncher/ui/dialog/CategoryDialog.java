@@ -92,10 +92,15 @@ public class CategoryDialog extends DialogFragment implements View.OnClickListen
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(intent);
         } else if (v == categoryBinding.audio) {
-
+            Intent intent = new Intent(requireActivity(), ResourceActivity.class);
+            intent.putExtra("TYPE", 1);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
         } else if (v == categoryBinding.image) {
-
+            Intent intent = new Intent(requireActivity(), ResourceActivity.class);
+            intent.putExtra("TYPE", 2);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
         }
-        dismiss();
     }
 }

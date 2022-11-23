@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="45dp"
+    android:layout_marginHorizontal="100dp"
+    android:focusable="true"
+    android:background="@drawable/item_category_music_background_selector"
+    android:gravity="center_vertical"
+    android:orientation="horizontal">
+
+    <TextView
+        android:id="@+id/name"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="5"
+        android:gravity="center_vertical"
+        android:layout_marginStart="10dp"
+        android:letterSpacing="0.3"
+        android:text="BECAUSE OF YOU"
+        android:textColor="@color/white"
+        android:textSize="18sp" />
+
+    <TextView
+        android:id="@+id/author"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="2"
+        android:gravity="center_vertical|end"
+        android:letterSpacing="0.1"
+        android:text="Kelly Clatkon"
+        android:textColor="@color/white"
+        android:textSize="18sp" />
+
+    <TextView
+        android:id="@+id/duration"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1.5"
+        android:gravity="center_vertical|end"
+        android:letterSpacing="0.1"
+        android:layout_marginEnd="10dp"
+        android:text="04:29"
+        android:textColor="@color/white"
+        android:textSize="18sp" />
+</LinearLayout>

@@ -54,7 +54,7 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.OnLi
     private final ChildrenFragment childrenFragment = new ChildrenFragment();
     private final ApplicationFragment applicationFragment = new ApplicationFragment();
     private final SettingsFragment settingsFragment = new SettingsFragment();
-    private Map<Boolean, String> map = new HashMap<>();
+    private final Map<Boolean, String> map = new HashMap<>();
     private TextView lastTextView = null;
     private final BroadcastReceiver receiver = new BroadcastReceiver() {
         @Override
@@ -153,7 +153,7 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.OnLi
     @Override
     public void turnToPager(int position) {
         switchFragment(position);
-        ItemMainTabBinding tabBinding = ItemMainTabBinding.bind(Objects.requireNonNull(binding.tabLayout.getLayoutManager().findViewByPosition(position)));
+        ItemMainTabBinding tabBinding = ItemMainTabBinding.bind(Objects.requireNonNull(Objects.requireNonNull(binding.tabLayout.getLayoutManager()).findViewByPosition(position)));
         tabBinding.getRoot().requestFocus();
         setColor(tabBinding.mainTabText, position);
     }

@@ -44,6 +44,8 @@
         <entry key="..\:/project/ProjectorLauncher/app/src/main/res/drawable/item_background_selector.xml" value="0.1155" />
         <entry key="..\:/project/ProjectorLauncher/app/src/main/res/drawable/item_card_category.xml" value="0.345" />
         <entry key="..\:/project/ProjectorLauncher/app/src/main/res/drawable/item_card_category_selector.xml" value="0.345" />
+        <entry key="..\:/project/ProjectorLauncher/app/src/main/res/drawable/item_category_music_background_focus.xml" value="0.1" />
+        <entry key="..\:/project/ProjectorLauncher/app/src/main/res/drawable/item_category_music_background_selector.xml" value="0.167" />
         <entry key="..\:/project/ProjectorLauncher/app/src/main/res/drawable/item_music_background_focus.xml" value="0.1" />
         <entry key="..\:/project/ProjectorLauncher/app/src/main/res/drawable/item_music_background_selector.xml" value="0.1" />
         <entry key="..\:/project/ProjectorLauncher/app/src/main/res/drawable/item_option_focus.xml" value="0.1" />
@@ -96,10 +98,11 @@
         <entry key="..\:/project/ProjectorLauncher/app/src/main/res/layout/activity_main.xml" value="0.296875" />
         <entry key="..\:/project/ProjectorLauncher/app/src/main/res/layout/activity_main2.xml" value="0.190625" />
         <entry key="..\:/project/ProjectorLauncher/app/src/main/res/layout/activity_play.xml" value="0.2" />
-        <entry key="..\:/project/ProjectorLauncher/app/src/main/res/layout/activity_resource.xml" value="0.18255208333333334" />
+        <entry key="..\:/project/ProjectorLauncher/app/src/main/res/layout/activity_resource.xml" value="0.1" />
         <entry key="..\:/project/ProjectorLauncher/app/src/main/res/layout/activity_wifi.xml" value="0.22" />
         <entry key="..\:/project/ProjectorLauncher/app/src/main/res/layout/dialog_add_network.xml" value="0.22" />
         <entry key="..\:/project/ProjectorLauncher/app/src/main/res/layout/dialog_category.xml" value="0.14" />
+        <entry key="..\:/project/ProjectorLauncher/app/src/main/res/layout/dialog_image.xml" value="0.1" />
         <entry key="..\:/project/ProjectorLauncher/app/src/main/res/layout/dialog_wifi.xml" value="0.33" />
         <entry key="..\:/project/ProjectorLauncher/app/src/main/res/layout/fragment_application.xml" value="0.22" />
         <entry key="..\:/project/ProjectorLauncher/app/src/main/res/layout/fragment_children.xml" value="0.409375" />
@@ -118,7 +121,8 @@
         <entry key="..\:/project/ProjectorLauncher/app/src/main/res/layout/item_app.xml" value="0.25" />
         <entry key="..\:/project/ProjectorLauncher/app/src/main/res/layout/item_banner_movie.xml" value="0.1515625" />
         <entry key="..\:/project/ProjectorLauncher/app/src/main/res/layout/item_card.xml" value="0.33" />
-        <entry key="..\:/project/ProjectorLauncher/app/src/main/res/layout/item_card_category.xml" value="0.22" />
+        <entry key="..\:/project/ProjectorLauncher/app/src/main/res/layout/item_card_category.xml" value="0.1" />
+        <entry key="..\:/project/ProjectorLauncher/app/src/main/res/layout/item_category_music.xml" value="0.25" />
         <entry key="..\:/project/ProjectorLauncher/app/src/main/res/layout/item_children.xml" value="0.409375" />
         <entry key="..\:/project/ProjectorLauncher/app/src/main/res/layout/item_comics.xml" value="0.409375" />
         <entry key="..\:/project/ProjectorLauncher/app/src/main/res/layout/item_main_tab.xml" value="0.67" />

@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:descendantFocusability="afterDescendants">
 
     <TextView
         android:id="@+id/category"
@@ -11,6 +12,7 @@
         android:gravity="center"
         android:paddingVertical="10dp"
         android:text="视频"
+        android:focusable="false"
         android:textColor="@color/background_color"
         android:textSize="35sp"
         android:letterSpacing="1"/>
@@ -19,6 +21,8 @@
         android:id="@+id/media_recycler_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_marginTop="10dp"
+        android:descendantFocusability="afterDescendants"
         android:layout_below="@id/category"/>
 
     <TextView
@@ -27,6 +31,7 @@
         android:layout_height="match_parent"
         android:text="@string/error"
         android:gravity="center"
+        android:focusable="false"
         android:textSize="45sp"
         android:visibility="invisible"/>
 </RelativeLayout>

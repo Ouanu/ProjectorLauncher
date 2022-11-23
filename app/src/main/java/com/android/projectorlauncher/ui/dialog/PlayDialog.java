@@ -1,4 +1,4 @@
-package com.android.projectorlauncher.ui.activity;
+package com.android.projectorlauncher.ui.dialog;
 
 import android.annotation.SuppressLint;
 import android.content.BroadcastReceiver;
@@ -8,32 +8,32 @@ import android.content.IntentFilter;
 import android.graphics.Rect;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.view.ViewCompat;
-import androidx.fragment.app.FragmentActivity;
+import androidx.fragment.app.DialogFragment;
 import androidx.lifecycle.MutableLiveData;
 import androidx.recyclerview.widget.RecyclerView;
 import com.android.projectorlauncher.R;
 import com.android.projectorlauncher.bean.MusicModel;
 import com.android.projectorlauncher.databinding.ActivityPlayBinding;
 import com.android.projectorlauncher.databinding.ItemMusicBinding;
-import com.android.projectorlauncher.utils.FileUtils;
+import com.android.projectorlauncher.presenter.ResourcePresenter;
 import com.android.projectorlauncher.utils.MusicPlayerHelper;
-import com.android.projectorlauncher.utils.ScanMusicUtils;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
 import java.util.Objects;
 
-public class PlayActivity extends FragmentActivity implements View.OnClickListener {
+public class PlayDialog extends DialogFragment implements View.OnClickListener {
     private ActivityPlayBinding playBinding;
     private MusicPlayerHelper helper;
-    private final List<MusicModel> musicList = new ArrayList<>();
     private int chosenIndex = 0;
+    private View chosenView = null;
+    private ResourcePresenter presenter;
     private final MutableLiveData<Boolean> isPlay = new MutableLiveData<>(false);
     private final BroadcastReceiver receiver = new BroadcastReceiver() {
         @Override
@@ -56,40 +56,62 @@ public class PlayActivity extends FragmentActivity implements View.OnClickListen
     };
 
     @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
+    public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        playBinding = ActivityPlayBinding.inflate(getLayoutInflater());
-        setContentView(playBinding.getRoot());
-
+        setStyle(STYLE_NO_FRAME, android.R.style.Theme_Light);
         registerBroadcast();
-        helper = new MusicPlayerHelper(this, playBinding.seekbar, isPlay);
-        helper.setCompletionListener(mp -> {
-            if (musicList.size() - 1 > chosenIndex) {
-                chosenIndex ++;
-            } else {
-                chosenIndex = 0;
-            }
-            helper.playMusic(musicList.get(chosenIndex), true);
+        Bundle bundle = getArguments();
+        if (bundle != null) {
+            presenter = (ResourcePresenter) bundle.getSerializable("presenter");
+            chosenIndex = bundle.getInt("position");
+        } else {
+            dismiss();
+        }
+    }
 
-        });
-        init();
+    @Nullable
+    @Override
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        playBinding = ActivityPlayBinding.inflate(getLayoutInflater());
+        MusicModel model = presenter.getMusics().get(chosenIndex);
+        playBinding.title.setText(model.getName());
+        playBinding.author.setText(model.getAuthor());
+        return playBinding.getRoot();
     }
 
     @Override
-    protected void onStart() {
+    public void onStart() {
         super.onStart();
-        HashSet<String> usbDisk = FileUtils.getUsbDisk();
-        musicList.clear();
-        for (String s : usbDisk) {
-            musicList.addAll(ScanMusicUtils.getMusicList(s));
+        helper = new MusicPlayerHelper(requireActivity(), playBinding.seekbar, isPlay);
+        helper.setCompletionListener(mp -> {
+            if (presenter.getMusics().size() - 1 > chosenIndex) {
+                chosenIndex++;
+            } else {
+                chosenIndex = 0;
+            }
+            helper.playMusic(presenter.getMusics().get(chosenIndex), false);
+
+        });
+        init();
+        helper.playMusic(presenter.getMusics().get(chosenIndex), true);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (chosenView != null) {
+            chosenView.requestFocus();
+        } else {
+            if (playBinding.musicRecyclerview.getLayoutManager() == null) return;
+            playBinding.musicRecyclerview.getLayoutManager().scrollToPosition(chosenIndex);
         }
     }
 
     @Override
-    protected void onDestroy() {
+    public void onDestroy() {
         helper.stop();
         helper.destroy();
-        unregisterReceiver(receiver);
+        requireActivity().unregisterReceiver(receiver);
         super.onDestroy();
     }
 
@@ -127,7 +149,7 @@ public class PlayActivity extends FragmentActivity implements View.OnClickListen
         filter.addAction(Intent.ACTION_MEDIA_MOUNTED);
         filter.addAction(Intent.ACTION_MEDIA_REMOVED);
         filter.addDataScheme("file");
-        registerReceiver(receiver, filter);
+        requireActivity().registerReceiver(receiver, filter);
     }
 
     @Override
@@ -140,24 +162,25 @@ public class PlayActivity extends FragmentActivity implements View.OnClickListen
             helper.fastRewind();
         } else if (v == playBinding.skipPrevious) {
             if (chosenIndex - 1 > 0) {
-                chosenIndex --;
+                chosenIndex--;
             } else {
-                chosenIndex = musicList.size() - 1;
+                chosenIndex = presenter.getMusics().size() - 1;
             }
-            helper.playMusic(musicList.get(chosenIndex), true);
+            helper.playMusic(presenter.getMusics().get(chosenIndex), true);
         } else if (v == playBinding.skipNext) {
-            if (musicList.size() - 1 > chosenIndex) {
-                chosenIndex ++;
+            if (presenter.getMusics().size() - 1 > chosenIndex) {
+                chosenIndex++;
             } else {
                 chosenIndex = 0;
             }
-            helper.playMusic(musicList.get(chosenIndex), true);
+            helper.playMusic(presenter.getMusics().get(chosenIndex), true);
         }
     }
 
     class ItemPlayViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnFocusChangeListener {
         ItemMusicBinding musicBinding;
         int index = 0;
+
         public ItemPlayViewHolder(@NonNull View itemView) {
             super(itemView);
             musicBinding = ItemMusicBinding.bind(itemView);
@@ -167,35 +190,38 @@ public class PlayActivity extends FragmentActivity implements View.OnClickListen
 
         @SuppressLint("SetTextI18n")
         public void bind(int position) {
+            if (chosenIndex == position) {
+                chosenView = itemView;
+            }
             index = position;
-            String builder = (position + 1) + musicList.get(position).getName();
-            musicBinding.name.setText(builder);
-            musicBinding.author.setText(musicList.get(position).getAuthor());
-            musicBinding.duration.setText(musicList.get(position).getDuration());
+            musicBinding.name.setText(presenter.getMusics().get(position).getName());
+            musicBinding.author.setText(presenter.getMusics().get(position).getAuthor());
+            musicBinding.duration.setText(presenter.getMusics().get(position).getDuration());
 
         }
 
         @Override
         public void onClick(View v) {
-            helper.playMusic(musicList.get(index), true);
+            helper.playMusic(presenter.getMusics().get(index), true);
+            Log.d("PlayDialog", "onClick: " + presenter.getMusics().get(index).src);
             chosenIndex = index;
         }
 
         @Override
         public void onFocusChange(View v, boolean hasFocus) {
             if (hasFocus) {
-                musicBinding.name.setTextColor(getColor(R.color.background_color));
-                musicBinding.author.setTextColor(getColor(R.color.background_color));
-                musicBinding.duration.setTextColor(getColor(R.color.background_color));
+                musicBinding.name.setTextColor(requireActivity().getColor(R.color.background_color));
+                musicBinding.author.setTextColor(requireActivity().getColor(R.color.background_color));
+                musicBinding.duration.setTextColor(requireActivity().getColor(R.color.background_color));
                 ViewCompat.animate(v)
                         .scaleX(1.1f)
                         .scaleY(1.1f)
                         .setDuration(250)
                         .start();
             } else {
-                musicBinding.name.setTextColor(getColor(R.color.self_4));
-                musicBinding.author.setTextColor(getColor(R.color.self_4));
-                musicBinding.duration.setTextColor(getColor(R.color.self_4));
+                musicBinding.name.setTextColor(requireActivity().getColor(R.color.self_4));
+                musicBinding.author.setTextColor(requireActivity().getColor(R.color.self_4));
+                musicBinding.duration.setTextColor(requireActivity().getColor(R.color.self_4));
                 ViewCompat.animate(v)
                         .scaleX(1f)
                         .scaleY(1f)
@@ -222,7 +248,10 @@ public class PlayActivity extends FragmentActivity implements View.OnClickListen
 
         @Override
         public int getItemCount() {
-            return musicList.size();
+            if (presenter == null) {
+                return 0;
+            }
+            return presenter.getMusics().size();
         }
     }
 }
