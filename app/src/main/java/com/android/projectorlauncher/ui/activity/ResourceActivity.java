@@ -9,11 +9,14 @@ import android.graphics.Rect;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.content.res.AppCompatResources;
 import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -39,7 +42,7 @@ public class ResourceActivity extends FragmentActivity implements ResourceView {
     public static final int TYPE_AUDIO = 1;
     public static final int TYPE_IMAGE = 2;
     private ActivityResourceBinding resourceBinding;
-    private int type = 1;
+    private int type = 0;
     private ResourcePresenter presenter;
     private final BroadcastReceiver receiver = new BroadcastReceiver() {
         @Override
@@ -52,7 +55,6 @@ public class ResourceActivity extends FragmentActivity implements ResourceView {
                         if (!TextUtils.isEmpty(mntPath)) {
                             Toast.makeText(context, getString(R.string.mount) + mntPath, Toast.LENGTH_SHORT).show();
                         }
-
                         break;
                     case Intent.ACTION_MEDIA_REMOVED:
                     case Intent.ACTION_MEDIA_UNMOUNTED:
@@ -71,18 +73,24 @@ public class ResourceActivity extends FragmentActivity implements ResourceView {
         setContentView(resourceBinding.getRoot());
         presenter = new ResourcePresenter(this);
         if (getIntent() != null) {
-            type = getIntent().getIntExtra("TYPE", 1);
+            type = getIntent().getIntExtra("TYPE", 0);
         }
         resourceBinding.mediaRecyclerView.setLayoutManager(new GridLayoutManager(this, 5));
         resourceBinding.mediaRecyclerView.addItemDecoration(new RecyclerView.ItemDecoration() {
             @Override
             public void getItemOffsets(@NonNull Rect outRect, @NonNull View view, @NonNull RecyclerView parent, @NonNull RecyclerView.State state) {
-                outRect.top = 20;
+                outRect.top = 10;
                 outRect.left = 15;
                 outRect.right = 15;
-                outRect.bottom = 20;
+                outRect.bottom = 10;
             }
         });
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        Log.d("ResourceActivity", "onKeyDown: Keyevent" + event);
+        return super.onKeyDown(keyCode, event);
     }
 
     @Override
@@ -94,11 +102,27 @@ public class ResourceActivity extends FragmentActivity implements ResourceView {
         filter.addAction(Intent.ACTION_MEDIA_UNMOUNTED);
         filter.addDataScheme("file");
         registerReceiver(receiver, filter);
-
         refreshData();
     }
 
+    @Override
+    protected void onStop() {
+        super.onStop();
+        unregisterReceiver(receiver);
+    }
+
     private void refreshData() {
+        if (type == TYPE_VIDEO) {
+            presenter.loadVideos();
+        } else if (type == TYPE_AUDIO) {
+            presenter.loadAudios();
+        } else if (type == TYPE_IMAGE) {
+            presenter.loadImages();
+        }
+    }
+
+    @Override
+    public void updateUI() {
         if (type == TYPE_ERROR) {
             resourceBinding.error.setVisibility(View.VISIBLE);
             resourceBinding.mediaRecyclerView.setVisibility(View.GONE);
@@ -106,28 +130,19 @@ public class ResourceActivity extends FragmentActivity implements ResourceView {
             resourceBinding.category.setText(R.string.video);
             resourceBinding.mediaRecyclerView.setVisibility(View.VISIBLE);
             resourceBinding.error.setVisibility(View.GONE);
-            presenter.loadVideos();
             resourceBinding.mediaRecyclerView.setAdapter(new CardAdapter(presenter.getVideos()));
         } else if (type == TYPE_AUDIO) {
             resourceBinding.category.setText(R.string.audio);
             resourceBinding.mediaRecyclerView.setVisibility(View.VISIBLE);
             resourceBinding.error.setVisibility(View.GONE);
-            presenter.loadAudios();
             resourceBinding.mediaRecyclerView.setLayoutManager(new LinearLayoutManager(this));
             resourceBinding.mediaRecyclerView.setAdapter(new LinearAdapter(presenter.getMusics()));
-
         } else if (type == TYPE_IMAGE) {
             resourceBinding.error.setVisibility(View.GONE);
             resourceBinding.category.setText(R.string.picture);
             resourceBinding.mediaRecyclerView.setVisibility(View.VISIBLE);
-            presenter.loadImages();
             resourceBinding.mediaRecyclerView.setAdapter(new CardAdapter(presenter.getImages()));
         }
-    }
-
-    @Override
-    public void updateUI() {
-
     }
 
     static class LinearViewHolder extends RecyclerView.ViewHolder {
@@ -187,16 +202,23 @@ public class ResourceActivity extends FragmentActivity implements ResourceView {
         public CardViewHolder(@NonNull View itemView) {
             super(itemView);
             categoryBinding = ItemCardCategoryBinding.bind(itemView);
+            itemView.setOnFocusChangeListener((v, hasFocus) -> {
+                if (hasFocus) {
+                    categoryBinding.cardView.setForeground(AppCompatResources.getDrawable(getApplicationContext(), R.drawable.item_card_category_focus));
+                } else {
+                    categoryBinding.cardView.setForeground(null);
+                }
+            });
         }
 
         public void bind(Model model, View.OnClickListener clickListener) {
+            itemView.setOnClickListener(clickListener);
             Glide.with(categoryBinding.image)
                     .load(model.src)
                     .error(R.drawable.error_cover_can_t_found)
                     .centerCrop()
                     .into(categoryBinding.image);
             categoryBinding.title.setText(model.name);
-            categoryBinding.image.setOnClickListener(clickListener);
         }
 
 
@@ -221,6 +243,7 @@ public class ResourceActivity extends FragmentActivity implements ResourceView {
         public void onBindViewHolder(@NonNull CardViewHolder holder, int position) {
             holder.bind(models.get(position), v -> {
                 // 跳转
+                Log.d("ResourceActivity", "onBindViewHolder: 22222222222222222");
                 if (type == 0) {
                     Intent intent = new Intent();
                     intent.setAction(Intent.ACTION_VIEW);

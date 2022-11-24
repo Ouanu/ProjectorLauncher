@@ -2,11 +2,8 @@ package com.android.projectorlauncher.ui.design;
 
 import android.content.Context;
 import android.content.res.Resources;
-import android.content.res.TypedArray;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.util.AttributeSet;
-import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
@@ -17,8 +14,6 @@ import androidx.cardview.widget.CardView;
 import com.android.projectorlauncher.R;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.bumptech.glide.load.resource.bitmap.CenterCrop;
-import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 
 public class PosterCardView extends CardView {
     private ImageView imageView;

@@ -20,7 +20,7 @@ import java.util.Objects;
 
 public class CategoryDialog extends DialogFragment implements View.OnClickListener {
     private DialogCategoryBinding categoryBinding;
-
+    private View chosenView;
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
@@ -48,7 +48,10 @@ public class CategoryDialog extends DialogFragment implements View.OnClickListen
     @Override
     public void onStart() {
         super.onStart();
-        categoryBinding.video.requestFocus();
+        if (chosenView == null) {
+            chosenView = categoryBinding.video;
+        }
+        chosenView.requestFocus();
     }
 
     private void onClick() {
@@ -87,16 +90,19 @@ public class CategoryDialog extends DialogFragment implements View.OnClickListen
     @Override
     public void onClick(View v) {
         if (v == categoryBinding.video) {
+            chosenView = categoryBinding.video;
             Intent intent = new Intent(requireActivity(), ResourceActivity.class);
             intent.putExtra("TYPE", 0);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(intent);
         } else if (v == categoryBinding.audio) {
+            chosenView = categoryBinding.audio;
             Intent intent = new Intent(requireActivity(), ResourceActivity.class);
             intent.putExtra("TYPE", 1);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(intent);
         } else if (v == categoryBinding.image) {
+            chosenView = categoryBinding.image;
             Intent intent = new Intent(requireActivity(), ResourceActivity.class);
             intent.putExtra("TYPE", 2);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);

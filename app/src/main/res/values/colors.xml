@@ -5,17 +5,22 @@
     <color name="none">#00FFFFFF</color>
     <color name="self_1">#80FE7A15</color>
     <color name="self_2">#FE7A15</color>
+    <color name="self_2_un_focus_0.3">#4DFE7A15</color>
     <color name="background_color">#262626</color>
     <color name="self_3">#2E7178</color>
     <color name="self_4">#35BBCA</color>
     <color name="self_4_un_focus">#8035BBCA</color>
+    <color name="self_4_un_focus_0.3">#4D35BBCA</color>
     <color name="self_5">#8518FF</color>
     <color name="self_5_un_focus">#808518FF</color>
     <color name="self_6">#016BB5</color>
     <color name="self_6_un_focus">#80016BB5</color>
     <color name="self_7">#FF4318</color>
     <color name="self_7_un_focus">#80FF4318</color>
+    <color name="self_7_un_focus_0.3">#4DFF4318</color>
     <color name="self_8_un_focus">#80D3DD18</color>
+    <color name="self_8_un_focus_0.3">#4DD3DD18</color>
     <color name="self_8">#D3DD18</color>
+    <color name="self_9_un_focus_0.3">#4DF9D80D</color>
     <color name="self_9">#F9D80D</color>
 </resources>

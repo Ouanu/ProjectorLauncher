@@ -23,10 +23,12 @@
             android:layout_marginHorizontal="5dp"
             android:layout_marginVertical="5dp"
             android:layout_weight="2"
-            android:nextFocusRight="@id/settings"
-            android:focusable="true">
+            android:focusable="true"
+            android:nextFocusRight="@id/settings">
+
 
             <LinearLayout
+                android:id="@+id/disconnect_recent"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="@drawable/card_home_background"
@@ -41,36 +43,44 @@
                     android:scaleType="centerInside"
                     android:src="@drawable/home_disconnect" />
 
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_weight="1"
-                    android:fontFamily="sans-serif"
-                    android:gravity="center_horizontal"
-                    android:text="最近观看"
-                    android:textColor="@color/white"
-                    android:textSize="21sp"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintHeight_percent="0.3"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintVertical_bias="0.8" />
             </LinearLayout>
+
+            <ImageView
+                android:id="@+id/connect_recent"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="centerCrop"
+                android:src="@drawable/moon_man" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:fontFamily="sans-serif"
+                android:gravity="center"
+                android:text="最近观看"
+                android:textColor="@color/white"
+                android:textSize="21sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintHeight_percent="0.3"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.8" />
 
         </androidx.cardview.widget.CardView>
 
         <androidx.cardview.widget.CardView
-            android:id="@+id/tv"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_marginHorizontal="5dp"
             android:layout_marginVertical="5dp"
-            android:layout_weight="1"
-            android:focusable="true">
+            android:layout_weight="1">
 
             <LinearLayout
+                android:id="@+id/tv"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@color/self_8"
+                android:background="@drawable/home_tv_selector"
+                android:focusable="true"
                 android:orientation="vertical">
 
                 <ImageView
@@ -107,18 +117,18 @@
         android:orientation="vertical">
 
         <androidx.cardview.widget.CardView
-            android:id="@+id/settings"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_marginHorizontal="5dp"
             android:layout_marginTop="5dp"
-            android:layout_weight="0.8"
-            android:focusable="true">
+            android:layout_weight="0.8">
 
             <LinearLayout
+                android:id="@+id/settings"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@color/self_2"
+                android:background="@drawable/home_settings_selector"
+                android:focusable="true"
                 android:gravity="center"
                 android:orientation="vertical">
 
@@ -187,18 +197,18 @@
         </androidx.cardview.widget.CardView>
 
         <androidx.cardview.widget.CardView
-            android:id="@+id/search"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_marginHorizontal="5dp"
             android:layout_marginVertical="5dp"
-            android:layout_weight="1"
-            android:focusable="true">
+            android:layout_weight="1">
 
             <LinearLayout
+                android:id="@+id/search"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@color/self_4"
+                android:background="@drawable/home_search_selector"
+                android:focusable="true"
                 android:orientation="vertical">
 
                 <ImageView
@@ -279,19 +289,21 @@
         </androidx.cardview.widget.CardView>
 
         <androidx.cardview.widget.CardView
-            android:id="@+id/game"
+
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_marginHorizontal="5dp"
             android:layout_marginVertical="5dp"
             android:layout_weight="1.2"
-            android:nextFocusRight="@id/application"
-            android:focusable="true">
+
+            android:nextFocusRight="@id/application">
 
             <LinearLayout
+                android:id="@+id/game"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@color/self_9"
+                android:background="@drawable/home_game_selector"
+                android:focusable="true"
                 android:orientation="vertical">
 
                 <ImageView
@@ -320,18 +332,19 @@
         </androidx.cardview.widget.CardView>
 
         <androidx.cardview.widget.CardView
-            android:id="@+id/local_resource"
+
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_marginHorizontal="5dp"
             android:layout_marginVertical="5dp"
-            android:layout_weight="1"
-            android:focusable="true">
+            android:layout_weight="1">
 
             <LinearLayout
+                android:id="@+id/local_resource"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@color/self_7_un_focus"
+                android:background="@drawable/home_resource_selector"
+                android:focusable="true"
                 android:orientation="vertical">
 
                 <ImageView
@@ -368,18 +381,18 @@
         android:orientation="vertical">
 
         <androidx.cardview.widget.CardView
-            android:id="@+id/application"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_marginHorizontal="5dp"
             android:layout_marginVertical="5dp"
-            android:layout_weight="1"
-            android:focusable="true">
+            android:layout_weight="1">
 
             <LinearLayout
+                android:id="@+id/application"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@color/self_8"
+                android:background="@drawable/home_application_selector"
+                android:focusable="true"
                 android:orientation="vertical">
 
                 <ImageView
