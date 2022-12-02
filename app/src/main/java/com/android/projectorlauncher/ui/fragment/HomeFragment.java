@@ -1,24 +1,37 @@
 package com.android.projectorlauncher.ui.fragment;
 
+import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
+import android.text.format.DateFormat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.core.view.ViewCompat;
 import androidx.fragment.app.Fragment;
 import com.android.projectorlauncher.databinding.FragmentHomeBinding;
 import com.android.projectorlauncher.ui.dialog.CategoryDialog;
 import com.android.projectorlauncher.utils.JumpToApplication;
 
-public class HomeFragment extends Fragment implements View.OnClickListener, View.OnFocusChangeListener {
+import java.util.Date;
+
+public class HomeFragment extends Fragment implements View.OnClickListener {
     private FragmentHomeBinding homeBinding;
     private OnListenerClick listener;
     public interface OnListenerClick {
        void turnToPager(int position);
     }
+    private BroadcastReceiver timeReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if (intent.getAction().equals(Intent.ACTION_TIME_TICK)) {
+                updateTime();
+            }
+        }
+    };
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -39,18 +52,36 @@ public class HomeFragment extends Fragment implements View.OnClickListener, View
         homeBinding.settings.setOnClickListener(this);
         homeBinding.shows.setOnClickListener(this);
         homeBinding.tv.setOnClickListener(this);
-
-        homeBinding.application.setOnFocusChangeListener(this);
-        homeBinding.game.setOnFocusChangeListener(this);
-        homeBinding.localResource.setOnFocusChangeListener(this);
-        homeBinding.movie.setOnFocusChangeListener(this);
-        homeBinding.recentWatch.setOnFocusChangeListener(this);
-        homeBinding.search.setOnFocusChangeListener(this);
-        homeBinding.settings.setOnFocusChangeListener(this);
-        homeBinding.shows.setOnFocusChangeListener(this);
-        homeBinding.tv.setOnFocusChangeListener(this);
-
         return homeBinding.getRoot();
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        IntentFilter filter = new IntentFilter();
+        filter.addAction(Intent.ACTION_TIME_TICK);
+        requireActivity().registerReceiver(timeReceiver, filter);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        updateTime();
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        requireActivity().unregisterReceiver(timeReceiver);
+    }
+
+    private void updateTime() {
+        long l = System.currentTimeMillis();
+        Date date = new Date(l);
+        CharSequence clock = DateFormat.format("hh:mm", date);
+        CharSequence day = DateFormat.format("MM-dd EEEE", date);
+        homeBinding.timeClock.setText(clock);
+        homeBinding.timeDate.setText(day);
     }
 
     @Override
@@ -75,23 +106,4 @@ public class HomeFragment extends Fragment implements View.OnClickListener, View
         }
     }
 
-
-    @Override
-    public void onFocusChange(View v, boolean hasFocus) {
-        if (hasFocus) {
-            ViewCompat.animate(v)
-                    .scaleX(1.2f)
-                    .scaleY(1.2f)
-                    .setDuration(250)
-                    .translationZ(2f)
-                    .start();
-        } else {
-            ViewCompat.animate(v)
-                    .scaleX(1f)
-                    .scaleY(1f)
-                    .setDuration(250)
-                    .translationZ(1f)
-                    .start();
-        }
-    }
 }

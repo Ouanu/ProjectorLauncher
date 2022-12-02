@@ -32,4 +32,19 @@
     <string name="audio">音频</string>
     <string name="picture">图片</string>
     <string name="error">发生错误！！！！</string>
+    <string name="recent_history">recent_history</string>
+    <string name="recent_watch">最近观看</string>
+    <string name="tv">tv</string>
+    <string name="tv_text">电视剧</string>
+    <string name="show">show</string>
+    <string name="show_text">综艺</string>
+    <string name="search_text">搜索</string>
+    <string name="game">game</string>
+    <string name="game_text">游戏</string>
+    <string name="local_resource">local resource</string>
+    <string name="local_resource_text">本地资源</string>
+    <string name="application">application</string>
+    <string name="application_text">应用</string>
+    <string name="movie">movie</string>
+    <string name="movie_text">影片</string>
 </resources>

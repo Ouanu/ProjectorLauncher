@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.android.projectorlauncher"
     android:sharedUserId="android.uid.system">
 
@@ -9,12 +10,16 @@
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"
+        tools:ignore="PermissionImpliesUnsupportedHardware" />
     <uses-permission android:name="android.hardware.usb.host" />
     <uses-permission android:name="android.hardware.usb.accessory" />
-    <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS"/>
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+
+    <uses-permission android:name="android.permission.CHANGE_CONFIGURATION" />
+    <uses-permission android:name="android.permission.SET_TIME_ZONE" />
 
     <uses-permission android:name="android.permission.INTERNET" />
 
@@ -38,22 +43,24 @@
             android:name=".MainActivity"
             android:exported="true"
             android:screenOrientation="landscape">
-
-        </activity>
-
-        <activity android:name=".ui.activity.ResourceActivity"
-            android:exported="true"
-            android:screenOrientation="landscape">
-        </activity>
-
-        <activity android:name=".ui.activity.KeystoneActivity"
-            android:exported="true"
-            android:screenOrientation="landscape">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
                 <category android:name="android.intent.category.LEANBACK_LAUNCHER" />
             </intent-filter>
+        </activity>
+
+        <activity
+            android:name=".ui.activity.ResourceActivity"
+            android:exported="true"
+            android:screenOrientation="landscape"></activity>
+
+        <activity
+            android:name=".ui.activity.KeystoneActivity"
+            android:exported="true"
+            android:screenOrientation="landscape">
+
         </activity>
     </application>
 

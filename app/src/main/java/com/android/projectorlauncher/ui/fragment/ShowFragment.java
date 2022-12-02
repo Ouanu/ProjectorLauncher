@@ -14,7 +14,6 @@ import androidx.annotation.Nullable;
 import androidx.core.view.ViewCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.MutableLiveData;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.android.projectorlauncher.R;
@@ -29,7 +28,6 @@ import java.util.List;
 
 public class ShowFragment extends Fragment implements ShowView, View.OnClickListener {
     private FragmentShowBinding showBinding;
-    private View selectView;
     private ShowPresenter presenter;
     private final MutableLiveData<List<VideoCard>> videoCards = new MutableLiveData<>();
 
@@ -166,7 +164,7 @@ public class ShowFragment extends Fragment implements ShowView, View.OnClickList
         public ShowViewHolder(@NonNull View itemView) {
             super(itemView);
             binding = ItemShowBinding.bind(itemView);
-            ViewGroup.LayoutParams layoutParams = new ViewGroup.LayoutParams(showBinding.recyclerView.getWidth() / 5, (int) (showBinding.recyclerView.getHeight() * 0.95));
+            ViewGroup.LayoutParams layoutParams = new ViewGroup.LayoutParams((int)(showBinding.recyclerView.getWidth() / 5.4), (int) (showBinding.recyclerView.getHeight() * 0.95));
             binding.getRoot().setLayoutParams(layoutParams);
             itemView.setOnClickListener(this);
             itemView.setOnFocusChangeListener((v, hasFocus) -> {
@@ -177,7 +175,6 @@ public class ShowFragment extends Fragment implements ShowView, View.OnClickList
                             .setDuration(250)
                             .translationZ(1.2f)
                             .start();
-                    selectView = itemView;
                 } else {
                     ViewCompat.animate(v)
                             .scaleX(1f)
@@ -234,16 +231,6 @@ public class ShowFragment extends Fragment implements ShowView, View.OnClickList
 
         @Override
         public void onBindViewHolder(@NonNull ShowViewHolder holder, int position) {
-            if (position == 0) {
-                if(selectView == null){
-                    selectView = holder.itemView;
-                    selectView.requestFocus();
-                }
-                holder.itemView.setNextFocusLeftId(holder.itemView.getId());
-            }
-            if (videoCards.getValue() != null && position == videoCards.getValue().size()-1) {
-                holder.itemView.setNextFocusRightId(holder.itemView.getId());
-            }
             holder.bind(position);
         }
 

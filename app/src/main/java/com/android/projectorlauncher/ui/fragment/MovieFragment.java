@@ -1,6 +1,8 @@
 package com.android.projectorlauncher.ui.fragment;
 
 import android.content.Context;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,6 +19,9 @@ import com.android.projectorlauncher.presenter.MoviePresenter;
 import com.android.projectorlauncher.ui.view.MovieView;
 import com.bumptech.glide.Glide;
 import com.google.android.material.tabs.TabLayout;
+
+import java.io.File;
+import java.io.FileInputStream;
 
 public class MovieFragment extends Fragment implements View.OnClickListener, MovieView {
     private int currentIndex = 0;
@@ -49,7 +54,6 @@ public class MovieFragment extends Fragment implements View.OnClickListener, Mov
     @Override
     public void onResume() {
         super.onResume();
-        movieBinding.recommend1.requestFocus();
         if (presenter.sizeOfCards() == 0) {
             presenter.init();
         }

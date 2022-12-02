@@ -121,7 +121,6 @@ public class TvFragment extends Fragment implements TvView, View.OnClickListener
     @Override
     public void onResume() {
         super.onResume();
-        tvBinding.recommend.requestFocus();
         if (cards.getValue() == null || cards.getValue().size() == 0 || presenter.sizeOfCards() == 0) {
             presenter.init();
         }

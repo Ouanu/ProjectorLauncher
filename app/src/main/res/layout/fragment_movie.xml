@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:descendantFocusability="afterDescendants">
@@ -25,7 +26,8 @@
             android:id="@+id/image"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:scaleType="centerCrop" />
+            android:scaleType="centerCrop"
+            tools:ignore="ContentDescription" />
     </androidx.cardview.widget.CardView>
 
     <com.android.projectorlauncher.ui.design.PosterCardView
@@ -144,7 +146,8 @@
             android:layout_height="match_parent"
             android:paddingTop="5dp"
             android:scaleType="centerInside"
-            android:src="@drawable/movie_category" />
+            android:src="@drawable/more_category"
+            tools:ignore="ContentDescription" />
     </androidx.cardview.widget.CardView>
 
     <androidx.cardview.widget.CardView
@@ -174,7 +177,8 @@
             android:layout_height="match_parent"
             android:paddingTop="5dp"
             android:scaleType="centerInside"
-            android:src="@drawable/movie_search" />
+            android:src="@drawable/search"
+            tools:ignore="ContentDescription" />
     </androidx.cardview.widget.CardView>
 
 

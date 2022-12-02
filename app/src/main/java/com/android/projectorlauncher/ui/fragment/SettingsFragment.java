@@ -7,14 +7,15 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewTreeObserver;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.view.ViewCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
+
 import com.android.projectorlauncher.R;
 import com.android.projectorlauncher.databinding.ItemSettingsBinding;
 import com.android.projectorlauncher.databinding.FragmentSettingsBinding;
@@ -27,9 +28,6 @@ public class SettingsFragment extends Fragment {
     private FragmentSettingsBinding settingsBinding;
     private final List<String> options = new ArrayList<>();
     private TextView selectView = null;
-    private final SystemInfoFragment sf = new SystemInfoFragment();
-    private final WifiFragment wf = new WifiFragment();
-    private final EthernetFragment ef = new EthernetFragment();
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -59,32 +57,21 @@ public class SettingsFragment extends Fragment {
                 outRect.bottom = 10;
             }
         });
-        getParentFragmentManager().beginTransaction().add(R.id.container_frameLayout, sf).commit();
+        getParentFragmentManager().beginTransaction()
+                .replace(R.id.container_frameLayout, new SystemInfoFragment())
+                .commit();
         return settingsBinding.getRoot();
     }
-
-    static class SettingsGlobalFocusChange implements ViewTreeObserver.OnGlobalFocusChangeListener {
-
-        @Override
-        public void onGlobalFocusChanged(View oldFocus, View newFocus) {
-            Log.d("SettingsGlobalFocusChange", "onGlobalFocusChanged: " + oldFocus + " \n " + newFocus);
-        }
-    }
-
-
-    private final SettingsGlobalFocusChange globalFocusChange = new SettingsGlobalFocusChange();
 
     @Override
     public void onResume() {
         super.onResume();
-        settingsBinding.recyclerViewSettings.requestFocus();
-        settingsBinding.getRoot().getViewTreeObserver().addOnGlobalFocusChangeListener(globalFocusChange);
     }
 
     @Override
-    public void onPause() {
-        super.onPause();
-        settingsBinding.getRoot().getViewTreeObserver().removeOnGlobalFocusChangeListener(globalFocusChange);
+    public void onDestroyView() {
+        super.onDestroyView();
+        selectView = null;
     }
 
     class SettingsViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
@@ -104,7 +91,7 @@ public class SettingsFragment extends Fragment {
                 itemView.setNextFocusUpId(R.id.tabLayout);
                 if (selectView == null) {
                     selectView = binding.option;
-                    ViewCompat.animate(selectView)
+                    ViewCompat.animate(itemView)
                             .scaleX(1.2f)
                             .scaleY(1.2f)
                             .setDuration(250)
@@ -119,17 +106,17 @@ public class SettingsFragment extends Fragment {
             switch (position) {
                 case 0:
                     getParentFragmentManager().beginTransaction()
-                            .replace(R.id.container_frameLayout, sf)
+                            .replace(R.id.container_frameLayout, new SystemInfoFragment())
                             .commit();
                     break;
                 case 1:
                     getParentFragmentManager().beginTransaction()
-                            .replace(R.id.container_frameLayout, wf)
+                            .replace(R.id.container_frameLayout, new WifiFragment())
                             .commit();
                     break;
                 case 2:
                     getParentFragmentManager().beginTransaction()
-                            .replace(R.id.container_frameLayout, ef)
+                            .replace(R.id.container_frameLayout, new EthernetFragment())
                             .commit();
                     break;
                 default:

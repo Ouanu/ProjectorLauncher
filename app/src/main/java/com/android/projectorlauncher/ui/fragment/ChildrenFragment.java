@@ -119,7 +119,6 @@ public class ChildrenFragment extends Fragment implements ChildrenView, View.OnC
     @Override
     public void onResume() {
         super.onResume();
-        tvBinding.recommend.requestFocus();
         if (cards.getValue() == null || cards.getValue().size() == 0 || presenter.sizeOfCards() == 0) {
             presenter.init();
         }
