@@ -36,9 +36,10 @@ public class SettingsFragment extends Fragment {
             options.add("系统信息");
             options.add("无线网络");
             options.add("有线网络");
-            options.add("画面设置");
-            options.add("声音设置");
-            options.add("梯度矫正");
+//            options.add("画面设置");
+//            options.add("声音设置");
+            options.add("时间设置");
+//            options.add("梯度矫正");
         }
 
     }
@@ -119,6 +120,10 @@ public class SettingsFragment extends Fragment {
                             .replace(R.id.container_frameLayout, new EthernetFragment())
                             .commit();
                     break;
+                case 3:
+                    getParentFragmentManager().beginTransaction()
+                            .replace(R.id.container_frameLayout, new TimeFragment())
+                            .commit();
                 default:
                     break;
 

@@ -141,7 +141,7 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.OnLi
 
 
         getSupportFragmentManager().beginTransaction()
-                .add(R.id.container_pager, homeFragment)
+                .add(R.id.container_pager, settingsFragment)
                 .commit();
     }
 
