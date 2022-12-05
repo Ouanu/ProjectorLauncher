@@ -4,8 +4,10 @@ import android.app.AlarmManager;
 import android.content.Context;
 import android.os.SystemClock;
 import android.provider.Settings;
+import android.util.Log;
 
 import java.util.Calendar;
+import java.util.Date;
 import java.util.Locale;
 import java.util.TimeZone;
 
@@ -22,6 +24,7 @@ public class TimeUtil {
         calendar.set(Calendar.HOUR_OF_DAY, hour);
         calendar.set(Calendar.MINUTE, minute);
         long time = calendar.getTimeInMillis();
+        Log.d("TimeFragment", "setTime: " + time);
         if (time / 1000 < Integer.MAX_VALUE) {
             SystemClock.setCurrentTimeMillis(time);
         }
@@ -33,6 +36,15 @@ public class TimeUtil {
         calendar.set(Calendar.MONTH, month);
         calendar.set(Calendar.DAY_OF_MONTH, day);
 
+        long when = calendar.getTimeInMillis();
+        if (when / 1000 < Integer.MAX_VALUE) {
+            SystemClock.setCurrentTimeMillis(when);
+        }
+    }
+
+    public static void setData(long date) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(new Date(date));
         long when = calendar.getTimeInMillis();
         if (when / 1000 < Integer.MAX_VALUE) {
             SystemClock.setCurrentTimeMillis(when);

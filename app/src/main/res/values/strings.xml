@@ -47,4 +47,6 @@
     <string name="application_text">应用</string>
     <string name="movie">movie</string>
     <string name="movie_text">影片</string>
+    <string name="automatic_time_update">自动更新时间</string>
+    <string name="manually_update_the_time">手动更新时间</string>
 </resources>

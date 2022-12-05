@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="@drawable/popup_window_background">
+
+    <Button
+        android:id="@+id/mode_auto"
+        android:layout_width="260dp"
+        android:layout_height="wrap_content"
+        android:text="@string/automatic_time_update"
+        android:textSize="18sp"
+        android:textColor="@color/black"
+        android:focusable="true"
+        android:background="@drawable/fragment_spinner_background_select"/>
+
+    <Button
+        android:id="@+id/mode_manual"
+        android:layout_width="260dp"
+        android:layout_height="wrap_content"
+        android:text="@string/manually_update_the_time"
+        android:textSize="18sp"
+        android:focusable="true"
+        android:textColor="@color/black"
+        android:background="@drawable/fragment_spinner_background_select"/>
+</LinearLayout>

@@ -3,7 +3,6 @@ package com.android.projectorlauncher.ui.fragment;
 import android.content.Context;
 import android.graphics.Rect;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -114,6 +113,7 @@ public class SettingsFragment extends Fragment {
                     getParentFragmentManager().beginTransaction()
                             .replace(R.id.container_frameLayout, new WifiFragment())
                             .commit();
+                    binding.option.setNextFocusRightId(R.id.btn_switch);
                     break;
                 case 2:
                     getParentFragmentManager().beginTransaction()
@@ -124,6 +124,7 @@ public class SettingsFragment extends Fragment {
                     getParentFragmentManager().beginTransaction()
                             .replace(R.id.container_frameLayout, new TimeFragment())
                             .commit();
+                    binding.option.setNextFocusRightId(R.id.mode);
                 default:
                     break;
 

@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="@drawable/popup_window_background"
+    android:orientation="vertical"
+    android:gravity="center">
+    <CalendarView
+        android:id="@+id/calendar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="10dp"
+        android:layout_marginVertical="10dp"
+        android:background="@color/self_4"/>
+
+    <Button
+        android:id="@+id/confirm"
+        android:layout_width="wrap_content"
+        android:layout_height="35dp"
+        android:text="确认"
+        android:textSize="18sp"
+        android:background="@drawable/time_popup_window_background"
+        android:foreground="@drawable/time_settings_foreground_selector"
+        android:layout_marginVertical="10dp"/>
+
+</LinearLayout>
