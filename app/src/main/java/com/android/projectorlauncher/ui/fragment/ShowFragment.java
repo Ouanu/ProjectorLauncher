@@ -1,64 +1,124 @@
 package com.android.projectorlauncher.ui.fragment;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
-import android.graphics.Rect;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.core.view.ViewCompat;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.MutableLiveData;
-import androidx.recyclerview.widget.RecyclerView;
 
 import com.android.projectorlauncher.R;
-import com.android.projectorlauncher.bean.VideoCard;
-import com.android.projectorlauncher.databinding.FragmentShowBinding;
-import com.android.projectorlauncher.databinding.ItemShowBinding;
+import com.android.projectorlauncher.databinding.FragmentUnityShowBinding;
 import com.android.projectorlauncher.presenter.ShowPresenter;
-import com.android.projectorlauncher.ui.view.ShowView;
+import com.android.projectorlauncher.ui.view.MovieView;
+import com.bumptech.glide.Glide;
 
-import java.util.ArrayList;
-import java.util.List;
-
-public class ShowFragment extends Fragment implements ShowView, View.OnClickListener {
-    private FragmentShowBinding showBinding;
+public class ShowFragment extends Fragment implements View.OnClickListener, MovieView {
+    private FragmentUnityShowBinding showBinding;
     private ShowPresenter presenter;
-    private final MutableLiveData<List<VideoCard>> videoCards = new MutableLiveData<>();
 
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
-        videoCards.setValue(new ArrayList<>());
         presenter = new ShowPresenter(requireActivity());
-        presenter.setView(this);
     }
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        showBinding = FragmentShowBinding.inflate(inflater, container, false);
-        showBinding.recyclerView.setAdapter(new ShowAdapter());
-        showBinding.recyclerView.addItemDecoration(new RecyclerView.ItemDecoration() {
-            @Override
-            public void getItemOffsets(@NonNull Rect outRect, @NonNull View view, @NonNull RecyclerView parent, @NonNull RecyclerView.State state) {
-                outRect.top = 15;
-                outRect.bottom = 10;
-                outRect.left = 10;
-                outRect.right = 10;
-            }
-        });
-
-        setFocus();
+        showBinding = FragmentUnityShowBinding.inflate(inflater, container, false);
+        setImageResources();
         setClick();
-        Log.d("ShowFragment", "onCreateView: ========");
         return showBinding.getRoot();
     }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        presenter.setView(this);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (presenter.sizeOfCards() == 0) {
+            presenter.init();
+        }
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+    }
+
+    //设置图片
+    private void setImageResources() {
+        Glide.with(showBinding.recommend1)
+                .load(presenter.getImage(0))
+                .error(R.color.white)
+                .fitCenter()
+                .into(showBinding.recommend1);
+        Glide.with(showBinding.recommend2)
+                .load(presenter.getImage(1))
+                .error(R.color.white)
+                .fitCenter()
+                .into(showBinding.recommend2);
+        Glide.with(showBinding.recommend3)
+                .load(presenter.getImage(2))
+                .error(R.color.white)
+                .fitCenter()
+                .into(showBinding.recommend3);
+        Glide.with(showBinding.recommend4)
+                .load(presenter.getImage(3))
+                .error(R.color.white)
+                .fitCenter()
+                .into(showBinding.recommend4);
+        Glide.with(showBinding.recommend5)
+                .load(presenter.getImage(4))
+                .error(R.color.white)
+                .fitCenter()
+                .into(showBinding.recommend5);
+        Glide.with(showBinding.recommend6)
+                .load(presenter.getImage(5))
+                .error(R.color.white)
+                .fitCenter()
+                .into(showBinding.recommend6);
+        Glide.with(showBinding.recommend7)
+                .load(presenter.getImage(6))
+                .error(R.color.white)
+                .fitCenter()
+                .into(showBinding.recommend7);
+        Glide.with(showBinding.recommend8)
+                .load(presenter.getImage(7))
+                .error(R.color.white)
+                .fitCenter()
+                .into(showBinding.recommend8);
+        Glide.with(showBinding.recommend9)
+                .load(presenter.getImage(8))
+                .error(R.color.white)
+                .fitCenter()
+                .into(showBinding.recommend9);
+        Glide.with(showBinding.recommend10)
+                .load(presenter.getImage(9))
+                .error(R.color.white)
+                .fitCenter()
+                .into(showBinding.recommend10);
+        Glide.with(showBinding.recommend11)
+                .load(presenter.getImage(10))
+                .error(R.color.white)
+                .fitCenter()
+                .into(showBinding.recommend11);
+        Glide.with(showBinding.recommend12)
+                .load(presenter.getImage(11))
+                .error(R.color.white)
+                .fitCenter()
+                .into(showBinding.recommend12);
+    }
+
+
 
     private void setClick() {
         showBinding.recommend1.setOnClickListener(this);
@@ -66,54 +126,10 @@ public class ShowFragment extends Fragment implements ShowView, View.OnClickList
         showBinding.recommend3.setOnClickListener(this);
         showBinding.recommend4.setOnClickListener(this);
         showBinding.search.setOnClickListener(this);
-        showBinding.category.setOnClickListener(this);
+        showBinding.more.setOnClickListener(this);
     }
 
-    private void setFocus() {
-        showBinding.recommend1.setOnFocusChangeListener(new ShowAnimation());
-        showBinding.recommend2.setOnFocusChangeListener(new ShowAnimation());
-        showBinding.recommend3.setOnFocusChangeListener(new ShowAnimation());
-        showBinding.recommend4.setOnFocusChangeListener(new ShowAnimation());
-        showBinding.category.setOnFocusChangeListener((v, hasFocus) -> {
-            if (hasFocus) {
-                ViewCompat.animate(v)
-                        .scaleX(1.05f)
-                        .scaleY(1.05f)
-                        .setDuration(250)
-                        .translationZ(1.2f)
-                        .start();
-                showBinding.category.setCardBackgroundColor(requireContext().getColor(R.color.self_2));
-            } else {
-                ViewCompat.animate(v)
-                        .scaleX(1f)
-                        .scaleY(1f)
-                        .setDuration(250)
-                        .translationZ(1f)
-                        .start();
-                showBinding.category.setCardBackgroundColor(requireContext().getColor(R.color.self_1));
-            }
-        });
-        showBinding.search.setOnFocusChangeListener((v, hasFocus) -> {
-            if (hasFocus) {
-                ViewCompat.animate(v)
-                        .scaleX(1.05f)
-                        .scaleY(1.05f)
-                        .setDuration(250)
-                        .translationZ(1.2f)
-                        .start();
-                showBinding.search.setCardBackgroundColor(requireContext().getColor(R.color.self_2));
-            } else {
-                ViewCompat.animate(v)
-                        .scaleX(1f)
-                        .scaleY(1f)
-                        .setDuration(250)
-                        .translationZ(1f)
-                        .start();
-                showBinding.search.setCardBackgroundColor(requireContext().getColor(R.color.self_1));
-            }
-        });
-    }
-
+    // 设置点击后的事件
     @Override
     public void onClick(View v) {
         if (v == showBinding.recommend1) {
@@ -124,121 +140,35 @@ public class ShowFragment extends Fragment implements ShowView, View.OnClickList
             presenter.turnVideoDetailPage(2);
         } else if (v == showBinding.recommend4) {
             presenter.turnVideoDetailPage(3);
+        } else if (v == showBinding.recommend5) {
+            presenter.turnVideoDetailPage(4);
+        } else if (v == showBinding.recommend6) {
+            presenter.turnVideoDetailPage(5);
+        } else if (v == showBinding.recommend7) {
+            presenter.turnVideoDetailPage(6);
+        } else if (v == showBinding.recommend8) {
+            presenter.turnVideoDetailPage(7);
+        } else if (v == showBinding.recommend9) {
+            presenter.turnVideoDetailPage(8);
+        } else if (v == showBinding.recommend10) {
+            presenter.turnVideoDetailPage(9);
+        } else if (v == showBinding.recommend11) {
+            presenter.turnVideoDetailPage(10);
+        } else if (v == showBinding.recommend12) {
+            presenter.turnVideoDetailPage(11);
+        } else if (v == showBinding.recentWatch) {
+            presenter.turnToRecentWatch();
         } else if (v == showBinding.search) {
             presenter.turnToSearchPage();
-        } else if (v == showBinding.category) {
-            presenter.turnToVarietyCategoryPage();
+        } else if (v == showBinding.more) {
+            presenter.turnToShowCategoryPage();
         }
     }
 
     @Override
-    public void onResume() {
-        super.onResume();
-        if (videoCards.getValue() == null || videoCards.getValue().size() == 0 || presenter.sizeOfCards() == 0) {
-            presenter.init();
-        }
+    public void update() {
+        setImageResources();
     }
 
-    @Override
-    public void onPause() {
-        super.onPause();
-    }
 
-    @SuppressLint("NotifyDataSetChanged")
-    @Override
-    public void update(VideoCard r1, VideoCard r2, VideoCard r3, VideoCard r4, List<VideoCard> cards) {
-        if (r1 != null) showBinding.recommend1.setImageResource(r1.getImgSrc());
-        if (r2 != null) showBinding.recommend2.setImageResource(r2.getImgSrc());
-        if (r3 != null) showBinding.recommend3.setImageResource(r3.getImgSrc());
-        if (r4 != null) showBinding.recommend4.setImageResource(r4.getImgSrc());
-        if (cards != null) {
-            videoCards.setValue(cards);
-            if (showBinding.recyclerView.getAdapter() == null) return;
-            showBinding.recyclerView.getAdapter().notifyDataSetChanged();
-        }
-    }
-
-    class ShowViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        ItemShowBinding binding;
-        int index;
-        public ShowViewHolder(@NonNull View itemView) {
-            super(itemView);
-            binding = ItemShowBinding.bind(itemView);
-            ViewGroup.LayoutParams layoutParams = new ViewGroup.LayoutParams((int)(showBinding.recyclerView.getWidth() / 5.4), (int) (showBinding.recyclerView.getHeight() * 0.95));
-            binding.getRoot().setLayoutParams(layoutParams);
-            itemView.setOnClickListener(this);
-            itemView.setOnFocusChangeListener((v, hasFocus) -> {
-                if (hasFocus) {
-                    ViewCompat.animate(v)
-                            .scaleX(1.05f)
-                            .scaleY(1.05f)
-                            .setDuration(250)
-                            .translationZ(1.2f)
-                            .start();
-                } else {
-                    ViewCompat.animate(v)
-                            .scaleX(1f)
-                            .scaleY(1f)
-                            .setDuration(250)
-                            .translationZ(1f)
-                            .start();
-                }
-            });
-        }
-
-        public void bind(int index) {
-            this.index = index;
-            if (videoCards.getValue() == null) return;
-            binding.image.setImageResource(presenter.getRecommendsImage(index));
-        }
-
-        @Override
-        public void onClick(View v) {
-            presenter.fromRecommendsToVideoDetailPage(index);
-        }
-    }
-
-    static class ShowAnimation implements View.OnFocusChangeListener {
-
-        @Override
-        public void onFocusChange(View v, boolean hasFocus) {
-            if (hasFocus) {
-                ViewCompat.animate(v)
-                        .scaleX(1.05f)
-                        .scaleY(1.05f)
-                        .setDuration(250)
-                        .translationZ(1.2f)
-                        .start();
-            } else {
-                ViewCompat.animate(v)
-                        .scaleX(1f)
-                        .scaleY(1f)
-                        .setDuration(250)
-                        .translationZ(1f)
-                        .start();
-            }
-        }
-    }
-
-    class ShowAdapter extends RecyclerView.Adapter<ShowViewHolder> {
-
-        @NonNull
-        @Override
-        public ShowViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-            ItemShowBinding binding = ItemShowBinding.inflate(getLayoutInflater(), parent, false);
-            return new ShowViewHolder(binding.getRoot());
-        }
-
-        @Override
-        public void onBindViewHolder(@NonNull ShowViewHolder holder, int position) {
-            holder.bind(position);
-        }
-
-        @Override
-        public int getItemCount() {
-            if (videoCards.getValue() != null)
-                return videoCards.getValue().size();
-            return 0;
-        }
-    }
 }

@@ -4,14 +4,13 @@ import android.app.Activity;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
-import android.util.Log;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
 import com.android.projectorlauncher.bean.Tag;
 import com.android.projectorlauncher.bean.VideoCard;
-import com.android.projectorlauncher.ui.view.ShowView;
+import com.android.projectorlauncher.ui.view.MovieView;
 import com.android.projectorlauncher.utils.JsonUtils;
 import com.android.projectorlauncher.utils.JumpToApplication;
 
@@ -22,8 +21,7 @@ public class ShowPresenter {
     private final List<VideoCard> cards = new ArrayList<>();
     private final Activity activity;
     private final ShowHandler handler;
-    private ShowView view;
-    private final List<VideoCard> recommends = new ArrayList<>();
+    private MovieView view;
     public ShowPresenter(Activity activity) {
         handler = new ShowHandler(activity.getMainLooper());
         this.activity = activity;
@@ -34,12 +32,13 @@ public class ShowPresenter {
         JsonUtils.downloadJson(activity, Tag.SHOW, handler);
     }
 
+    // 列表大小
     public int sizeOfCards() {
         return cards.size();
     }
 
     // 获得MovieFragment接口
-    public void setView(ShowView view) {
+    public void setView(MovieView view) {
         this.view = view;
     }
 
@@ -54,9 +53,14 @@ public class ShowPresenter {
         JumpToApplication.turnToSearch(activity);
     }
 
-    // 跳转到电视剧分类频道
-    public void turnToVarietyCategoryPage() {
+    // 跳转到综艺分类频道
+    public void turnToShowCategoryPage() {
         JumpToApplication.turnToCategory(activity, "variety");
+    }
+
+    //跳转到最近观看
+    public void turnToRecentWatch() {
+        JumpToApplication.turnToHistory(activity);
     }
 
     // 获取视频封面地址
@@ -64,17 +68,6 @@ public class ShowPresenter {
         if (index >= cards.size()) return "";
         return cards.get(index).getImgSrc();
     }
-
-    // 获取推荐列表图片
-    public String getRecommendsImage(int index) {
-        return getImage(index + 4);
-    }
-
-    // 推荐列表跳转到指定的视频详情页面
-    public void fromRecommendsToVideoDetailPage(int index) {
-        turnVideoDetailPage(index + 4);
-    }
-
 
     private class ShowHandler extends Handler {
         public ShowHandler(@NonNull Looper looper) {
@@ -85,18 +78,11 @@ public class ShowPresenter {
         public void handleMessage(@NonNull Message msg) {
             if (msg.what == JsonUtils.DOWNLOAD_SUCCESS) {
                 cards.clear();
-                recommends.clear();
                 cards.addAll(JsonUtils.readCards(activity, Tag.SHOW, VideoCard.class));
-                recommends.addAll(cards.subList(4, cards.size()));
-                Log.d("ShowPresenter", "handleMessage: " + recommends.size() + "   " + cards.size());
             } else {
                 Toast.makeText(activity, "请检查网络", Toast.LENGTH_SHORT).show();
-//                recommends.clear();
             }
-            if (cards.size() >= 3) {
-                view.update(cards.get(0), cards.get(1), cards.get(2), cards.get(3), recommends);
-            }
-
+            view.update();
         }
     }
 }

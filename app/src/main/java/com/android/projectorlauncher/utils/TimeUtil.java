@@ -4,10 +4,11 @@ import android.app.AlarmManager;
 import android.content.Context;
 import android.os.SystemClock;
 import android.provider.Settings;
-import android.util.Log;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 import java.util.TimeZone;
 
@@ -16,25 +17,19 @@ public class TimeUtil {
 
     /**
      * 设置时间
-     * @param hour   小时
+     * @param year 年
+     * @param month 月
+     * @param day 日
+     * @param hour 小时
      * @param minute 分钟
      */
-    public static void setTime(int hour, int minute) {
-        Calendar calendar = Calendar.getInstance();
-        calendar.set(Calendar.HOUR_OF_DAY, hour);
-        calendar.set(Calendar.MINUTE, minute);
-        long time = calendar.getTimeInMillis();
-        Log.d("TimeFragment", "setTime: " + time);
-        if (time / 1000 < Integer.MAX_VALUE) {
-            SystemClock.setCurrentTimeMillis(time);
-        }
-    }
-
-    public static void setData(int year, int month, int day) {
+    public static void setData(int year, int month, int day, int hour, int minute) {
         Calendar calendar = Calendar.getInstance();
         calendar.set(Calendar.YEAR, year);
         calendar.set(Calendar.MONTH, month);
         calendar.set(Calendar.DAY_OF_MONTH, day);
+        calendar.set(Calendar.HOUR_OF_DAY, hour);
+        calendar.set(Calendar.MINUTE, minute);
 
         long when = calendar.getTimeInMillis();
         if (when / 1000 < Integer.MAX_VALUE) {
@@ -53,6 +48,14 @@ public class TimeUtil {
 
     public static void setAutoDateTime(Context context, int checked) {
         Settings.Global.putInt(context.getContentResolver(), Settings.Global.AUTO_TIME, checked);
+    }
+
+    public static int isAutoSetTime(Context context) {
+        try {
+            return Settings.Global.getInt(context.getContentResolver(), Settings.Global.AUTO_TIME);
+        } catch (Settings.SettingNotFoundException e) {
+            return 0;
+        }
     }
 
     public static boolean isDateAutoSet(Context context) {
@@ -107,6 +110,18 @@ public class TimeUtil {
      */
     public static String[] getTimeZoneCity() {
         return TimeZone.getDefault().getID().split("/");
+    }
+
+
+    public static List<String> getTimeZoneIds() {
+        String[] availableIDs = TimeZone.getAvailableIDs();
+        List<String> ids = new ArrayList<>();
+        for (String availableID : availableIDs) {
+            if (availableID.contains("GMT") && availableID.contains("Etc")) {
+                ids.add(availableID);
+            }
+        }
+        return ids;
     }
 
 

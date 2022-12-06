@@ -58,6 +58,11 @@ public class MoviePresenter {
         JumpToApplication.turnToCategory(activity, "movie");
     }
 
+    //跳转到最近观看
+    public void turnToRecentWatch() {
+        JumpToApplication.turnToHistory(activity);
+    }
+
     // 获取视频封面地址
     public String getImage(int index) {
         if (index >= cards.size()) return "";

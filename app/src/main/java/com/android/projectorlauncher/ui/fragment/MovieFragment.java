@@ -1,32 +1,21 @@
 package com.android.projectorlauncher.ui.fragment;
 
 import android.content.Context;
-import android.graphics.BitmapFactory;
-import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewTreeObserver;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.cardview.widget.CardView;
-import androidx.core.view.ViewCompat;
 import androidx.fragment.app.Fragment;
 import com.android.projectorlauncher.R;
-import com.android.projectorlauncher.databinding.FragmentMovieBinding;
+import com.android.projectorlauncher.databinding.FragmentUnityMovieBinding;
 import com.android.projectorlauncher.presenter.MoviePresenter;
 import com.android.projectorlauncher.ui.view.MovieView;
 import com.bumptech.glide.Glide;
-import com.google.android.material.tabs.TabLayout;
-
-import java.io.File;
-import java.io.FileInputStream;
 
 public class MovieFragment extends Fragment implements View.OnClickListener, MovieView {
-    private int currentIndex = 0;
-    private int lastIndex = 0;
-    private FragmentMovieBinding movieBinding;
+    private FragmentUnityMovieBinding movieBinding;
     private MoviePresenter presenter;
 
     @Override
@@ -38,9 +27,8 @@ public class MovieFragment extends Fragment implements View.OnClickListener, Mov
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        movieBinding = FragmentMovieBinding.inflate(inflater, container, false);
+        movieBinding = FragmentUnityMovieBinding.inflate(inflater, container, false);
         setImageResources();
-        setFocusChange();
         setClick();
         return movieBinding.getRoot();
     }
@@ -66,27 +54,69 @@ public class MovieFragment extends Fragment implements View.OnClickListener, Mov
 
     //设置图片
     private void setImageResources() {
-        Glide.with(movieBinding.image)
-                .load(presenter.getImage(currentIndex))
+        Glide.with(movieBinding.recommend1)
+                .load(presenter.getImage(0))
                 .error(R.color.white)
-                .centerCrop()
-                .into(movieBinding.image);
-        movieBinding.recommend1.setImageResource(presenter.getImage(0));
-        movieBinding.recommend2.setImageResource(presenter.getImage(1));
-        movieBinding.recommend3.setImageResource(presenter.getImage(2));
-        movieBinding.recommend4.setImageResource(presenter.getImage(3));
+                .fitCenter()
+                .into(movieBinding.recommend1);
+        Glide.with(movieBinding.recommend2)
+                .load(presenter.getImage(1))
+                .error(R.color.white)
+                .fitCenter()
+                .into(movieBinding.recommend2);
+        Glide.with(movieBinding.recommend3)
+                .load(presenter.getImage(2))
+                .error(R.color.white)
+                .fitCenter()
+                .into(movieBinding.recommend3);
+        Glide.with(movieBinding.recommend4)
+                .load(presenter.getImage(3))
+                .error(R.color.white)
+                .fitCenter()
+                .into(movieBinding.recommend4);
+        Glide.with(movieBinding.recommend5)
+                .load(presenter.getImage(4))
+                .error(R.color.white)
+                .fitCenter()
+                .into(movieBinding.recommend5);
+        Glide.with(movieBinding.recommend6)
+                .load(presenter.getImage(5))
+                .error(R.color.white)
+                .fitCenter()
+                .into(movieBinding.recommend6);
+        Glide.with(movieBinding.recommend7)
+                .load(presenter.getImage(6))
+                .error(R.color.white)
+                .fitCenter()
+                .into(movieBinding.recommend7);
+        Glide.with(movieBinding.recommend8)
+                .load(presenter.getImage(7))
+                .error(R.color.white)
+                .fitCenter()
+                .into(movieBinding.recommend8);
+        Glide.with(movieBinding.recommend9)
+                .load(presenter.getImage(8))
+                .error(R.color.white)
+                .fitCenter()
+                .into(movieBinding.recommend9);
+        Glide.with(movieBinding.recommend10)
+                .load(presenter.getImage(9))
+                .error(R.color.white)
+                .fitCenter()
+                .into(movieBinding.recommend10);
+        Glide.with(movieBinding.recommend11)
+                .load(presenter.getImage(10))
+                .error(R.color.white)
+                .fitCenter()
+                .into(movieBinding.recommend11);
+        Glide.with(movieBinding.recommend12)
+                .load(presenter.getImage(11))
+                .error(R.color.white)
+                .fitCenter()
+                .into(movieBinding.recommend12);
     }
 
-    //设置了获取焦点的效果
-    private void setFocusChange() {
-        movieBinding.recommend1.setOnFocusChangeListener(new PosterAnimationOnFocusChange());
-        movieBinding.recommend2.setOnFocusChangeListener(new PosterAnimationOnFocusChange());
-        movieBinding.recommend3.setOnFocusChangeListener(new PosterAnimationOnFocusChange());
-        movieBinding.recommend4.setOnFocusChangeListener(new PosterAnimationOnFocusChange());
-        movieBinding.search.setOnFocusChangeListener(new MovieAnimationOnFocusChange());
-        movieBinding.category.setOnFocusChangeListener(new MovieAnimationOnFocusChange());
 
-    }
 
     private void setClick() {
         movieBinding.recommend1.setOnClickListener(this);
@@ -94,7 +124,7 @@ public class MovieFragment extends Fragment implements View.OnClickListener, Mov
         movieBinding.recommend3.setOnClickListener(this);
         movieBinding.recommend4.setOnClickListener(this);
         movieBinding.search.setOnClickListener(this);
-        movieBinding.category.setOnClickListener(this);
+        movieBinding.more.setOnClickListener(this);
     }
 
     // 设置点击后的事件
@@ -108,9 +138,27 @@ public class MovieFragment extends Fragment implements View.OnClickListener, Mov
             presenter.turnVideoDetailPage(2);
         } else if (v == movieBinding.recommend4) {
             presenter.turnVideoDetailPage(3);
+        } else if (v == movieBinding.recommend5) {
+            presenter.turnVideoDetailPage(4);
+        } else if (v == movieBinding.recommend6) {
+            presenter.turnVideoDetailPage(5);
+        } else if (v == movieBinding.recommend7) {
+            presenter.turnVideoDetailPage(6);
+        } else if (v == movieBinding.recommend8) {
+            presenter.turnVideoDetailPage(7);
+        } else if (v == movieBinding.recommend9) {
+            presenter.turnVideoDetailPage(8);
+        } else if (v == movieBinding.recommend10) {
+            presenter.turnVideoDetailPage(9);
+        } else if (v == movieBinding.recommend11) {
+            presenter.turnVideoDetailPage(10);
+        } else if (v == movieBinding.recommend12) {
+            presenter.turnVideoDetailPage(11);
+        } else if (v == movieBinding.recentWatch) {
+            presenter.turnToRecentWatch();
         } else if (v == movieBinding.search) {
             presenter.turnToSearchPage();
-        } else if (v == movieBinding.category) {
+        } else if (v == movieBinding.more) {
             presenter.turnToMovieCategoryPage();
         }
     }
@@ -118,73 +166,6 @@ public class MovieFragment extends Fragment implements View.OnClickListener, Mov
     @Override
     public void update() {
         setImageResources();
-    }
-
-    /**
-     * 获得焦点前后的显示效果
-     * PosterAnimationOnFocusChange、MovieAnimationOnFocusChange
-     */
-    class PosterAnimationOnFocusChange implements View.OnFocusChangeListener {
-        @Override
-        public void onFocusChange(View v, boolean hasFocus) {
-            if (v == movieBinding.recommend1) {
-                currentIndex = 0;
-            } else if (v == movieBinding.recommend2) {
-                currentIndex = 1;
-            } else if (v == movieBinding.recommend3) {
-                currentIndex = 2;
-            } else if (v == movieBinding.recommend4) {
-                currentIndex = 3;
-            }
-            if (hasFocus) {
-                ViewCompat.animate(v)
-                        .scaleX(1.05f)
-                        .scaleY(1.05f)
-                        .setDuration(300)
-                        .translationZ(1.2f)
-                        .start();
-                if (currentIndex == lastIndex) {
-                    return;
-                }
-                Glide.with(movieBinding.image)
-                        .load(presenter.getImage(currentIndex))
-                        .error(R.color.white)
-                        .centerCrop()
-                        .into(movieBinding.image);
-                lastIndex = currentIndex;
-            } else {
-                ViewCompat.animate(v)
-                        .scaleX(1f)
-                        .scaleY(1f)
-                        .setDuration(300)
-                        .translationZ(1f)
-                        .start();
-            }
-
-        }
-    }
-    class MovieAnimationOnFocusChange implements View.OnFocusChangeListener {
-
-        @Override
-        public void onFocusChange(View v, boolean hasFocus) {
-            if (hasFocus) {
-                ViewCompat.animate(v)
-                        .scaleX(1.05f)
-                        .scaleY(1.05f)
-                        .setDuration(300)
-                        .translationZ(1.2f)
-                        .start();
-                ((CardView)v).setCardBackgroundColor(v.getContext().getColor(R.color.self_5));
-            } else {
-                ViewCompat.animate(v)
-                        .scaleX(1f)
-                        .scaleY(1f)
-                        .setDuration(300)
-                        .translationZ(1f)
-                        .start();
-                ((CardView)v).setCardBackgroundColor(v.getContext().getColor(R.color.self_5_un_focus));
-            }
-        }
     }
 
 
