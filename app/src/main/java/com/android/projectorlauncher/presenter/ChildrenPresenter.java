@@ -10,7 +10,7 @@ import androidx.annotation.NonNull;
 
 import com.android.projectorlauncher.bean.Tag;
 import com.android.projectorlauncher.bean.VideoCard;
-import com.android.projectorlauncher.ui.view.ChildrenView;
+import com.android.projectorlauncher.ui.view.MovieView;
 import com.android.projectorlauncher.utils.JsonUtils;
 import com.android.projectorlauncher.utils.JumpToApplication;
 
@@ -21,8 +21,7 @@ public class ChildrenPresenter {
     private final List<VideoCard> cards = new ArrayList<>();
     private final Activity activity;
     private final ChildrenHandler handler;
-    private ChildrenView view;
-    private final List<VideoCard> recommends = new ArrayList<>();
+    private MovieView view;
     public ChildrenPresenter(Activity activity) {
         handler = new ChildrenHandler(activity.getMainLooper());
         this.activity = activity;
@@ -33,12 +32,13 @@ public class ChildrenPresenter {
         JsonUtils.downloadJson(activity, Tag.CHILDREN, handler);
     }
 
+    // 列表大小
     public int sizeOfCards() {
         return cards.size();
     }
 
     // 获得MovieFragment接口
-    public void setView(ChildrenView view) {
+    public void setView(MovieView view) {
         this.view = view;
     }
 
@@ -53,9 +53,14 @@ public class ChildrenPresenter {
         JumpToApplication.turnToSearch(activity);
     }
 
-    // 跳转到电视剧分类频道
-    public void turnToTvCategoryPage() {
+    // 跳转到儿童分类频道
+    public void turnToMovieCategoryPage() {
         JumpToApplication.turnToCategory(activity, "children");
+    }
+
+    //跳转到最近观看
+    public void turnToRecentWatch() {
+        JumpToApplication.turnToHistory(activity);
     }
 
     // 获取视频封面地址
@@ -63,17 +68,6 @@ public class ChildrenPresenter {
         if (index >= cards.size()) return "";
         return cards.get(index).getImgSrc();
     }
-
-    // 获取推荐列表图片
-    public String getRecommendsImage(int index) {
-        return getImage(index + 3);
-    }
-
-    // 推荐列表跳转到指定的视频详情页面
-    public void fromRecommendsToVideoDetailPage(int index) {
-        turnVideoDetailPage(index + 3);
-    }
-
 
     private class ChildrenHandler extends Handler {
         public ChildrenHandler(@NonNull Looper looper) {
@@ -84,16 +78,11 @@ public class ChildrenPresenter {
         public void handleMessage(@NonNull Message msg) {
             if (msg.what == JsonUtils.DOWNLOAD_SUCCESS) {
                 cards.clear();
-                recommends.clear();
                 cards.addAll(JsonUtils.readCards(activity, Tag.CHILDREN, VideoCard.class));
-                recommends.addAll(cards.subList(3, cards.size()));
             } else {
                 Toast.makeText(activity, "请检查网络", Toast.LENGTH_SHORT).show();
-//                recommends.clear();
             }
-            if (cards.size() > 3) {
-                view.update(cards.get(0), cards.get(1), cards.get(2), recommends);
-            }
+            view.update();
         }
     }
 }

@@ -27,6 +27,12 @@
         <entry key="..\:/project/ProjectorLauncher/app/src/main/res/drawable/category_background_focus.xml" value="0.232" />
         <entry key="..\:/project/ProjectorLauncher/app/src/main/res/drawable/category_background_selector.xml" value="0.232" />
         <entry key="..\:/project/ProjectorLauncher/app/src/main/res/drawable/category_dialog_background.xml" value="0.345" />
+        <entry key="..\:/project/ProjectorLauncher/app/src/main/res/drawable/children_card_new_background_focus.xml" value="0.245" />
+        <entry key="..\:/project/ProjectorLauncher/app/src/main/res/drawable/children_card_new_background_selector.xml" value="0.245" />
+        <entry key="..\:/project/ProjectorLauncher/app/src/main/res/drawable/children_card_new_background_un_focus.xml" value="0.245" />
+        <entry key="..\:/project/ProjectorLauncher/app/src/main/res/drawable/comics_card_new_background_focus.xml" value="0.245" />
+        <entry key="..\:/project/ProjectorLauncher/app/src/main/res/drawable/comics_card_new_background_selector.xml" value="0.245" />
+        <entry key="..\:/project/ProjectorLauncher/app/src/main/res/drawable/comics_card_new_background_un_focus.xml" value="0.245" />
         <entry key="..\:/project/ProjectorLauncher/app/src/main/res/drawable/dialog_add_network_background.xml" value="0.1155" />
         <entry key="..\:/project/ProjectorLauncher/app/src/main/res/drawable/dialog_save_focus.xml" value="0.1155" />
         <entry key="..\:/project/ProjectorLauncher/app/src/main/res/drawable/dialog_save_un_focus.xml" value="0.1155" />
@@ -158,6 +164,8 @@
         <entry key="..\:/project/ProjectorLauncher/app/src/main/res/layout/fragment_time.xml" value="0.16" />
         <entry key="..\:/project/ProjectorLauncher/app/src/main/res/layout/fragment_tv.xml" value="0.33" />
         <entry key="..\:/project/ProjectorLauncher/app/src/main/res/layout/fragment_unity.xml" value="0.22" />
+        <entry key="..\:/project/ProjectorLauncher/app/src/main/res/layout/fragment_unity_children.xml" value="0.18307291666666667" />
+        <entry key="..\:/project/ProjectorLauncher/app/src/main/res/layout/fragment_unity_comics.xml" value="0.18307291666666667" />
         <entry key="..\:/project/ProjectorLauncher/app/src/main/res/layout/fragment_unity_movie.xml" value="0.1" />
         <entry key="..\:/project/ProjectorLauncher/app/src/main/res/layout/fragment_unity_show.xml" value="0.10286458333333333" />
         <entry key="..\:/project/ProjectorLauncher/app/src/main/res/layout/fragment_unity_tv.xml" value="0.1" />
