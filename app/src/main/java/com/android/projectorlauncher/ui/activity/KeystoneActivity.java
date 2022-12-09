@@ -29,8 +29,8 @@ public class KeystoneActivity extends Activity implements View.OnClickListener, 
     private int cnt = 0;
     private boolean isSetting = false;
     private int[] xy = new int[]{-1, -1};
-    private int[] maxXy = new int[]{-1, -1};
-    private int[] minXy = new int[]{-1, -1};
+    private final int[] maxXy = new int[]{-1, -1};
+    private final int[] minXy = new int[]{-1, -1};
     private int mode = -1;
 
     static {

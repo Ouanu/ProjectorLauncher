@@ -24,7 +24,6 @@ import java.util.List;
 
 
 public class SettingsFragment extends Fragment {
-    private FragmentSettingsBinding settingsBinding;
     private final List<String> options = new ArrayList<>();
     private TextView selectView = null;
 
@@ -46,7 +45,7 @@ public class SettingsFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        settingsBinding = FragmentSettingsBinding.inflate(inflater, container, false);
+        FragmentSettingsBinding settingsBinding = FragmentSettingsBinding.inflate(inflater, container, false);
         settingsBinding.recyclerViewSettings.setAdapter(new SettingsAdapter());
         settingsBinding.recyclerViewSettings.addItemDecoration(new RecyclerView.ItemDecoration() {
             @Override
@@ -119,17 +118,20 @@ public class SettingsFragment extends Fragment {
                     getParentFragmentManager().beginTransaction()
                             .replace(R.id.container_frameLayout, new EthernetFragment())
                             .commit();
+                    binding.option.setNextFocusRightId(R.id.btn_switch);
                     break;
                 case 3:
                     getParentFragmentManager().beginTransaction()
                             .replace(R.id.container_frameLayout, new TimeFragment())
                             .commit();
                     binding.option.setNextFocusRightId(R.id.mode);
+                    break;
                 case 4:
                     getParentFragmentManager().beginTransaction()
                             .replace(R.id.container_frameLayout, new AdvanceFragment())
                             .commit();
                     binding.option.setNextFocusRightId(R.id.keystone);
+                    break;
                 default:
                     break;
 

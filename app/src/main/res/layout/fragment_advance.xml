@@ -2,33 +2,37 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
+    android:descendantFocusability="afterDescendants"
     android:gravity="center"
-    android:descendantFocusability="afterDescendants">
+    android:orientation="vertical">
+
     <Button
         android:id="@+id/keystone"
         android:layout_width="300dp"
         android:layout_height="55dp"
-        android:text="@string/keystone_settings"
-        android:gravity="center"
-        android:textSize="21sp"
-        android:textStyle="bold"
-        android:letterSpacing="0.1"
-        android:fontFamily="monospace"
+        android:background="@drawable/btn_advance_background_selector"
         android:focusable="true"
-        android:background="@drawable/btn_advance_background_selector"/>
+        android:fontFamily="monospace"
+        android:gravity="center"
+        android:letterSpacing="0.1"
+        android:nextFocusRight="@id/picture"
+        android:text="@string/keystone_settings"
+        android:textSize="21sp"
+        android:textStyle="bold" />
 
     <Button
         android:id="@+id/picture"
         android:layout_width="300dp"
         android:layout_height="55dp"
-        android:text="@string/picture_settings"
-        android:gravity="center"
-        android:textSize="21sp"
-        android:textStyle="bold"
-        android:letterSpacing="0.1"
-        android:fontFamily="monospace"
-        android:focusable="true"
         android:layout_marginTop="30dp"
-        android:background="@drawable/btn_advance_background_selector"/>
+        android:background="@drawable/btn_advance_background_selector"
+        android:focusable="true"
+        android:fontFamily="monospace"
+        android:gravity="center"
+        android:letterSpacing="0.1"
+        android:nextFocusRight="@id/picture"
+        android:nextFocusDown="@id/picture"
+        android:text="@string/picture_settings"
+        android:textSize="21sp"
+        android:textStyle="bold" />
 </LinearLayout>

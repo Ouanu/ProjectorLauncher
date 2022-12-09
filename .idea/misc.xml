@@ -9,6 +9,9 @@
         <entry key="..\:/project/ProjectorLauncher/app/src/main/res/drawable/app_card_un_focus.xml" value="0.1485" />
         <entry key="..\:/project/ProjectorLauncher/app/src/main/res/drawable/back_selector.xml" value="0.1" />
         <entry key="..\:/project/ProjectorLauncher/app/src/main/res/drawable/back_wifi_selector.xml" value="0.1265" />
+        <entry key="..\:/project/ProjectorLauncher/app/src/main/res/drawable/btn_advance_background_focus.xml" value="0.214" />
+        <entry key="..\:/project/ProjectorLauncher/app/src/main/res/drawable/btn_advance_background_selector.xml" value="0.214" />
+        <entry key="..\:/project/ProjectorLauncher/app/src/main/res/drawable/btn_advance_background_un_focus.xml" value="0.214" />
         <entry key="..\:/project/ProjectorLauncher/app/src/main/res/drawable/btn_enable_focus.xml" value="0.1" />
         <entry key="..\:/project/ProjectorLauncher/app/src/main/res/drawable/btn_focus.xml" value="0.1" />
         <entry key="..\:/project/ProjectorLauncher/app/src/main/res/drawable/btn_stop_focus.xml" value="0.1" />
@@ -151,6 +154,7 @@
         <entry key="..\:/project/ProjectorLauncher/app/src/main/res/layout/dialog_category.xml" value="0.14" />
         <entry key="..\:/project/ProjectorLauncher/app/src/main/res/layout/dialog_image.xml" value="0.1" />
         <entry key="..\:/project/ProjectorLauncher/app/src/main/res/layout/dialog_wifi.xml" value="0.33" />
+        <entry key="..\:/project/ProjectorLauncher/app/src/main/res/layout/fragment_advance.xml" value="0.15" />
         <entry key="..\:/project/ProjectorLauncher/app/src/main/res/layout/fragment_application.xml" value="0.22" />
         <entry key="..\:/project/ProjectorLauncher/app/src/main/res/layout/fragment_children.xml" value="0.16" />
         <entry key="..\:/project/ProjectorLauncher/app/src/main/res/layout/fragment_comics.xml" value="0.18" />
