@@ -50,4 +50,6 @@
     <string name="automatic_time_update">自动更新时间</string>
     <string name="manually_update_the_time">手动更新时间</string>
     <string name="more_category_new">更多内容</string>
+    <string name="keystone_settings">梯度设置</string>
+    <string name="picture_settings">画面设置</string>
 </resources>

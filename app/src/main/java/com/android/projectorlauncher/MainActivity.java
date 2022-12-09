@@ -93,6 +93,7 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.OnLi
         }
     };
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -140,9 +141,9 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.OnLi
         binding.time.setText(dateFormat.format(new Date(System.currentTimeMillis())));
 
 
-        getSupportFragmentManager().beginTransaction()
-                .add(R.id.container_pager, settingsFragment)
-                .commit();
+//        getSupportFragmentManager().beginTransaction()
+//                .add(R.id.container_pager, settingsFragment)
+//                .commit();
     }
 
     @Override
@@ -190,7 +191,7 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.OnLi
             if (position == 0) {
                 if (lastTextView == null) {
                     lastTextView = tabBinding.mainTabText;
-                    lastTextView.setTextColor(getColor(R.color.self_5));
+                    lastTextView.setTextColor(getColor(R.color.self_4));
                     ViewCompat.animate(lastTextView)
                             .scaleX(1.3f)
                             .scaleY(1.3f)
@@ -233,9 +234,11 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.OnLi
         } else if (position == 5) {
             textView.setTextColor(getColor(R.color.self_8));
         } else if (position == 6) {
-            textView.setTextColor(getColor(R.color.self_9));
-        } else {
             textView.setTextColor(getColor(R.color.self_7));
+        } else if (position == 7){
+            textView.setTextColor(getColor(R.color.self_6));
+        } else {
+            textView.setTextColor(getColor(R.color.self_4));
         }
         lastTextView = textView;
         ViewCompat.animate(lastTextView)

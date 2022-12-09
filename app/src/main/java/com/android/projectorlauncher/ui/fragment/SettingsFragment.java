@@ -38,7 +38,7 @@ public class SettingsFragment extends Fragment {
 //            options.add("画面设置");
 //            options.add("声音设置");
             options.add("时间设置");
-//            options.add("梯度矫正");
+            options.add("进阶设置");
         }
 
     }
@@ -125,6 +125,11 @@ public class SettingsFragment extends Fragment {
                             .replace(R.id.container_frameLayout, new TimeFragment())
                             .commit();
                     binding.option.setNextFocusRightId(R.id.mode);
+                case 4:
+                    getParentFragmentManager().beginTransaction()
+                            .replace(R.id.container_frameLayout, new AdvanceFragment())
+                            .commit();
+                    binding.option.setNextFocusRightId(R.id.keystone);
                 default:
                     break;
 
