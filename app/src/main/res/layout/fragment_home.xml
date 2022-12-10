@@ -252,36 +252,33 @@
             android:layout_weight="0.8">
 
             <LinearLayout
+                android:id="@+id/source"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@color/self_6"
+                android:focusable="true"
+                android:background="@drawable/home_source_selector"
                 android:gravity="center"
                 android:orientation="vertical">
 
-                <TextView
-                    android:id="@+id/time_clock"
+                <ImageView
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
-                    android:layout_weight="1"
-                    android:fontFamily="sans-serif"
-                    android:gravity="center_horizontal|bottom"
-                    android:textColor="@color/white"
-                    android:textSize="45sp"
-                    android:letterSpacing="0.2"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintHeight_percent="0.3"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintVertical_bias="0.8" />
+                    android:layout_marginHorizontal="15dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_weight="2.5"
+                    android:scaleType="centerInside"
+                    android:src="@drawable/hdmi"
+                    android:contentDescription="@string/game" />
 
                 <TextView
-                    android:id="@+id/time_date"
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
                     android:layout_weight="1"
                     android:fontFamily="sans-serif"
-                    android:gravity="center"
+                    android:gravity="center_horizontal"
+                    android:text="信号源"
                     android:textColor="@color/white"
-                    android:textSize="25sp"
+                    android:textSize="21sp"
                     android:letterSpacing="0.2"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintHeight_percent="0.3"
@@ -291,13 +288,11 @@
         </androidx.cardview.widget.CardView>
 
         <androidx.cardview.widget.CardView
-
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_marginHorizontal="5dp"
             android:layout_marginVertical="5dp"
             android:layout_weight="1.2"
-
             android:nextFocusRight="@id/application">
 
             <LinearLayout

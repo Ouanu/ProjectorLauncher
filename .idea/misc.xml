@@ -56,6 +56,7 @@
         <entry key="..\:/project/ProjectorLauncher/app/src/main/res/drawable/home_resource_selector.xml" value="0.26" />
         <entry key="..\:/project/ProjectorLauncher/app/src/main/res/drawable/home_search_selector.xml" value="0.26" />
         <entry key="..\:/project/ProjectorLauncher/app/src/main/res/drawable/home_settings_selector.xml" value="0.26" />
+        <entry key="..\:/project/ProjectorLauncher/app/src/main/res/drawable/home_source_selector.xml" value="0.1135" />
         <entry key="..\:/project/ProjectorLauncher/app/src/main/res/drawable/home_tv_selector.xml" value="0.26" />
         <entry key="..\:/project/ProjectorLauncher/app/src/main/res/drawable/ic_baseline_arrow_drop_down_24.xml" value="0.2385" />
         <entry key="..\:/project/ProjectorLauncher/app/src/main/res/drawable/ic_baseline_signal_cellular_4_bar_24.xml" value="0.1" />
@@ -160,7 +161,7 @@
         <entry key="..\:/project/ProjectorLauncher/app/src/main/res/layout/fragment_comics.xml" value="0.18" />
         <entry key="..\:/project/ProjectorLauncher/app/src/main/res/layout/fragment_ethernet.xml" value="0.33" />
         <entry key="..\:/project/ProjectorLauncher/app/src/main/res/layout/fragment_game.xml" value="0.1" />
-        <entry key="..\:/project/ProjectorLauncher/app/src/main/res/layout/fragment_home.xml" value="0.14" />
+        <entry key="..\:/project/ProjectorLauncher/app/src/main/res/layout/fragment_home.xml" value="0.13" />
         <entry key="..\:/project/ProjectorLauncher/app/src/main/res/layout/fragment_match.xml" value="0.2" />
         <entry key="..\:/project/ProjectorLauncher/app/src/main/res/layout/fragment_movie.xml" value="0.1" />
         <entry key="..\:/project/ProjectorLauncher/app/src/main/res/layout/fragment_pager.xml" value="0.22" />
@@ -184,6 +185,7 @@
         <entry key="..\:/project/ProjectorLauncher/app/src/main/res/layout/item_category_music.xml" value="0.25" />
         <entry key="..\:/project/ProjectorLauncher/app/src/main/res/layout/item_children.xml" value="0.409375" />
         <entry key="..\:/project/ProjectorLauncher/app/src/main/res/layout/item_comics.xml" value="0.409375" />
+        <entry key="..\:/project/ProjectorLauncher/app/src/main/res/layout/item_game_tab.xml" value="0.16" />
         <entry key="..\:/project/ProjectorLauncher/app/src/main/res/layout/item_main_tab.xml" value="0.67" />
         <entry key="..\:/project/ProjectorLauncher/app/src/main/res/layout/item_match.xml" value="0.2" />
         <entry key="..\:/project/ProjectorLauncher/app/src/main/res/layout/item_music.xml" value="0.2" />

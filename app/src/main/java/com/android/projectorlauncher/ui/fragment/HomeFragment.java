@@ -1,11 +1,7 @@
 package com.android.projectorlauncher.ui.fragment;
 
-import android.content.BroadcastReceiver;
 import android.content.Context;
-import android.content.Intent;
-import android.content.IntentFilter;
 import android.os.Bundle;
-import android.text.format.DateFormat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,7 +12,6 @@ import com.android.projectorlauncher.databinding.FragmentHomeBinding;
 import com.android.projectorlauncher.ui.dialog.CategoryDialog;
 import com.android.projectorlauncher.utils.JumpToApplication;
 
-import java.util.Date;
 
 public class HomeFragment extends Fragment implements View.OnClickListener {
     private FragmentHomeBinding homeBinding;
@@ -24,14 +19,6 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
     public interface OnListenerClick {
        void turnToPager(int position);
     }
-    private BroadcastReceiver timeReceiver = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            if (intent.getAction().equals(Intent.ACTION_TIME_TICK)) {
-                updateTime();
-            }
-        }
-    };
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -52,37 +39,25 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         homeBinding.settings.setOnClickListener(this);
         homeBinding.shows.setOnClickListener(this);
         homeBinding.tv.setOnClickListener(this);
+        homeBinding.source.setOnClickListener(this);
         return homeBinding.getRoot();
     }
 
     @Override
     public void onStart() {
         super.onStart();
-        IntentFilter filter = new IntentFilter();
-        filter.addAction(Intent.ACTION_TIME_TICK);
-        requireActivity().registerReceiver(timeReceiver, filter);
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        updateTime();
     }
 
     @Override
     public void onStop() {
         super.onStop();
-        requireActivity().unregisterReceiver(timeReceiver);
     }
 
-    private void updateTime() {
-        long l = System.currentTimeMillis();
-        Date date = new Date(l);
-        CharSequence clock = DateFormat.format("hh:mm", date);
-        CharSequence day = DateFormat.format("MM-dd EEEE", date);
-        homeBinding.timeClock.setText(clock);
-        homeBinding.timeDate.setText(day);
-    }
 
     @Override
     public void onClick(View v) {
@@ -103,6 +78,8 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         } else if (v == homeBinding.localResource) {
             CategoryDialog dialog = new CategoryDialog();
             dialog.show(getParentFragmentManager(), "category");
+        } else if (v == homeBinding.source) {
+            JumpToApplication.turnToSource(requireContext());
         }
     }
 

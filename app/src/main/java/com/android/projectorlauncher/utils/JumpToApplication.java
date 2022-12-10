@@ -71,4 +71,13 @@ public class JumpToApplication {
         }
     }
 
+    public static void turnToSource(Context context) {
+        Intent intent1 = context.getPackageManager().getLaunchIntentForPackage("com.android.quicksourcesettings");
+        if (intent1 != null) {
+            context.startActivity(intent1);
+            return;
+        }
+        Toast.makeText(context, "未找到应用", Toast.LENGTH_SHORT).show();
+    }
+
 }
