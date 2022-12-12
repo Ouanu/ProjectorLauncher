@@ -25,6 +25,7 @@ import com.android.projectorlauncher.databinding.ItemMainTabBinding;
 import com.android.projectorlauncher.ui.fragment.ApplicationFragment;
 import com.android.projectorlauncher.ui.fragment.ChildrenFragment;
 import com.android.projectorlauncher.ui.fragment.ComicsFragment;
+import com.android.projectorlauncher.ui.fragment.GameFragment;
 import com.android.projectorlauncher.ui.fragment.HomeFragment;
 import com.android.projectorlauncher.ui.fragment.MatchFragment;
 import com.android.projectorlauncher.ui.fragment.MovieFragment;
@@ -54,6 +55,7 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.OnLi
     private final ChildrenFragment childrenFragment = new ChildrenFragment();
     private final ApplicationFragment applicationFragment = new ApplicationFragment();
     private final SettingsFragment settingsFragment = new SettingsFragment();
+    private final GameFragment gameFragment = new GameFragment();
     private final Map<Boolean, String> map = new HashMap<>();
     private TextView lastTextView = null;
     private final BroadcastReceiver receiver = new BroadcastReceiver() {
@@ -125,6 +127,7 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.OnLi
         fragments.add(matchFragment);
         fragments.add(applicationFragment);
         fragments.add(settingsFragment);
+        fragments.add(gameFragment);
 
         binding.tabLayout.setAdapter(new TabAdapter());
         binding.tabLayout.addItemDecoration(new RecyclerView.ItemDecoration() {
@@ -197,7 +200,7 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.OnLi
                             .scaleY(1.3f)
                             .setDuration(250)
                             .start();
-                    switchFragment(position);
+                    switchFragment(9);
                 }
             }
         }
@@ -237,8 +240,10 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.OnLi
             textView.setTextColor(getColor(R.color.self_7));
         } else if (position == 7){
             textView.setTextColor(getColor(R.color.self_6));
-        } else {
+        } else if (position == 8){
             textView.setTextColor(getColor(R.color.self_4));
+        } else if (position == 9) {
+            textView.setTextColor(getColor(R.color.self_8));
         }
         lastTextView = textView;
         ViewCompat.animate(lastTextView)

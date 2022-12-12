@@ -9,4 +9,9 @@
         <item name="cornerFamily">rounded</item>
         <item name="cornerSize">2%</item>
     </style>
+
+    <style name="rectangleImageStyle_card">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">5%</item>
+    </style>
 </resources>

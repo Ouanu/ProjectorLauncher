@@ -1,10 +1,13 @@
 package com.android.projectorlauncher.utils;
 
 import android.content.ActivityNotFoundException;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.widget.Toast;
+
+import com.android.projectorlauncher.bean.GameCard;
 
 public class JumpToApplication {
 
@@ -78,6 +81,14 @@ public class JumpToApplication {
             return;
         }
         Toast.makeText(context, "未找到应用", Toast.LENGTH_SHORT).show();
+    }
+
+    public static void turnToGame(Context context, GameCard card) {
+        Intent intent = new Intent();
+        ComponentName componentName = new ComponentName(card.getPackageName(), card.getClassName());
+        intent.setComponent(componentName);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        context.startActivity(intent);
     }
 
 }

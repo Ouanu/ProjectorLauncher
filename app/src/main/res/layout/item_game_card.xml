@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.imageview.ShapeableImageView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/card_view"
+    android:layout_width="380dp"
+    android:layout_height="240dp"
+    android:scaleType="centerCrop"
+    android:focusable="true"
+    android:src="@drawable/moon_man"
+    android:foreground="@drawable/item_game_card_foreground"
+    app:shapeAppearanceOverlay="@style/rectangleImageStyle_card">
+
+</com.google.android.material.imageview.ShapeableImageView>
