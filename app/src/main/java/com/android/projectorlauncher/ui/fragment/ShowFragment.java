@@ -15,10 +15,20 @@ import com.android.projectorlauncher.databinding.FragmentUnityShowBinding;
 import com.android.projectorlauncher.presenter.ShowPresenter;
 import com.android.projectorlauncher.ui.view.MovieView;
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.request.RequestOptions;
+import com.google.android.material.imageview.ShapeableImageView;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class ShowFragment extends Fragment implements View.OnClickListener, MovieView {
     private FragmentUnityShowBinding showBinding;
     private ShowPresenter presenter;
+    private final List<ShapeableImageView> views = new ArrayList<>();
+    private final RequestOptions options = new RequestOptions()
+            .diskCacheStrategy(DiskCacheStrategy.ALL)
+            .skipMemoryCache(false);
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -30,15 +40,30 @@ public class ShowFragment extends Fragment implements View.OnClickListener, Movi
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         showBinding = FragmentUnityShowBinding.inflate(inflater, container, false);
-        setImageResources();
-        setClick();
         return showBinding.getRoot();
+    }
+
+    private void init() {
+        views.add(showBinding.recommend1);
+        views.add(showBinding.recommend2);
+        views.add(showBinding.recommend3);
+        views.add(showBinding.recommend4);
+        views.add(showBinding.recommend5);
+        views.add(showBinding.recommend6);
+        views.add(showBinding.recommend7);
+        views.add(showBinding.recommend8);
+        views.add(showBinding.recommend9);
+        views.add(showBinding.recommend10);
+        views.add(showBinding.recommend11);
+        views.add(showBinding.recommend12);
     }
 
     @Override
     public void onStart() {
         super.onStart();
         presenter.setView(this);
+        setClick();
+        init();
     }
 
     @Override
@@ -54,77 +79,16 @@ public class ShowFragment extends Fragment implements View.OnClickListener, Movi
         super.onPause();
     }
 
-    //设置图片
-    private void setImageResources() {
-        Glide.with(showBinding.recommend1)
-                .load(presenter.getImage(0))
-                .error(R.color.white)
-                .fitCenter()
-                .into(showBinding.recommend1);
-        Glide.with(showBinding.recommend2)
-                .load(presenter.getImage(1))
-                .error(R.color.white)
-                .fitCenter()
-                .into(showBinding.recommend2);
-        Glide.with(showBinding.recommend3)
-                .load(presenter.getImage(2))
-                .error(R.color.white)
-                .fitCenter()
-                .into(showBinding.recommend3);
-        Glide.with(showBinding.recommend4)
-                .load(presenter.getImage(3))
-                .error(R.color.white)
-                .fitCenter()
-                .into(showBinding.recommend4);
-        Glide.with(showBinding.recommend5)
-                .load(presenter.getImage(4))
-                .error(R.color.white)
-                .fitCenter()
-                .into(showBinding.recommend5);
-        Glide.with(showBinding.recommend6)
-                .load(presenter.getImage(5))
-                .error(R.color.white)
-                .fitCenter()
-                .into(showBinding.recommend6);
-        Glide.with(showBinding.recommend7)
-                .load(presenter.getImage(6))
-                .error(R.color.white)
-                .fitCenter()
-                .into(showBinding.recommend7);
-        Glide.with(showBinding.recommend8)
-                .load(presenter.getImage(7))
-                .error(R.color.white)
-                .fitCenter()
-                .into(showBinding.recommend8);
-        Glide.with(showBinding.recommend9)
-                .load(presenter.getImage(8))
-                .error(R.color.white)
-                .fitCenter()
-                .into(showBinding.recommend9);
-        Glide.with(showBinding.recommend10)
-                .load(presenter.getImage(9))
-                .error(R.color.white)
-                .fitCenter()
-                .into(showBinding.recommend10);
-        Glide.with(showBinding.recommend11)
-                .load(presenter.getImage(10))
-                .error(R.color.white)
-                .fitCenter()
-                .into(showBinding.recommend11);
-        Glide.with(showBinding.recommend12)
-                .load(presenter.getImage(11))
-                .error(R.color.white)
-                .fitCenter()
-                .into(showBinding.recommend12);
+    @Override
+    public void onStop() {
+        super.onStop();
+        views.clear();
     }
 
-
-
     private void setClick() {
-        showBinding.recommend1.setOnClickListener(this);
-        showBinding.recommend2.setOnClickListener(this);
-        showBinding.recommend3.setOnClickListener(this);
-        showBinding.recommend4.setOnClickListener(this);
+        for (ShapeableImageView view : views) {
+            view.setOnClickListener(this);
+        }
         showBinding.search.setOnClickListener(this);
         showBinding.more.setOnClickListener(this);
     }
@@ -132,31 +96,13 @@ public class ShowFragment extends Fragment implements View.OnClickListener, Movi
     // 设置点击后的事件
     @Override
     public void onClick(View v) {
-        if (v == showBinding.recommend1) {
-            presenter.turnVideoDetailPage(0);
-        } else if (v == showBinding.recommend2) {
-            presenter.turnVideoDetailPage(1);
-        } else if (v == showBinding.recommend3) {
-            presenter.turnVideoDetailPage(2);
-        } else if (v == showBinding.recommend4) {
-            presenter.turnVideoDetailPage(3);
-        } else if (v == showBinding.recommend5) {
-            presenter.turnVideoDetailPage(4);
-        } else if (v == showBinding.recommend6) {
-            presenter.turnVideoDetailPage(5);
-        } else if (v == showBinding.recommend7) {
-            presenter.turnVideoDetailPage(6);
-        } else if (v == showBinding.recommend8) {
-            presenter.turnVideoDetailPage(7);
-        } else if (v == showBinding.recommend9) {
-            presenter.turnVideoDetailPage(8);
-        } else if (v == showBinding.recommend10) {
-            presenter.turnVideoDetailPage(9);
-        } else if (v == showBinding.recommend11) {
-            presenter.turnVideoDetailPage(10);
-        } else if (v == showBinding.recommend12) {
-            presenter.turnVideoDetailPage(11);
-        } else if (v == showBinding.recentWatch) {
+        for (int i = 0; i < views.size(); i++) {
+            if (views.get(i) == v) {
+                presenter.turnVideoDetailPage(i);
+                break;
+            }
+        }
+        if (v == showBinding.recentWatch) {
             presenter.turnToRecentWatch();
         } else if (v == showBinding.search) {
             presenter.turnToSearchPage();
@@ -165,9 +111,23 @@ public class ShowFragment extends Fragment implements View.OnClickListener, Movi
         }
     }
 
+
     @Override
-    public void update() {
-        setImageResources();
+    public void updateAll() {
+        for (int i = 0; i < views.size(); i++) {
+            updateIndex(i);
+        }
+    }
+
+    @Override
+    public void updateIndex(int index) {
+        if (index == -1 || views.size() == 0) return;
+        Glide.with(views.get(index))
+                .load(presenter.getImage(index))
+                .error(R.drawable.error_cover_can_t_found)
+                .fitCenter()
+                .apply(options)
+                .into(views.get(index));
     }
 
 

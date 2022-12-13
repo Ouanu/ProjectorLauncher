@@ -75,12 +75,12 @@ public class GameFragment extends Fragment implements GameView {
     @Override
     public void onStart() {
         super.onStart();
-        presenter.init();
+//        presenter.init();
     }
 
     @Override
     public void update() {
-        mutableCards.setValue(presenter.getCards());
+//        mutableCards.setValue(presenter.getCards());
     }
 
     class CategoryTabViewHolder extends RecyclerView.ViewHolder {

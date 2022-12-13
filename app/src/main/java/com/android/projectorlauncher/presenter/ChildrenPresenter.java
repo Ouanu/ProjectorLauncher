@@ -11,10 +11,12 @@ import androidx.annotation.NonNull;
 import com.android.projectorlauncher.bean.Tag;
 import com.android.projectorlauncher.bean.VideoCard;
 import com.android.projectorlauncher.ui.view.MovieView;
+import com.android.projectorlauncher.utils.CacheUtil;
 import com.android.projectorlauncher.utils.JsonUtils;
 import com.android.projectorlauncher.utils.JumpToApplication;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class ChildrenPresenter {
@@ -22,9 +24,11 @@ public class ChildrenPresenter {
     private final Activity activity;
     private final ChildrenHandler handler;
     private MovieView view;
+    private final HashMap<Integer, String> map;
     public ChildrenPresenter(Activity activity) {
         handler = new ChildrenHandler(activity.getMainLooper());
         this.activity = activity;
+        map = new HashMap<>();
     }
 
     // 初始化数据
@@ -54,7 +58,7 @@ public class ChildrenPresenter {
     }
 
     // 跳转到儿童分类频道
-    public void turnToMovieCategoryPage() {
+    public void turnToChildCategoryPage() {
         JumpToApplication.turnToCategory(activity, "children");
     }
 
@@ -66,7 +70,7 @@ public class ChildrenPresenter {
     // 获取视频封面地址
     public String getImage(int index) {
         if (index >= cards.size()) return "";
-        return cards.get(index).getImgSrc();
+        return map.getOrDefault(index, null);
     }
 
     private class ChildrenHandler extends Handler {
@@ -79,10 +83,15 @@ public class ChildrenPresenter {
             if (msg.what == JsonUtils.DOWNLOAD_SUCCESS) {
                 cards.clear();
                 cards.addAll(JsonUtils.readCards(activity, Tag.CHILDREN, VideoCard.class));
+                for (int i = 0; i < 12; i++) {
+                    CacheUtil.downloadImage(activity, cards.get(i).getImgSrc(), i, map, handler);
+                }
+            } else if (msg.what == CacheUtil.IMAGE_PREPARED) {
+                view.updateIndex(msg.getData().getInt("INDEX", -1));
             } else {
                 Toast.makeText(activity, "请检查网络", Toast.LENGTH_SHORT).show();
+                view.updateAll();
             }
-            view.update();
         }
     }
 }

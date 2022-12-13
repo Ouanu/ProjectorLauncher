@@ -11,10 +11,12 @@ import androidx.annotation.NonNull;
 import com.android.projectorlauncher.bean.Tag;
 import com.android.projectorlauncher.bean.VideoCard;
 import com.android.projectorlauncher.ui.view.MovieView;
+import com.android.projectorlauncher.utils.CacheUtil;
 import com.android.projectorlauncher.utils.JsonUtils;
 import com.android.projectorlauncher.utils.JumpToApplication;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class TvPresenter {
@@ -22,9 +24,11 @@ public class TvPresenter {
     private final Activity activity;
     private final TvHandler handler;
     private MovieView view;
+    private final HashMap<Integer, String> map;
     public TvPresenter(Activity activity) {
         handler = new TvHandler(activity.getMainLooper());
         this.activity = activity;
+        map = new HashMap<>();
     }
 
     // 初始化数据
@@ -54,7 +58,7 @@ public class TvPresenter {
     }
 
     // 跳转到电视剧分类频道
-    public void turnToMovieCategoryPage() {
+    public void turnToTvCategoryPage() {
         JumpToApplication.turnToCategory(activity, "tv");
     }
 
@@ -66,7 +70,7 @@ public class TvPresenter {
     // 获取视频封面地址
     public String getImage(int index) {
         if (index >= cards.size()) return "";
-        return cards.get(index).getImgSrc();
+        return map.getOrDefault(index, null);
     }
 
     private class TvHandler extends Handler {
@@ -79,10 +83,15 @@ public class TvPresenter {
             if (msg.what == JsonUtils.DOWNLOAD_SUCCESS) {
                 cards.clear();
                 cards.addAll(JsonUtils.readCards(activity, Tag.TV, VideoCard.class));
+                for (int i = 0; i < 12; i++) {
+                    CacheUtil.downloadImage(activity, cards.get(i).getImgSrc(), i, map, handler);
+                }
+            } else if (msg.what == CacheUtil.IMAGE_PREPARED) {
+                view.updateIndex(msg.getData().getInt("INDEX", -1));
             } else {
                 Toast.makeText(activity, "请检查网络", Toast.LENGTH_SHORT).show();
+                view.updateAll();
             }
-            view.update();
         }
     }
 }

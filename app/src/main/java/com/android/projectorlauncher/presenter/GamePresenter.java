@@ -66,7 +66,7 @@ public class GamePresenter {
             } else {
                 Toast.makeText(activity, "请检查网络", Toast.LENGTH_SHORT).show();
             }
-            view.update();
+//            view.update();
         }
     }
 }

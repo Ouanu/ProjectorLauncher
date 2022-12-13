@@ -15,10 +15,20 @@ import com.android.projectorlauncher.databinding.FragmentUnityComicsBinding;
 import com.android.projectorlauncher.presenter.ComicsPresenter;
 import com.android.projectorlauncher.ui.view.MovieView;
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.request.RequestOptions;
+import com.google.android.material.imageview.ShapeableImageView;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class ComicsFragment extends Fragment implements View.OnClickListener, MovieView {
     private FragmentUnityComicsBinding comicsBinding;
     private ComicsPresenter presenter;
+    private final List<ShapeableImageView> views = new ArrayList<>();
+    private final RequestOptions options = new RequestOptions()
+            .diskCacheStrategy(DiskCacheStrategy.ALL)
+            .skipMemoryCache(false);
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -30,15 +40,30 @@ public class ComicsFragment extends Fragment implements View.OnClickListener, Mo
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         comicsBinding = FragmentUnityComicsBinding.inflate(inflater, container, false);
-        setImageResources();
-        setClick();
         return comicsBinding.getRoot();
+    }
+
+    private void init() {
+        views.add(comicsBinding.recommend1);
+        views.add(comicsBinding.recommend2);
+        views.add(comicsBinding.recommend3);
+        views.add(comicsBinding.recommend4);
+        views.add(comicsBinding.recommend5);
+        views.add(comicsBinding.recommend6);
+        views.add(comicsBinding.recommend7);
+        views.add(comicsBinding.recommend8);
+        views.add(comicsBinding.recommend9);
+        views.add(comicsBinding.recommend10);
+        views.add(comicsBinding.recommend11);
+        views.add(comicsBinding.recommend12);
     }
 
     @Override
     public void onStart() {
         super.onStart();
         presenter.setView(this);
+        setClick();
+        init();
     }
 
     @Override
@@ -54,77 +79,16 @@ public class ComicsFragment extends Fragment implements View.OnClickListener, Mo
         super.onPause();
     }
 
-    //设置图片
-    private void setImageResources() {
-        Glide.with(comicsBinding.recommend1)
-                .load(presenter.getImage(0))
-                .error(R.color.white)
-                .fitCenter()
-                .into(comicsBinding.recommend1);
-        Glide.with(comicsBinding.recommend2)
-                .load(presenter.getImage(1))
-                .error(R.color.white)
-                .fitCenter()
-                .into(comicsBinding.recommend2);
-        Glide.with(comicsBinding.recommend3)
-                .load(presenter.getImage(2))
-                .error(R.color.white)
-                .fitCenter()
-                .into(comicsBinding.recommend3);
-        Glide.with(comicsBinding.recommend4)
-                .load(presenter.getImage(3))
-                .error(R.color.white)
-                .fitCenter()
-                .into(comicsBinding.recommend4);
-        Glide.with(comicsBinding.recommend5)
-                .load(presenter.getImage(4))
-                .error(R.color.white)
-                .fitCenter()
-                .into(comicsBinding.recommend5);
-        Glide.with(comicsBinding.recommend6)
-                .load(presenter.getImage(5))
-                .error(R.color.white)
-                .fitCenter()
-                .into(comicsBinding.recommend6);
-        Glide.with(comicsBinding.recommend7)
-                .load(presenter.getImage(6))
-                .error(R.color.white)
-                .fitCenter()
-                .into(comicsBinding.recommend7);
-        Glide.with(comicsBinding.recommend8)
-                .load(presenter.getImage(7))
-                .error(R.color.white)
-                .fitCenter()
-                .into(comicsBinding.recommend8);
-        Glide.with(comicsBinding.recommend9)
-                .load(presenter.getImage(8))
-                .error(R.color.white)
-                .fitCenter()
-                .into(comicsBinding.recommend9);
-        Glide.with(comicsBinding.recommend10)
-                .load(presenter.getImage(9))
-                .error(R.color.white)
-                .fitCenter()
-                .into(comicsBinding.recommend10);
-        Glide.with(comicsBinding.recommend11)
-                .load(presenter.getImage(10))
-                .error(R.color.white)
-                .fitCenter()
-                .into(comicsBinding.recommend11);
-        Glide.with(comicsBinding.recommend12)
-                .load(presenter.getImage(11))
-                .error(R.color.white)
-                .fitCenter()
-                .into(comicsBinding.recommend12);
+    @Override
+    public void onStop() {
+        super.onStop();
+        views.clear();
     }
 
-
-
     private void setClick() {
-        comicsBinding.recommend1.setOnClickListener(this);
-        comicsBinding.recommend2.setOnClickListener(this);
-        comicsBinding.recommend3.setOnClickListener(this);
-        comicsBinding.recommend4.setOnClickListener(this);
+        for (ShapeableImageView view : views) {
+            view.setOnClickListener(this);
+        }
         comicsBinding.search.setOnClickListener(this);
         comicsBinding.more.setOnClickListener(this);
     }
@@ -132,42 +96,38 @@ public class ComicsFragment extends Fragment implements View.OnClickListener, Mo
     // 设置点击后的事件
     @Override
     public void onClick(View v) {
-        if (v == comicsBinding.recommend1) {
-            presenter.turnVideoDetailPage(0);
-        } else if (v == comicsBinding.recommend2) {
-            presenter.turnVideoDetailPage(1);
-        } else if (v == comicsBinding.recommend3) {
-            presenter.turnVideoDetailPage(2);
-        } else if (v == comicsBinding.recommend4) {
-            presenter.turnVideoDetailPage(3);
-        } else if (v == comicsBinding.recommend5) {
-            presenter.turnVideoDetailPage(4);
-        } else if (v == comicsBinding.recommend6) {
-            presenter.turnVideoDetailPage(5);
-        } else if (v == comicsBinding.recommend7) {
-            presenter.turnVideoDetailPage(6);
-        } else if (v == comicsBinding.recommend8) {
-            presenter.turnVideoDetailPage(7);
-        } else if (v == comicsBinding.recommend9) {
-            presenter.turnVideoDetailPage(8);
-        } else if (v == comicsBinding.recommend10) {
-            presenter.turnVideoDetailPage(9);
-        } else if (v == comicsBinding.recommend11) {
-            presenter.turnVideoDetailPage(10);
-        } else if (v == comicsBinding.recommend12) {
-            presenter.turnVideoDetailPage(11);
-        } else if (v == comicsBinding.recentWatch) {
+        for (int i = 0; i < views.size(); i++) {
+            if (views.get(i) == v) {
+                presenter.turnVideoDetailPage(i);
+                break;
+            }
+        }
+        if (v == comicsBinding.recentWatch) {
             presenter.turnToRecentWatch();
         } else if (v == comicsBinding.search) {
             presenter.turnToSearchPage();
         } else if (v == comicsBinding.more) {
-            presenter.turnToMovieCategoryPage();
+            presenter.turnToComicsCategoryPage();
+        }
+    }
+
+
+    @Override
+    public void updateAll() {
+        for (int i = 0; i < views.size(); i++) {
+            updateIndex(i);
         }
     }
 
     @Override
-    public void update() {
-        setImageResources();
+    public void updateIndex(int index) {
+        if (index == -1 || views.size() == 0) return;
+        Glide.with(views.get(index))
+                .load(presenter.getImage(index))
+                .error(R.drawable.error_cover_can_t_found)
+                .fitCenter()
+                .apply(options)
+                .into(views.get(index));
     }
 
 
