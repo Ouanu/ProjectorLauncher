@@ -9,9 +9,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewTreeObserver;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.view.ViewCompat;
@@ -30,15 +27,14 @@ public class ApplicationFragment extends Fragment implements PackagesStatusRecei
     private FragmentApplicationBinding applicationBinding;
     private PackagesStatusReceiver receiver;
     private List<ResolveInfo> resolveInfoList;
-    private final ViewTreeObserver.OnGlobalFocusChangeListener focusChangeListener = (oldFocus, newFocus) -> {
-        if (oldFocus instanceof LinearLayout && newFocus instanceof ImageView) {
-            oldFocus.requestFocus();
-        }
-    };
 
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
+        initBroadcastReceiver(context);
+    }
+
+    private void initBroadcastReceiver(@NonNull Context context) {
         receiver = new PackagesStatusReceiver();
         IntentFilter filter = new IntentFilter();
         filter.addAction(Intent.ACTION_PACKAGE_ADDED);
@@ -47,38 +43,38 @@ public class ApplicationFragment extends Fragment implements PackagesStatusRecei
         filter.addDataScheme("package");
         receiver.setCallback(this);
         context.registerReceiver(receiver, filter);
-        resolveInfoList = ApplicationsUtils.getAllApplications(context);
     }
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         applicationBinding = FragmentApplicationBinding.inflate(inflater, container, false);
-        ProjectorLayoutManager layoutManager = new ProjectorLayoutManager(getContext(), 4);
-        applicationBinding.recyclerView.setLayoutManager(layoutManager);
-        applicationBinding.recyclerView.setAdapter(new ApplicationAdapter());
-        applicationBinding.recyclerView.addItemDecoration(new RecyclerView.ItemDecoration() {
-            @Override
-            public void getItemOffsets(@NonNull Rect outRect, @NonNull View view, @NonNull RecyclerView parent, @NonNull RecyclerView.State state) {
-                outRect.top = 10;
-                outRect.bottom = 10;
-                outRect.left = 20;
-                outRect.right = 20;
-            }
-        });
+        new Thread(()->{
+            resolveInfoList = ApplicationsUtils.getAllApplications(requireContext());
+            ProjectorLayoutManager layoutManager = new ProjectorLayoutManager(getContext(), 4);
+            applicationBinding.recyclerView.setLayoutManager(layoutManager);
+            applicationBinding.recyclerView.setAdapter(new ApplicationAdapter());
+            applicationBinding.recyclerView.addItemDecoration(new RecyclerView.ItemDecoration() {
+                @Override
+                public void getItemOffsets(@NonNull Rect outRect, @NonNull View view, @NonNull RecyclerView parent, @NonNull RecyclerView.State state) {
+                    outRect.top = 10;
+                    outRect.bottom = 10;
+                    outRect.left = 20;
+                    outRect.right = 20;
+                }
+            });
+        }).start();
         return applicationBinding.getRoot();
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        applicationBinding.recyclerView.getViewTreeObserver().addOnGlobalFocusChangeListener(focusChangeListener);
     }
 
     @Override
     public void onPause() {
         super.onPause();
-        applicationBinding.recyclerView.getViewTreeObserver().removeOnGlobalFocusChangeListener(focusChangeListener);
     }
 
     @Override

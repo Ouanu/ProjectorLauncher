@@ -101,8 +101,11 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.OnLi
         super.onCreate(savedInstanceState);
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-        initView();
-        initBroadcast();
+        new Thread(()->{
+            initView();
+            initBroadcast();
+        }).start();
+
 
     }
 
