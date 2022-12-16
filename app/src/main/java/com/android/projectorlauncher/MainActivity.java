@@ -20,6 +20,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import com.android.projectorlauncher.databinding.ActivityMainBinding;
 import com.android.projectorlauncher.databinding.ItemMainTabBinding;
 import com.android.projectorlauncher.ui.fragment.ApplicationFragment;
@@ -32,6 +33,7 @@ import com.android.projectorlauncher.ui.fragment.MovieFragment;
 import com.android.projectorlauncher.ui.fragment.SettingsFragment;
 import com.android.projectorlauncher.ui.fragment.ShowFragment;
 import com.android.projectorlauncher.ui.fragment.TvFragment;
+
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -42,9 +44,9 @@ import java.util.Map;
 import java.util.Objects;
 
 
-public class MainActivity extends AppCompatActivity implements HomeFragment.OnListenerClick{
+public class MainActivity extends AppCompatActivity implements HomeFragment.OnListenerClick {
     ActivityMainBinding binding;
-    private final List<String> titles = Arrays.asList("首页", "电影", "剧集", "综艺", "动漫", "少儿", "体育", "应用", "设置");
+    private final List<String> titles = Arrays.asList("首页", "电影", "剧集", "综艺", "动漫", "少儿", "体育", "游戏", "应用", "设置");
     private final ArrayList<Fragment> fragments = new ArrayList<>();
     private final HomeFragment homeFragment = new HomeFragment();
     private final MovieFragment fragment = new MovieFragment();
@@ -101,7 +103,7 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.OnLi
         super.onCreate(savedInstanceState);
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-        new Thread(()->{
+        new Thread(() -> {
             initView();
             initBroadcast();
         }).start();
@@ -128,9 +130,10 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.OnLi
         fragments.add(comicsFragment);
         fragments.add(childrenFragment);
         fragments.add(matchFragment);
+        fragments.add(gameFragment);
         fragments.add(applicationFragment);
         fragments.add(settingsFragment);
-        fragments.add(gameFragment);
+
 
         binding.tabLayout.setAdapter(new TabAdapter());
         binding.tabLayout.addItemDecoration(new RecyclerView.ItemDecoration() {
@@ -169,6 +172,7 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.OnLi
     class TabViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         ItemMainTabBinding tabBinding;
         int position = 0;
+
         public TabViewHolder(@NonNull View itemView) {
             super(itemView);
             tabBinding = ItemMainTabBinding.bind(itemView);
@@ -198,13 +202,22 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.OnLi
                 if (lastTextView == null) {
                     lastTextView = tabBinding.mainTabText;
                     lastTextView.setTextColor(getColor(R.color.self_4));
+                    tabBinding.mainTabText.setNextFocusDownId(R.id.recommend_1);
                     ViewCompat.animate(lastTextView)
                             .scaleX(1.3f)
                             .scaleY(1.3f)
                             .setDuration(250)
                             .start();
-                    switchFragment(9);
+                    switchFragment(0);
                 }
+            } else if (position == 1 || position == 2 || position == 3 || position == 4 || position == 5) {
+                itemView.setNextFocusDownId(R.id.recommend_1);
+            } else if (position == 7) {
+                itemView.setNextFocusDownId(R.id.category_recycle_view);
+            } else if (position == 8) {
+                itemView.setNextFocusDownId(R.id.app_recycler_view);
+            } else if (position == 9) {
+                itemView.setNextFocusDownId(R.id.recycler_view_settings);
             }
         }
 
@@ -241,12 +254,12 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.OnLi
             textView.setTextColor(getColor(R.color.self_8));
         } else if (position == 6) {
             textView.setTextColor(getColor(R.color.self_7));
-        } else if (position == 7){
-            textView.setTextColor(getColor(R.color.self_6));
-        } else if (position == 8){
-            textView.setTextColor(getColor(R.color.self_4));
-        } else if (position == 9) {
+        } else if (position == 7) {
             textView.setTextColor(getColor(R.color.self_8));
+        } else if (position == 8) {
+            textView.setTextColor(getColor(R.color.self_6));
+        } else if (position == 9) {
+            textView.setTextColor(getColor(R.color.self_4));
         }
         lastTextView = textView;
         ViewCompat.animate(lastTextView)

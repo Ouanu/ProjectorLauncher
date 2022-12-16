@@ -52,9 +52,9 @@ public class ApplicationFragment extends Fragment implements PackagesStatusRecei
         new Thread(()->{
             resolveInfoList = ApplicationsUtils.getAllApplications(requireContext());
             ProjectorLayoutManager layoutManager = new ProjectorLayoutManager(getContext(), 4);
-            applicationBinding.recyclerView.setLayoutManager(layoutManager);
-            applicationBinding.recyclerView.setAdapter(new ApplicationAdapter());
-            applicationBinding.recyclerView.addItemDecoration(new RecyclerView.ItemDecoration() {
+            applicationBinding.appRecyclerView.setLayoutManager(layoutManager);
+            applicationBinding.appRecyclerView.setAdapter(new ApplicationAdapter());
+            applicationBinding.appRecyclerView.addItemDecoration(new RecyclerView.ItemDecoration() {
                 @Override
                 public void getItemOffsets(@NonNull Rect outRect, @NonNull View view, @NonNull RecyclerView parent, @NonNull RecyclerView.State state) {
                     outRect.top = 10;

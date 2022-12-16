@@ -21,8 +21,6 @@ import com.android.projectorlauncher.databinding.ItemGameTabBinding;
 import com.android.projectorlauncher.presenter.GamePresenter;
 import com.android.projectorlauncher.ui.view.GameView;
 import com.bumptech.glide.Glide;
-
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -124,11 +122,14 @@ public class GameFragment extends Fragment implements GameView {
             cardBinding = ItemGameCardBinding.bind(itemView);
         }
 
-        private void bind(String image) {
+        private void bind(int position) {
             Glide.with(cardBinding.cardView)
                     .load(R.drawable.moon_man)
                     .centerCrop()
                     .into(cardBinding.cardView);
+            if (position == 0) {
+                itemView.setNextFocusUpId(R.id.tabLayout);
+            }
         }
     }
 
@@ -143,7 +144,7 @@ public class GameFragment extends Fragment implements GameView {
 
         @Override
         public void onBindViewHolder(@NonNull CardViewHolder holder, int position) {
-            holder.bind(cards.get(position).getImage());
+            holder.bind(position);
         }
 
         @Override
