@@ -5,6 +5,7 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.android.projectorlauncher.bean.GameCard;
@@ -84,11 +85,22 @@ public class JumpToApplication {
     }
 
     public static void turnToGame(Context context, GameCard card) {
-        Intent intent = new Intent();
-        ComponentName componentName = new ComponentName(card.getPackageName(), card.getClassName());
-        intent.setComponent(componentName);
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        context.startActivity(intent);
+        try {
+            Intent intent = new Intent();
+            ComponentName componentName = new ComponentName(card.getPackageName(), card.getClassName());
+            intent.setComponent(componentName);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            context.startActivity(intent);
+        } catch (Exception e) {
+            Log.d("JumpToApplication", "turnToGame: 没有该应用或者该类，跳转到更新页面进行更新");
+            Intent intent = new Intent();
+            ComponentName componentName = new ComponentName("com.android.projectorupdate", "com.android.projectorupdate.MainActivity");
+            intent.setComponent(componentName);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            context.startActivity(intent);
+        }
+
+
     }
 
 }

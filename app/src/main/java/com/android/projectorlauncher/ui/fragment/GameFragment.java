@@ -1,5 +1,6 @@
 package com.android.projectorlauncher.ui.fragment;
 
+import android.annotation.SuppressLint;
 import android.graphics.Rect;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -9,12 +10,11 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.MutableLiveData;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.android.projectorlauncher.MainActivity;
 import com.android.projectorlauncher.R;
-import com.android.projectorlauncher.bean.GameCard;
 import com.android.projectorlauncher.databinding.FragmentGameBinding;
 import com.android.projectorlauncher.databinding.ItemGameCardBinding;
 import com.android.projectorlauncher.databinding.ItemGameTabBinding;
@@ -23,27 +23,20 @@ import com.android.projectorlauncher.ui.view.GameView;
 import com.bumptech.glide.Glide;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 
 public class GameFragment extends Fragment implements GameView {
 
     private FragmentGameBinding gameBinding;
     private GamePresenter presenter;
-    private List<String> tabs = Arrays.asList("健身", "休闲", "竞技");
-
-    private final List<GameCard> cards = Arrays.asList(
-            new GameCard("1", "1", "2", "2", 0),
-            new GameCard("1", "1", "2", "2", 0),
-            new GameCard("1", "1", "2", "2", 0),
-            new GameCard("1", "1", "2", "2", 0),
-            new GameCard("1", "1", "2", "2", 0),
-            new GameCard("1", "1", "2", "2", 0));
-    private final MutableLiveData<List<GameCard>> mutableCards = new MutableLiveData<>(cards);
+    private final List<String> tabs = Arrays.asList("健身", "休闲", "竞技");
+    private int tag = 0;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         gameBinding = FragmentGameBinding.inflate(inflater, container, false);
-        presenter = new GamePresenter(requireActivity());
+        presenter = new GamePresenter((MainActivity) requireActivity());
         gameBinding.categoryRecycleView.setAdapter(new CategoryTabAdapter());
         gameBinding.categoryRecycleView.addItemDecoration(new RecyclerView.ItemDecoration() {
             @Override
@@ -73,24 +66,34 @@ public class GameFragment extends Fragment implements GameView {
     @Override
     public void onStart() {
         super.onStart();
-//        presenter.init();
+        presenter.setView(this);
+        presenter.init();
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     @Override
     public void update() {
-//        mutableCards.setValue(presenter.getCards());
+        Objects.requireNonNull(gameBinding.cardsRecycleView.getAdapter()).notifyDataSetChanged();
     }
 
-    class CategoryTabViewHolder extends RecyclerView.ViewHolder {
+    class CategoryTabViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         ItemGameTabBinding tabBinding;
-
+        int position = 0;
         public CategoryTabViewHolder(@NonNull View itemView) {
             super(itemView);
             tabBinding = ItemGameTabBinding.bind(itemView);
+            itemView.setOnClickListener(this);
         }
 
-        public void bind(String imgSrc, String title) {
-            tabBinding.title.setText(title);
+        public void bind(String imgSrc, int position) {
+            tabBinding.title.setText(tabs.get(position));
+            this.position = position;
+        }
+
+        @Override
+        public void onClick(View v) {
+            tag = position;
+            presenter.setGameTag(tag);
         }
     }
 
@@ -106,7 +109,7 @@ public class GameFragment extends Fragment implements GameView {
 
         @Override
         public void onBindViewHolder(@NonNull CategoryTabViewHolder holder, int position) {
-            holder.bind("123", tabs.get(position));
+            holder.bind("123", position);
         }
 
         @Override
@@ -115,11 +118,13 @@ public class GameFragment extends Fragment implements GameView {
         }
     }
 
-    class CardViewHolder extends RecyclerView.ViewHolder{
+    class CardViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         ItemGameCardBinding cardBinding;
+        int position = 0;
         public CardViewHolder(@NonNull View itemView) {
             super(itemView);
             cardBinding = ItemGameCardBinding.bind(itemView);
+            itemView.setOnClickListener(this);
         }
 
         private void bind(int position) {
@@ -130,6 +135,12 @@ public class GameFragment extends Fragment implements GameView {
             if (position == 0) {
                 itemView.setNextFocusUpId(R.id.tabLayout);
             }
+            this.position = position;
+        }
+
+        @Override
+        public void onClick(View v) {
+            presenter.turnToGame(presenter.getCard(position));
         }
     }
 
@@ -149,7 +160,7 @@ public class GameFragment extends Fragment implements GameView {
 
         @Override
         public int getItemCount() {
-            return cards.size();
+            return presenter.sizeOfCards(tag);
         }
     }
 
