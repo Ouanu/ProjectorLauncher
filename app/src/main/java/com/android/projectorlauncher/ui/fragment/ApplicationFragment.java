@@ -1,5 +1,7 @@
 package com.android.projectorlauncher.ui.fragment;
 
+import static com.android.projectorlauncher.utils.ApplicationsUtils.getAllApplications;
+
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
@@ -9,24 +11,28 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.view.ViewCompat;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.MutableLiveData;
 import androidx.recyclerview.widget.RecyclerView;
+
 import com.android.projectorlauncher.R;
 import com.android.projectorlauncher.databinding.FragmentApplicationBinding;
 import com.android.projectorlauncher.databinding.ItemAppBinding;
 import com.android.projectorlauncher.receiver.PackagesStatusReceiver;
 import com.android.projectorlauncher.ui.design.ProjectorLayoutManager;
-import com.android.projectorlauncher.utils.ApplicationsUtils;
 import com.bumptech.glide.Glide;
+
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class ApplicationFragment extends Fragment implements PackagesStatusReceiver.PackagesCallback {
-    private FragmentApplicationBinding applicationBinding;
     private PackagesStatusReceiver receiver;
-    private List<ResolveInfo> resolveInfoList;
+    private final MutableLiveData<List<ResolveInfo>> resolveInfoList = new MutableLiveData<>(new ArrayList<>());
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -48,22 +54,20 @@ public class ApplicationFragment extends Fragment implements PackagesStatusRecei
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        applicationBinding = FragmentApplicationBinding.inflate(inflater, container, false);
+        com.android.projectorlauncher.databinding.FragmentApplicationBinding applicationBinding = FragmentApplicationBinding.inflate(inflater, container, false);
         ProjectorLayoutManager layoutManager = new ProjectorLayoutManager(getContext(), 4);
         applicationBinding.appRecyclerView.setLayoutManager(layoutManager);
-        new Thread(()->{
-            resolveInfoList = ApplicationsUtils.getAllApplications(requireContext());
-            applicationBinding.appRecyclerView.setAdapter(new ApplicationAdapter());
-            applicationBinding.appRecyclerView.addItemDecoration(new RecyclerView.ItemDecoration() {
-                @Override
-                public void getItemOffsets(@NonNull Rect outRect, @NonNull View view, @NonNull RecyclerView parent, @NonNull RecyclerView.State state) {
-                    outRect.top = 10;
-                    outRect.bottom = 10;
-                    outRect.left = 20;
-                    outRect.right = 20;
-                }
-            });
-        }).start();
+        applicationBinding.appRecyclerView.setAdapter(new ApplicationAdapter());
+        applicationBinding.appRecyclerView.addItemDecoration(new RecyclerView.ItemDecoration() {
+            @Override
+            public void getItemOffsets(@NonNull Rect outRect, @NonNull View view, @NonNull RecyclerView parent, @NonNull RecyclerView.State state) {
+                outRect.top = 10;
+                outRect.bottom = 10;
+                outRect.left = 20;
+                outRect.right = 20;
+            }
+        });
+        statusChanged();
         return applicationBinding.getRoot();
     }
 
@@ -85,13 +89,14 @@ public class ApplicationFragment extends Fragment implements PackagesStatusRecei
 
     @Override
     public void statusChanged() {
-        resolveInfoList = ApplicationsUtils.getAllApplications(requireContext());
+        resolveInfoList.setValue(getAllApplications(requireContext()));
 
     }
 
     class ApplicationViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         ItemAppBinding binding;
         int index;
+
         public ApplicationViewHolder(@NonNull View itemView) {
             super(itemView);
             binding = ItemAppBinding.bind(itemView);
@@ -115,10 +120,10 @@ public class ApplicationFragment extends Fragment implements PackagesStatusRecei
 
         public void bind(int position) {
             index = position;
-            binding.label.setText(resolveInfoList.get(position).loadLabel(requireContext().getPackageManager()));
+            binding.label.setText(Objects.requireNonNull(resolveInfoList.getValue()).get(position).loadLabel(requireContext().getPackageManager()));
             itemView.setTag(position);
             Glide.with(binding.image)
-                    .load(resolveInfoList.get(position).loadIcon(requireContext().getPackageManager()))
+                    .load(resolveInfoList.getValue().get(position).loadIcon(requireContext().getPackageManager()))
                     .error(R.color.white)
                     .centerCrop()
                     .into(binding.image);
@@ -126,7 +131,7 @@ public class ApplicationFragment extends Fragment implements PackagesStatusRecei
 
         @Override
         public void onClick(View v) {
-            Intent intent = requireContext().getPackageManager().getLaunchIntentForPackage(resolveInfoList.get(index).activityInfo.packageName);
+            Intent intent = requireContext().getPackageManager().getLaunchIntentForPackage(Objects.requireNonNull(resolveInfoList.getValue()).get(index).activityInfo.packageName);
             if (intent != null) {
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 requireContext().startActivity(intent);
@@ -136,6 +141,7 @@ public class ApplicationFragment extends Fragment implements PackagesStatusRecei
 
     class ApplicationAdapter extends RecyclerView.Adapter<ApplicationViewHolder> {
         ItemAppBinding binding;
+
         @NonNull
         @Override
         public ApplicationViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -150,7 +156,7 @@ public class ApplicationFragment extends Fragment implements PackagesStatusRecei
 
         @Override
         public int getItemCount() {
-            return resolveInfoList.size();
+            return Objects.requireNonNull(resolveInfoList.getValue()).size();
         }
     }
 }
