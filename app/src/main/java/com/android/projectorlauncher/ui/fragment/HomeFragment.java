@@ -70,7 +70,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         } else if (v == homeBinding.shows) {
             listener.turnToPager(3);
         } else if (v == homeBinding.settings) {
-            listener.turnToPager(8);
+            listener.turnToPager(9);
         } else if (v == homeBinding.recentWatch) {
             JumpToApplication.turnToHistory(requireContext());
         } else if (v == homeBinding.search) {

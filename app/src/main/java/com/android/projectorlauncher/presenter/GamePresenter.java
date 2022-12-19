@@ -60,6 +60,7 @@ public class GamePresenter {
 
     // 跳转到指定的视频详情页面
     public void turnToGame(GameCard card) {
+
         JumpToApplication.turnToGame(activity, card);
     }
 

@@ -49,10 +49,10 @@ public class ApplicationFragment extends Fragment implements PackagesStatusRecei
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         applicationBinding = FragmentApplicationBinding.inflate(inflater, container, false);
+        ProjectorLayoutManager layoutManager = new ProjectorLayoutManager(getContext(), 4);
+        applicationBinding.appRecyclerView.setLayoutManager(layoutManager);
         new Thread(()->{
             resolveInfoList = ApplicationsUtils.getAllApplications(requireContext());
-            ProjectorLayoutManager layoutManager = new ProjectorLayoutManager(getContext(), 4);
-            applicationBinding.appRecyclerView.setLayoutManager(layoutManager);
             applicationBinding.appRecyclerView.setAdapter(new ApplicationAdapter());
             applicationBinding.appRecyclerView.addItemDecoration(new RecyclerView.ItemDecoration() {
                 @Override

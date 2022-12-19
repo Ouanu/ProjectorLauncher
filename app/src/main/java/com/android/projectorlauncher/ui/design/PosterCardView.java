@@ -2,6 +2,7 @@ package com.android.projectorlauncher.ui.design;
 
 import android.content.Context;
 import android.content.res.Resources;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.util.AttributeSet;
 import android.view.ViewGroup;
@@ -12,8 +13,13 @@ import androidx.annotation.Nullable;
 import androidx.cardview.widget.CardView;
 
 import com.android.projectorlauncher.R;
+import com.android.projectorlauncher.bean.Tag;
+import com.android.projectorlauncher.utils.ImageUtils;
+import com.android.projectorlauncher.utils.NetworkUtils;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.request.target.CustomTarget;
+import com.bumptech.glide.request.transition.Transition;
 
 public class PosterCardView extends CardView {
     private ImageView imageView;
@@ -38,7 +44,7 @@ public class PosterCardView extends CardView {
         imageView.setLayoutParams(layoutParams);
         imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
         this.addView(imageView);
-        this.setCardElevation(3f);
+
     }
 
     public void setImageResource(int resId) {
@@ -48,6 +54,26 @@ public class PosterCardView extends CardView {
                 .centerCrop()
                 .diskCacheStrategy(DiskCacheStrategy.NONE)//不缓冲disk硬盘中
                 .into(imageView);
+    }
+
+    public void setImageDrawable(String src, String tag, int index) {
+        Glide.with(imageView)
+                .load(NetworkUtils.isOnline(getContext())? src : ImageUtils.getCacheImage(getContext(), tag, index))
+                .error(R.drawable.error_cover_can_t_found)
+                .fitCenter()
+                .diskCacheStrategy(DiskCacheStrategy.NONE)
+                .into(new CustomTarget<Drawable>() {
+                    @Override
+                    public void onResourceReady(@NonNull Drawable resource, @Nullable Transition<? super Drawable> transition) {
+                        imageView.setImageDrawable(resource);
+                        ImageUtils.saveImage(getContext(), tag, index, resource);
+                    }
+
+                    @Override
+                    public void onLoadCleared(@Nullable Drawable placeholder) {
+
+                    }
+                });
     }
 
 

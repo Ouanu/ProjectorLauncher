@@ -1,9 +1,13 @@
 package com.android.projectorlauncher.utils;
 
+import static com.android.projectorlauncher.utils.NetworkUtils.isOnline;
+
 import android.content.Context;
 import android.os.Handler;
 import android.util.Log;
 import com.alibaba.fastjson.JSONReader;
+import com.android.projectorlauncher.bean.VideoCard;
+
 import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -20,6 +24,7 @@ import java.util.List;
 public class JsonUtils {
     public static final int DOWNLOAD_SUCCESS = 101;
     public static final int DOWNLOAD_FAILURE = 202;
+    public static final int NO_NETWORK_CACHE = 303;
 
     public static <T> List<T> readCards(Context context, String json, Class<T> type) {
         File dir = context.getFilesDir();
@@ -66,5 +71,15 @@ public class JsonUtils {
             }
         }).start();
     }
+
+    public static void autoLinkVideos(Context context, Handler handler, String json) {
+        if (isOnline(context)) {
+            downloadJson(context, json, handler);
+        } else {
+           handler.sendEmptyMessage(NO_NETWORK_CACHE);
+        }
+    }
+
+
 
 }

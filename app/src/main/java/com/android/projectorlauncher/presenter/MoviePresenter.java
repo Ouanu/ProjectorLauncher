@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
+import android.util.Log;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -34,12 +35,9 @@ public class MoviePresenter {
 
     // 初始化数据
     public void init() {
-        JsonUtils.downloadJson(activity, Tag.MOVIE, handler);
-    }
-
-    // 列表大小
-    public int sizeOfCards() {
-        return cards.size();
+        Log.d("MoviePresenter", "init: ==================");
+        JsonUtils.autoLinkVideos(activity, handler, Tag.MOVIE);
+//        JsonUtils.downloadJson(activity, Tag.MOVIE, handler);
     }
 
     // 获得MovieFragment接口
@@ -49,7 +47,10 @@ public class MoviePresenter {
 
     // 跳转到指定的视频详情页面
     public void turnVideoDetailPage(int index) {
-        if (index >= cards.size()) return;
+        if (index >= cards.size()) {
+            Toast.makeText(activity, "请连接网络后重试", Toast.LENGTH_SHORT).show();
+            return;
+        }
         JumpToApplication.playVideo(activity, cards.get(index).getId());
     }
 
@@ -89,6 +90,10 @@ public class MoviePresenter {
                 }
             } else if (msg.what == CacheUtil.IMAGE_PREPARED) {
                 view.updateIndex(msg.getData().getInt("INDEX", -1));
+            } else if (msg.what == JsonUtils.NO_NETWORK_CACHE) {
+                cards.clear();
+                cards.addAll(JsonUtils.readCards(activity, Tag.MOVIE, VideoCard.class));
+                view.updateAll();
             } else {
                 Toast.makeText(activity, "请检查网络", Toast.LENGTH_SHORT).show();
                 view.updateAll();

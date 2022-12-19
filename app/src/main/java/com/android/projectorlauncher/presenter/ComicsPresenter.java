@@ -36,11 +36,6 @@ public class ComicsPresenter {
         JsonUtils.downloadJson(activity, Tag.COMICS, handler);
     }
 
-    // 列表大小
-    public int sizeOfCards() {
-        return cards.size();
-    }
-
     // 获得MovieFragment接口
     public void setView(MovieView view) {
         this.view = view;
@@ -48,7 +43,10 @@ public class ComicsPresenter {
 
     // 跳转到指定的视频详情页面
     public void turnVideoDetailPage(int index) {
-        if (index >= cards.size()) return;
+        if (index >= cards.size()) {
+            Toast.makeText(activity, "请连接网络后重试", Toast.LENGTH_SHORT).show();
+            return;
+        }
         JumpToApplication.playVideo(activity, cards.get(index).getId());
     }
 
@@ -86,6 +84,10 @@ public class ComicsPresenter {
                 for (int i = 0; i < 12; i++) {
                     CacheUtil.downloadImage(activity, cards.get(i).getImgSrc(), i, map, handler);
                 }
+            } else if (msg.what == JsonUtils.NO_NETWORK_CACHE) {
+                cards.clear();
+                cards.addAll(JsonUtils.readCards(activity, Tag.COMICS, VideoCard.class));
+                view.updateAll();
             } else if (msg.what == CacheUtil.IMAGE_PREPARED) {
                 view.updateIndex(msg.getData().getInt("INDEX", -1));
             } else {

@@ -1,6 +1,7 @@
 package com.android.projectorlauncher.ui.fragment;
 
 import android.content.Context;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,12 +12,17 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.android.projectorlauncher.R;
+import com.android.projectorlauncher.bean.Tag;
 import com.android.projectorlauncher.databinding.FragmentUnityShowBinding;
 import com.android.projectorlauncher.presenter.ShowPresenter;
 import com.android.projectorlauncher.ui.view.MovieView;
+import com.android.projectorlauncher.utils.ImageUtils;
+import com.android.projectorlauncher.utils.NetworkUtils;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
+import com.bumptech.glide.request.target.CustomTarget;
+import com.bumptech.glide.request.transition.Transition;
 import com.google.android.material.imageview.ShapeableImageView;
 
 import java.util.ArrayList;
@@ -62,16 +68,14 @@ public class ShowFragment extends Fragment implements View.OnClickListener, Movi
     public void onStart() {
         super.onStart();
         presenter.setView(this);
-        setClick();
         init();
+        setClick();
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        if (presenter.sizeOfCards() == 0) {
-            presenter.init();
-        }
+        presenter.init();
     }
 
     @Override
@@ -123,11 +127,23 @@ public class ShowFragment extends Fragment implements View.OnClickListener, Movi
     public void updateIndex(int index) {
         if (index == -1 || views.size() == 0) return;
         Glide.with(views.get(index))
-                .load(presenter.getImage(index))
+                .load(NetworkUtils.isOnline(requireContext()) ? presenter.getImage(index) : ImageUtils.getCacheImage(requireContext(), Tag.SHOW_IMAGE, index))
                 .error(R.drawable.error_cover_can_t_found)
                 .fitCenter()
+                .diskCacheStrategy(DiskCacheStrategy.NONE)
                 .apply(options)
-                .into(views.get(index));
+                .into(new CustomTarget<Drawable>() {
+                    @Override
+                    public void onResourceReady(@NonNull Drawable resource, @Nullable Transition<? super Drawable> transition) {
+                        views.get(index).setImageDrawable(resource);
+                        ImageUtils.saveImage(requireContext(), Tag.SHOW_IMAGE, index, resource);
+                    }
+
+                    @Override
+                    public void onLoadCleared(@Nullable Drawable placeholder) {
+
+                    }
+                });
     }
 
 
