@@ -3,8 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.android.projectorlauncher"
     android:sharedUserId="android.uid.system"
-    tools:ignore="ProtectedPermissions" >
-
+    tools:ignore="ProtectedPermissions">
 
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.WRITE_SETTINGS" />
@@ -41,37 +40,33 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.ProjectorLauncher"
         android:usesCleartextTraffic="true">
+
         <activity
             android:name=".MainActivity"
-            android:clearTaskOnLaunch="true"
             android:exported="true"
             android:hardwareAccelerated="true"
-            android:launchMode="singleTask"
+            android:launchMode="singleInstance"
             android:permission="com.hisilicon.permission.COMMON_PERMISSION"
             android:screenOrientation="landscape">
-            <intent-filter>
+            <intent-filter android:priority="1000">
                 <action android:name="android.intent.action.MAIN" />
-
-<!--                <category android:name="android.intent.category.HOME" />-->
-
+                <category android:name="android.intent.category.HOME" />
                 <category android:name="android.intent.category.DEFAULT" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
-
-                <category android:name="android.intent.category.LEANBACK_LAUNCHER"/>
+                <category android:name="android.intent.category.LEANBACK_LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity
             android:name=".ui.activity.ResourceActivity"
             android:exported="true"
-            android:screenOrientation="landscape"></activity>
-
+            android:screenOrientation="landscape" />
         <activity
             android:name=".ui.activity.KeystoneActivity"
             android:exported="true"
+            android:screenOrientation="landscape"></activity>
+        <activity android:name=".ui.activity.SettingsActivity"
+            android:exported="true"
             android:screenOrientation="landscape">
-
         </activity>
     </application>
 

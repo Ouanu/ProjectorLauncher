@@ -154,6 +154,7 @@
         <entry key="..\:/project/ProjectorLauncher/app/src/main/res/layout/activity_main2.xml" value="0.190625" />
         <entry key="..\:/project/ProjectorLauncher/app/src/main/res/layout/activity_play.xml" value="0.1" />
         <entry key="..\:/project/ProjectorLauncher/app/src/main/res/layout/activity_resource.xml" value="0.1" />
+        <entry key="..\:/project/ProjectorLauncher/app/src/main/res/layout/activity_settings.xml" value="0.1" />
         <entry key="..\:/project/ProjectorLauncher/app/src/main/res/layout/activity_wifi.xml" value="0.22" />
         <entry key="..\:/project/ProjectorLauncher/app/src/main/res/layout/dialog_add_network.xml" value="0.22" />
         <entry key="..\:/project/ProjectorLauncher/app/src/main/res/layout/dialog_category.xml" value="0.14" />
@@ -169,7 +170,7 @@
         <entry key="..\:/project/ProjectorLauncher/app/src/main/res/layout/fragment_match.xml" value="0.18" />
         <entry key="..\:/project/ProjectorLauncher/app/src/main/res/layout/fragment_movie.xml" value="0.1" />
         <entry key="..\:/project/ProjectorLauncher/app/src/main/res/layout/fragment_pager.xml" value="0.22" />
-        <entry key="..\:/project/ProjectorLauncher/app/src/main/res/layout/fragment_settings.xml" value="0.1" />
+        <entry key="..\:/project/ProjectorLauncher/app/src/main/res/layout/fragment_settings.xml" value="0.16614583333333333" />
         <entry key="..\:/project/ProjectorLauncher/app/src/main/res/layout/fragment_show.xml" value="0.18095238095238095" />
         <entry key="..\:/project/ProjectorLauncher/app/src/main/res/layout/fragment_system.xml" value="0.18" />
         <entry key="..\:/project/ProjectorLauncher/app/src/main/res/layout/fragment_time.xml" value="0.16" />

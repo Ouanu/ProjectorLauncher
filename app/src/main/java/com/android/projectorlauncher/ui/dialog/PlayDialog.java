@@ -108,9 +108,15 @@ public class PlayDialog extends DialogFragment implements View.OnClickListener {
     }
 
     @Override
-    public void onDestroy() {
+    public void onStop() {
+        super.onStop();
         helper.stop();
         helper.destroy();
+    }
+
+    @Override
+    public void onDestroy() {
+
         requireActivity().unregisterReceiver(receiver);
         super.onDestroy();
     }

@@ -17,6 +17,7 @@
         android:layout_marginStart="10dp"
         android:letterSpacing="0.3"
         android:text="BECAUSE OF YOU"
+        android:maxLines="1"
         android:textColor="@color/white"
         android:textSize="18sp" />
 
