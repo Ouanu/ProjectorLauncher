@@ -59,7 +59,6 @@
             android:nextFocusRight="@id/checkPasswd"
             android:nextFocusUp="@id/back"
             android:nextFocusDown="@id/checkPasswd"
-            android:text="123"
             android:textColor="@color/self_4"
             android:textSize="22sp" />
 

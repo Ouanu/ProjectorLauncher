@@ -52,4 +52,5 @@
     <string name="more_category_new">更多内容</string>
     <string name="keystone_settings">梯度设置</string>
     <string name="picture_settings">画面设置</string>
+    <string name="switch_ethernet_success">切换成功</string>
 </resources>

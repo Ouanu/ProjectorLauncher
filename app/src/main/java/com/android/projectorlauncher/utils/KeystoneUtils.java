@@ -87,6 +87,16 @@ public class KeystoneUtils {
         getRbXY();
     }
 
+    public static void activated(IHwSysManager sysManager) {
+        try {
+            sysManager.hiPropertySet("persist.hisi.keystone.enable", "true");
+            SystemProperties.set("persist.sys.keystone.enable", "true");
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
+
+    }
+
     public static int[] strToArray(String str) {
         int[] xy = new int[2];
         int i = 0;

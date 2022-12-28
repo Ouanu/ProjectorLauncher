@@ -81,6 +81,7 @@
         <entry key="..\:/project/ProjectorLauncher/app/src/main/res/drawable/item_option_un_focus.xml" value="0.1" />
         <entry key="..\:/project/ProjectorLauncher/app/src/main/res/drawable/item_select_background.xml" value="0.1" />
         <entry key="..\:/project/ProjectorLauncher/app/src/main/res/drawable/item_spinner_background.xml" value="0.122" />
+        <entry key="..\:/project/ProjectorLauncher/app/src/main/res/drawable/item_tab_background.xml" value="0.127" />
         <entry key="..\:/project/ProjectorLauncher/app/src/main/res/drawable/item_wifi_connected.xml" value="0.1025" />
         <entry key="..\:/project/ProjectorLauncher/app/src/main/res/drawable/item_wifi_connected_focus.xml" value="0.1585" />
         <entry key="..\:/project/ProjectorLauncher/app/src/main/res/drawable/item_wifi_focus.xml" value="0.1585" />
@@ -119,7 +120,10 @@
         <entry key="..\:/project/ProjectorLauncher/app/src/main/res/drawable/tab_style.xml" value="0.231" />
         <entry key="..\:/project/ProjectorLauncher/app/src/main/res/drawable/tab_un_focuse.xml" value="0.1" />
         <entry key="..\:/project/ProjectorLauncher/app/src/main/res/drawable/tablayout_background.xml" value="0.237" />
+        <entry key="..\:/project/ProjectorLauncher/app/src/main/res/drawable/text_white_black_selector.xml" value="0.127" />
         <entry key="..\:/project/ProjectorLauncher/app/src/main/res/drawable/time_popup_window_background.xml" value="0.106" />
+        <entry key="..\:/project/ProjectorLauncher/app/src/main/res/drawable/time_popup_window_background_stroke.xml" value="0.1" />
+        <entry key="..\:/project/ProjectorLauncher/app/src/main/res/drawable/time_settings_background_selector.xml" value="0.1335" />
         <entry key="..\:/project/ProjectorLauncher/app/src/main/res/drawable/time_settings_foreground.xml" value="0.222" />
         <entry key="..\:/project/ProjectorLauncher/app/src/main/res/drawable/time_settings_foreground_selector.xml" value="0.222" />
         <entry key="..\:/project/ProjectorLauncher/app/src/main/res/drawable/tv_card_new_background_focus.xml" value="0.274" />
@@ -152,6 +156,7 @@
         <entry key="..\:/project/ProjectorLauncher/app/src/main/res/layout/activity_keystone.xml" value="0.1" />
         <entry key="..\:/project/ProjectorLauncher/app/src/main/res/layout/activity_main.xml" value="0.296875" />
         <entry key="..\:/project/ProjectorLauncher/app/src/main/res/layout/activity_main2.xml" value="0.190625" />
+        <entry key="..\:/project/ProjectorLauncher/app/src/main/res/layout/activity_picture.xml" value="0.13" />
         <entry key="..\:/project/ProjectorLauncher/app/src/main/res/layout/activity_play.xml" value="0.1" />
         <entry key="..\:/project/ProjectorLauncher/app/src/main/res/layout/activity_resource.xml" value="0.1" />
         <entry key="..\:/project/ProjectorLauncher/app/src/main/res/layout/activity_settings.xml" value="0.1" />
@@ -166,11 +171,11 @@
         <entry key="..\:/project/ProjectorLauncher/app/src/main/res/layout/fragment_comics.xml" value="0.18" />
         <entry key="..\:/project/ProjectorLauncher/app/src/main/res/layout/fragment_ethernet.xml" value="0.33" />
         <entry key="..\:/project/ProjectorLauncher/app/src/main/res/layout/fragment_game.xml" value="0.12" />
-        <entry key="..\:/project/ProjectorLauncher/app/src/main/res/layout/fragment_home.xml" value="0.13" />
+        <entry key="..\:/project/ProjectorLauncher/app/src/main/res/layout/fragment_home.xml" value="0.14" />
         <entry key="..\:/project/ProjectorLauncher/app/src/main/res/layout/fragment_match.xml" value="0.18" />
         <entry key="..\:/project/ProjectorLauncher/app/src/main/res/layout/fragment_movie.xml" value="0.1" />
         <entry key="..\:/project/ProjectorLauncher/app/src/main/res/layout/fragment_pager.xml" value="0.22" />
-        <entry key="..\:/project/ProjectorLauncher/app/src/main/res/layout/fragment_settings.xml" value="0.16614583333333333" />
+        <entry key="..\:/project/ProjectorLauncher/app/src/main/res/layout/fragment_settings.xml" value="0.1" />
         <entry key="..\:/project/ProjectorLauncher/app/src/main/res/layout/fragment_show.xml" value="0.18095238095238095" />
         <entry key="..\:/project/ProjectorLauncher/app/src/main/res/layout/fragment_system.xml" value="0.18" />
         <entry key="..\:/project/ProjectorLauncher/app/src/main/res/layout/fragment_time.xml" value="0.16" />

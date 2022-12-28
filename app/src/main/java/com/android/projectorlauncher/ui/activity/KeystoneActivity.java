@@ -33,9 +33,9 @@ public class KeystoneActivity extends Activity implements View.OnClickListener, 
     private final int[] minXy = new int[]{-1, -1};
     private int mode = -1;
 
-    static {
-        System.loadLibrary("projectorlauncher");
-    }
+//    static {
+//        System.loadLibrary("projectorlauncher");
+//    }
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -56,6 +56,7 @@ public class KeystoneActivity extends Activity implements View.OnClickListener, 
         keystoneBinding.keystoneY.setText("0");
         try {
             sysManager = IHwSysManager.getService();
+            KeystoneUtils.activated(sysManager);
         } catch (RemoteException e) {
             e.printStackTrace();
         }

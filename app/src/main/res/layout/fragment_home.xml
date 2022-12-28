@@ -23,22 +23,22 @@
         android:weightSum="3">
 
         <androidx.cardview.widget.CardView
-            android:id="@+id/recent_watch"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="5dp"
             android:layout_marginVertical="5dp"
             android:layout_weight="2"
-            android:focusable="true"
-            android:foreground="@drawable/home_card_selector"
+            android:descendantFocusability="afterDescendants"
             android:nextFocusRight="@id/settings">
 
             <ImageView
-                android:id="@+id/connect_recent"
+                android:id="@+id/recent_watch"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:scaleType="centerCrop"
                 android:src="@drawable/home_history"
+                android:focusable="true"
+                android:foreground="@drawable/home_card_selector"
                 android:contentDescription="@string/recent_history" />
 
             <TextView
@@ -153,25 +153,28 @@
         </androidx.cardview.widget.CardView>
 
         <androidx.cardview.widget.CardView
-            android:id="@+id/shows"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_marginHorizontal="5dp"
             android:layout_marginVertical="5dp"
             android:layout_weight="1.2"
-            android:foreground="@drawable/home_card_selector"
-            android:focusable="true">
+            android:descendantFocusability="afterDescendants">
 
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:descendantFocusability="afterDescendants">
 
                 <ImageView
+                    android:id="@+id/shows"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:scaleType="centerCrop"
                     android:src="@drawable/home_show"
+                    android:foreground="@drawable/home_card_selector"
+
+                    android:focusable="true"
                     android:contentDescription="@string/show" />
 
                 <TextView
@@ -179,10 +182,10 @@
                     android:layout_height="match_parent"
                     android:fontFamily="sans-serif"
                     android:gravity="center"
+                    android:letterSpacing="0.2"
                     android:text="@string/show_text"
                     android:textColor="@color/white"
                     android:textSize="25sp"
-                    android:letterSpacing="0.2"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintHeight_percent="0.3"
                     app:layout_constraintTop_toTopOf="parent"
@@ -428,26 +431,28 @@
         </androidx.cardview.widget.CardView>
 
         <androidx.cardview.widget.CardView
-            android:id="@+id/movie"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_marginHorizontal="5dp"
             android:layout_marginVertical="5dp"
             android:layout_weight="2"
-            android:focusable="true"
-            android:foreground="@drawable/home_card_selector">
+            android:descendantFocusability="afterDescendants">
 
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:descendantFocusability="afterDescendants">
 
                 <ImageView
+                    android:id="@+id/movie"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:scaleType="centerCrop"
                     android:src="@drawable/home_movie"
-                    android:contentDescription="@string/movie" />
+                    android:contentDescription="@string/movie"
+                    android:focusable="true"
+                    android:foreground="@drawable/home_card_selector"/>
 
                 <TextView
                     android:layout_width="match_parent"

@@ -188,14 +188,14 @@ public class TimeFragment extends Fragment implements View.OnClickListener {
             }
             timeChange = 0;
             timeWindow.setAnimationStyle(R.anim.anim_pop);
-            timeWindow.showAsDropDown(v, 200, 0);
+            timeWindow.showAsDropDown(v, 50, 0);
         } else if (v == timeBinding.timeMinute) {
             if (timeWindow.isShowing()) {
                 timeWindow.dismiss();
             }
             timeChange = 1;
             timeWindow.setAnimationStyle(R.anim.anim_pop);
-            timeWindow.showAsDropDown(v, 200, 0);
+            timeWindow.showAsDropDown(v, 50, 0);
         } else if (v == timeBinding.dateSet) {
             if (calendarWindow.isShowing()) {
                 calendarWindow.dismiss();

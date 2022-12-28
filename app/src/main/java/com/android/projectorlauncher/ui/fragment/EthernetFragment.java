@@ -7,11 +7,13 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.android.projectorlauncher.R;
 import com.android.projectorlauncher.databinding.FragmentEthernetBinding;
 import com.android.projectorlauncher.utils.EthernetUtils;
 
@@ -74,6 +76,7 @@ public class EthernetFragment extends Fragment implements View.OnClickListener {
                         String.valueOf(ethernetBinding.netmask.getText()),
                         String.valueOf(ethernetBinding.dns1.getText()));
             }
+            Toast.makeText(requireContext(), R.string.switch_ethernet_success, Toast.LENGTH_SHORT).show();
 
         }
 

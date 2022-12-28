@@ -2,7 +2,6 @@ package com.android.projectorlauncher;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.view.ViewCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -184,30 +183,31 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.OnLi
             tabBinding.mainTabText.setText(titles.get(position));
             itemView.setOnFocusChangeListener((v, hasFocus) -> {
                 map.put(hasFocus, v.getTag().toString());
-                if (hasFocus) {
-                    ViewCompat.animate(itemView)
-                            .scaleX(1.1f)
-                            .scaleY(1.1f)
-                            .setDuration(250)
-                            .start();
-                } else {
-                    ViewCompat.animate(itemView)
-                            .scaleX(1.0f)
-                            .scaleY(1.0f)
-                            .setDuration(250)
-                            .start();
-                }
+//                if (hasFocus) {
+//                    ViewCompat.animate(itemView)
+//                            .scaleX(1.1f)
+//                            .scaleY(1.1f)
+//                            .setDuration(250)
+//                            .start();
+//                } else {
+//                    ViewCompat.animate(itemView)
+//                            .scaleX(1.0f)
+//                            .scaleY(1.0f)
+//                            .setDuration(250)
+//                            .start();
+//                }
             });
             if (position == 0) {
                 if (lastTextView == null) {
                     lastTextView = tabBinding.mainTabText;
                     lastTextView.setTextColor(getColor(R.color.self_4));
                     tabBinding.mainTabText.setNextFocusDownId(R.id.recommend_1);
-                    ViewCompat.animate(lastTextView)
-                            .scaleX(1.3f)
-                            .scaleY(1.3f)
-                            .setDuration(250)
-                            .start();
+                    lastTextView.setBackgroundResource(R.drawable.item_tab_background);
+//                    ViewCompat.animate(lastTextView)
+//                            .scaleX(1.3f)
+//                            .scaleY(1.3f)
+//                            .setDuration(250)
+//                            .start();
                     switchFragment(0);
                 }
             } else if (position == 1 || position == 2 || position == 3 || position == 4 || position == 5) {
@@ -234,39 +234,50 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.OnLi
             lastTextView = textView;
         } else {
             lastTextView.setTextColor(getColor(R.color.white));
-            ViewCompat.animate(lastTextView)
-                    .scaleX(1.0f)
-                    .scaleY(1.0f)
-                    .setDuration(250)
-                    .start();
+            lastTextView.setBackgroundColor(getColor(R.color.none));
+//            ViewCompat.animate(lastTextView)
+//                    .scaleX(1.0f)
+//                    .scaleY(1.0f)
+//                    .setDuration(250)
+//                    .start();
         }
         if (position == 0) {
             textView.setTextColor(getColor(R.color.self_4));
+            textView.setBackgroundResource(R.drawable.item_tab_background);
         } else if (position == 1) {
             textView.setTextColor(getColor(R.color.self_5));
+            textView.setBackgroundResource(R.drawable.item_tab_background);
         } else if (position == 2) {
             textView.setTextColor(getColor(R.color.self_6));
+            textView.setBackgroundResource(R.drawable.item_tab_background);
         } else if (position == 3) {
             textView.setTextColor(getColor(R.color.self_2));
+            textView.setBackgroundResource(R.drawable.item_tab_background);
         } else if (position == 4) {
             textView.setTextColor(getColor(R.color.self_4));
+            textView.setBackgroundResource(R.drawable.item_tab_background);
         } else if (position == 5) {
             textView.setTextColor(getColor(R.color.self_8));
+            textView.setBackgroundResource(R.drawable.item_tab_background);
         } else if (position == 6) {
             textView.setTextColor(getColor(R.color.self_7));
+            textView.setBackgroundResource(R.drawable.item_tab_background);
         } else if (position == 7) {
             textView.setTextColor(getColor(R.color.self_8));
+            textView.setBackgroundResource(R.drawable.item_tab_background);
         } else if (position == 8) {
             textView.setTextColor(getColor(R.color.self_6));
+            textView.setBackgroundResource(R.drawable.item_tab_background);
         } else if (position == 9) {
             textView.setTextColor(getColor(R.color.self_4));
+            textView.setBackgroundResource(R.drawable.item_tab_background);
         }
         lastTextView = textView;
-        ViewCompat.animate(lastTextView)
-                .scaleX(1.3f)
-                .scaleY(1.3f)
-                .setDuration(250)
-                .start();
+//        ViewCompat.animate(lastTextView)
+//                .scaleX(1.3f)
+//                .scaleY(1.3f)
+//                .setDuration(250)
+//                .start();
     }
 
     private void switchFragment(int position) {

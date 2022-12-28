@@ -5,19 +5,19 @@
     android:background="@color/background_color"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <TextView
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:text="@string/settings"
-        android:textSize="28sp"
-        android:gravity="center"
-        android:focusable="false"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/recycler_view_settings"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintWidth_percent="0.2"
-        app:layout_constraintHorizontal_bias="0"/>
+<!--    <TextView-->
+<!--        android:layout_width="0dp"-->
+<!--        android:layout_height="0dp"-->
+<!--        android:text="@string/settings"-->
+<!--        android:textSize="28sp"-->
+<!--        android:gravity="center"-->
+<!--        android:focusable="false"-->
+<!--        app:layout_constraintTop_toTopOf="parent"-->
+<!--        app:layout_constraintBottom_toTopOf="@id/recycler_view_settings"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintWidth_percent="0.2"-->
+<!--        app:layout_constraintHorizontal_bias="0"/>-->
 
     <androidx.leanback.widget.VerticalGridView
         android:id="@+id/recycler_view_settings"
@@ -32,7 +32,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintWidth_percent="0.2"
         app:layout_constraintHorizontal_bias="0"
-        app:layout_constraintHeight_percent="0.85"
         app:layout_constraintVertical_bias="1"/>
 
     <FrameLayout

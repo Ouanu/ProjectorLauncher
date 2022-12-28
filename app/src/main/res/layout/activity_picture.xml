@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/picture_main"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="360dp"
+    android:layout_height="match_parent"
+    tools:context=".ui.activity.PictureActivity"
+    android:orientation="vertical"
+    android:gravity="center">
+
+    <TextView
+        android:id="@+id/brightness"
+        android:layout_width="wrap_content"
+        android:layout_height="50dp"
+        android:text="亮度: "
+        android:textSize="22sp"
+        android:textStyle="bold"
+        android:fontFamily="monospace"
+        android:letterSpacing="0.3"
+        android:textColor="@color/white"/>
+
+    <TextView
+        android:id="@+id/color_temp"
+        android:layout_width="wrap_content"
+        android:layout_height="50dp"
+        android:text="色温: "
+        android:textSize="22sp"
+        android:textStyle="bold"
+        android:fontFamily="monospace"
+        android:letterSpacing="0.3"
+        android:textColor="@color/white"/>
+
+    <TextView
+        android:id="@+id/contrast"
+        android:layout_width="wrap_content"
+        android:layout_height="50dp"
+        android:text="反差: "
+        android:textSize="22sp"
+        android:textStyle="bold"
+        android:fontFamily="monospace"
+        android:letterSpacing="0.3"
+        android:textColor="@color/white"/>
+
+<!--    <TextView-->
+<!--        android:id="@+id/contrast"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="50dp"-->
+<!--        android:text="反差: "-->
+<!--        android:textSize="22sp"-->
+<!--        android:textStyle="bold"-->
+<!--        android:fontFamily="monospace"-->
+<!--        android:letterSpacing="0.3"-->
+<!--        android:textColor="@color/white"/>-->
+
+
+</LinearLayout>
