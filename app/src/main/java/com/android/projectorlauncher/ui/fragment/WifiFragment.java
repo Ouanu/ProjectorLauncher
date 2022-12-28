@@ -105,7 +105,11 @@ public class WifiFragment extends Fragment implements View.OnClickListener, Wifi
                         .scaleY(1.05f)
                         .setDuration(250)
                         .start();
-                wifiBinding.btnSwitch.setTextColor(requireContext().getColor(R.color.self_4));
+                if (presenter.isWifiEnabled()) {
+                    wifiBinding.btnSwitch.setTextColor(requireContext().getColor(R.color.white));
+                } else {
+                    wifiBinding.btnSwitch.setTextColor(requireContext().getColor(R.color.self_4));
+                }
             } else {
                 ViewCompat.animate(v)
                         .scaleX(1f)
@@ -244,10 +248,12 @@ public class WifiFragment extends Fragment implements View.OnClickListener, Wifi
             } else {
                 binding.lock.setVisibility(View.INVISIBLE);
             }
-            if (result.level >= -55) {
+            if (result.level >= -45) {
+                binding.ivWifi.setImageResource(R.drawable.wifi_very_strong);
+            } else if (result.level >= -55) {
                 binding.ivWifi.setImageResource(R.drawable.wifi_strong);
             } else if (result.level >= -77) {
-                binding.ivWifi.setImageResource(R.drawable.wifi_middle);
+                binding.ivWifi.setImageResource(R.drawable.wifi_weak);
             } else {
                 binding.ivWifi.setImageResource(R.drawable.wifi_weak);
             }

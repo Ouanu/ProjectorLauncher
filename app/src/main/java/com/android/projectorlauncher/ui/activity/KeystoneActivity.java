@@ -22,8 +22,8 @@ import vendor.hisilicon.hardware.hwsysmanager.V1_0.IHwSysManager;
 public class KeystoneActivity extends Activity implements View.OnClickListener, View.OnFocusChangeListener {
     private static final int MAX_W = 1920;
     private static final int MAX_L = 1080;
-    private static final int MIN_W = 192;
-    private static final int MIN_L = 108;
+    private static final int MIN_W = 960;
+    private static final int MIN_L = 540;
     private ActivityKeystoneBinding keystoneBinding;
     private IHwSysManager sysManager;
     private int cnt = 0;
@@ -91,34 +91,34 @@ public class KeystoneActivity extends Activity implements View.OnClickListener, 
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (isSetting) {
             if (keyCode == KeyEvent.KEYCODE_DPAD_LEFT) {
-                if (xy[0] - MAX_W * 0.1 <= minXy[0]) {
+                if (xy[0] - MAX_W * 0.05 <= minXy[0]) {
                     xy[0] = minXy[0];
                 } else {
-                    xy[0] = (int) (xy[0] - MAX_W * 0.1);
+                    xy[0] = (int) (xy[0] - MAX_W * 0.05);
                 }
                 refreshPropertiesAndUpdateUI();
                 return false;
             } else if (keyCode == KeyEvent.KEYCODE_DPAD_RIGHT) {
-                if(xy[0] + MAX_W * 0.1 >= maxXy[0]) {
+                if(xy[0] + MAX_W * 0.05 >= maxXy[0]) {
                     xy[0] = maxXy[0];
                 } else {
-                    xy[0] = (int) (MAX_W * 0.1 + xy[0]);
+                    xy[0] = (int) (MAX_W * 0.05 + xy[0]);
                 }
                 refreshPropertiesAndUpdateUI();
                 return false;
             } else if (keyCode == KeyEvent.KEYCODE_DPAD_UP) {
-                if (MAX_L * 0.1 + xy[1] >= maxXy[1]) {
+                if (MAX_L * 0.05 + xy[1] >= maxXy[1]) {
                     xy[1] = maxXy[1];
                 } else {
-                    xy[1] = (int) (MAX_L * 0.1 + xy[1]);
+                    xy[1] = (int) (MAX_L * 0.05 + xy[1]);
                 }
                 refreshPropertiesAndUpdateUI();
                 return false;
             } else if (keyCode == KeyEvent.KEYCODE_DPAD_DOWN) {
-                if (xy[1] - MAX_L * 0.1 <= minXy[1]) {
+                if (xy[1] - MAX_L * 0.05 <= minXy[1]) {
                     xy[1] = minXy[1];
                 } else {
-                    xy[1] = (int) (xy[1] - MAX_L * 0.1);
+                    xy[1] = (int) (xy[1] - MAX_L * 0.05);
                 }
                 refreshPropertiesAndUpdateUI();
                 return false;
@@ -162,7 +162,7 @@ public class KeystoneActivity extends Activity implements View.OnClickListener, 
             xy = KeystoneUtils.getLtXY();
             keystoneBinding.keystoneX.setText(String.valueOf(xy[0]));
             keystoneBinding.keystoneY.setText(String.valueOf(xy[1]));
-            maxXy[0] = (int) (MAX_W * 0.9);
+            maxXy[0] = (int) (MAX_W * 0.5);
             maxXy[1] = MAX_L;
             minXy[0] = 0;
             minXy[1] = MIN_L;
@@ -188,8 +188,8 @@ public class KeystoneActivity extends Activity implements View.OnClickListener, 
             xy = KeystoneUtils.getLbXY();
             keystoneBinding.keystoneX.setText(String.valueOf(xy[0]));
             keystoneBinding.keystoneY.setText(String.valueOf(xy[1]));
-            maxXy[0] = (int) (MAX_W * 0.9);
-            maxXy[1] = (int) (MAX_L * 0.9);
+            maxXy[0] = (int) (MAX_W * 0.5);
+            maxXy[1] = (int) (MAX_L * 0.5);
             minXy[0] = 0;
             minXy[1] = 0;
             mode = 3;
@@ -202,7 +202,7 @@ public class KeystoneActivity extends Activity implements View.OnClickListener, 
             keystoneBinding.keystoneX.setText(String.valueOf(xy[0]));
             keystoneBinding.keystoneY.setText(String.valueOf(xy[1]));
             maxXy[0] = MAX_W;
-            maxXy[1] = (int) (MAX_L * 0.9);
+            maxXy[1] = (int) (MAX_L * 0.5);
             minXy[0] = MIN_W;
             minXy[1] = 0;
             mode = 4;
