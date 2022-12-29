@@ -10,6 +10,8 @@ import android.widget.Toast;
 
 import com.android.projectorlauncher.bean.GameCard;
 
+import java.io.IOException;
+
 public class JumpToApplication {
 
     public static void playVideo(Context context, String id) {
@@ -99,8 +101,22 @@ public class JumpToApplication {
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             context.startActivity(intent);
         }
+    }
 
+    public static void turnToPictureSettings() {
+        try {
+            Runtime.getRuntime().exec("am start -n com.rx.rxtvsettings/.PictureActivity");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
+    public static void turnToAudioSettings() {
+        try {
+            Runtime.getRuntime().exec("am start -n com.rx.rxtvsettings/.AudioActivity");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
 }

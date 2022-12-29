@@ -12,6 +12,7 @@ import androidx.fragment.app.Fragment;
 
 import com.android.projectorlauncher.databinding.FragmentAdvanceBinding;
 import com.android.projectorlauncher.ui.activity.KeystoneActivity;
+import com.android.projectorlauncher.utils.JumpToApplication;
 
 public class AdvanceFragment extends Fragment implements View.OnClickListener {
 
@@ -23,6 +24,7 @@ public class AdvanceFragment extends Fragment implements View.OnClickListener {
         advanceBinding = FragmentAdvanceBinding.inflate(inflater, container, false);
         advanceBinding.keystone.setOnClickListener(this);
         advanceBinding.picture.setOnClickListener(this);
+        advanceBinding.audio.setOnClickListener(this);
         return advanceBinding.getRoot();
     }
 
@@ -37,6 +39,10 @@ public class AdvanceFragment extends Fragment implements View.OnClickListener {
             Intent intent = new Intent(requireActivity(), KeystoneActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(intent);
+        } else if (v == advanceBinding.picture) {
+            JumpToApplication.turnToPictureSettings();
+        } else if (v == advanceBinding.audio) {
+            JumpToApplication.turnToAudioSettings();
         }
     }
 }

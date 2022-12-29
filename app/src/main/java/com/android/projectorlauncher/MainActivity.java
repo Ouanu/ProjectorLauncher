@@ -147,11 +147,6 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.OnLi
         @SuppressLint("SimpleDateFormat")
         SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm");
         binding.time.setText(dateFormat.format(new Date(System.currentTimeMillis())));
-
-
-//        getSupportFragmentManager().beginTransaction()
-//                .add(R.id.container_pager, settingsFragment)
-//                .commit();
     }
 
     @Override
@@ -181,33 +176,13 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.OnLi
         public void bind(int position) {
             this.position = position;
             tabBinding.mainTabText.setText(titles.get(position));
-            itemView.setOnFocusChangeListener((v, hasFocus) -> {
-                map.put(hasFocus, v.getTag().toString());
-//                if (hasFocus) {
-//                    ViewCompat.animate(itemView)
-//                            .scaleX(1.1f)
-//                            .scaleY(1.1f)
-//                            .setDuration(250)
-//                            .start();
-//                } else {
-//                    ViewCompat.animate(itemView)
-//                            .scaleX(1.0f)
-//                            .scaleY(1.0f)
-//                            .setDuration(250)
-//                            .start();
-//                }
-            });
+            itemView.setOnFocusChangeListener((v, hasFocus) -> map.put(hasFocus, v.getTag().toString()));
             if (position == 0) {
                 if (lastTextView == null) {
                     lastTextView = tabBinding.mainTabText;
                     lastTextView.setTextColor(getColor(R.color.self_4));
                     tabBinding.mainTabText.setNextFocusDownId(R.id.recommend_1);
                     lastTextView.setBackgroundResource(R.drawable.item_tab_background);
-//                    ViewCompat.animate(lastTextView)
-//                            .scaleX(1.3f)
-//                            .scaleY(1.3f)
-//                            .setDuration(250)
-//                            .start();
                     switchFragment(0);
                 }
             } else if (position == 1 || position == 2 || position == 3 || position == 4 || position == 5) {
@@ -235,11 +210,6 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.OnLi
         } else {
             lastTextView.setTextColor(getColor(R.color.white));
             lastTextView.setBackgroundColor(getColor(R.color.none));
-//            ViewCompat.animate(lastTextView)
-//                    .scaleX(1.0f)
-//                    .scaleY(1.0f)
-//                    .setDuration(250)
-//                    .start();
         }
         if (position == 0) {
             textView.setTextColor(getColor(R.color.self_4));
@@ -273,11 +243,6 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.OnLi
             textView.setBackgroundResource(R.drawable.item_tab_background);
         }
         lastTextView = textView;
-//        ViewCompat.animate(lastTextView)
-//                .scaleX(1.3f)
-//                .scaleY(1.3f)
-//                .setDuration(250)
-//                .start();
     }
 
     private void switchFragment(int position) {
@@ -309,7 +274,7 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.OnLi
 
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
+//        super.onBackPressed();
     }
 
     @Override

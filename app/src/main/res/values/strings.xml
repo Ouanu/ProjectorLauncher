@@ -53,4 +53,5 @@
     <string name="keystone_settings">梯度设置</string>
     <string name="picture_settings">画面设置</string>
     <string name="switch_ethernet_success">切换成功</string>
+    <string name="audio_settings">声音设置</string>
 </resources>

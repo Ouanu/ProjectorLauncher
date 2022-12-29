@@ -30,9 +30,25 @@
         android:fontFamily="monospace"
         android:gravity="center"
         android:letterSpacing="0.1"
-        android:nextFocusRight="@id/picture"
-        android:nextFocusDown="@id/picture"
+        android:nextFocusRight="@id/audio"
+        android:nextFocusDown="@id/audio"
         android:text="@string/picture_settings"
+        android:textSize="21sp"
+        android:textStyle="bold" />
+
+    <Button
+        android:id="@+id/audio"
+        android:layout_width="300dp"
+        android:layout_height="55dp"
+        android:layout_marginTop="30dp"
+        android:background="@drawable/btn_advance_background_selector"
+        android:focusable="true"
+        android:fontFamily="monospace"
+        android:gravity="center"
+        android:letterSpacing="0.1"
+        android:nextFocusRight="@id/audio"
+        android:nextFocusDown="@id/audio"
+        android:text="@string/audio_settings"
         android:textSize="21sp"
         android:textStyle="bold" />
 </LinearLayout>
