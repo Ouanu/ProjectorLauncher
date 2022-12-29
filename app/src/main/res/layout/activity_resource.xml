@@ -11,7 +11,7 @@
         android:background="@color/self_4"
         android:gravity="center"
         android:paddingVertical="10dp"
-        android:text="视频"
+        android:text="@string/video"
         android:focusable="false"
         android:textColor="@color/background_color"
         android:textSize="35sp"

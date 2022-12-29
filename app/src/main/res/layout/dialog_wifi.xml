@@ -16,7 +16,6 @@
         android:layout_marginTop="20dp"
         android:fontFamily="sans-serif"
         android:gravity="center"
-        android:text="WIFI"
         android:textColor="@color/white"
         android:textSize="22sp" />
 
@@ -74,7 +73,7 @@
             android:gravity="end|center_vertical"
             android:nextFocusUp="@id/passwd"
             android:nextFocusDown="@id/connect"
-            android:text="显示密码"
+            android:text="@string/show_passwd"
             android:textColor="@color/self_4"
             android:textSize="13sp"
             android:textStyle="bold" />

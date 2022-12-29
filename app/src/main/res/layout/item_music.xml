@@ -17,7 +17,6 @@
         android:layout_marginStart="10dp"
         android:maxLines="1"
         android:letterSpacing="0.1"
-        android:text="BECAUSE OF YOU"
         android:textColor="@color/self_4"
         android:textSize="15sp" />
 
@@ -28,7 +27,6 @@
         android:layout_weight="2"
         android:gravity="center_vertical|end"
         android:letterSpacing="0.1"
-        android:text="Kelly Clatkon"
         android:textColor="@color/self_4"
         android:textSize="13sp" />
 
@@ -40,7 +38,6 @@
         android:gravity="center_vertical|end"
         android:letterSpacing="0.1"
         android:layout_marginEnd="10dp"
-        android:text="04:29"
         android:textColor="@color/self_4"
         android:textSize="13sp" />
 </LinearLayout>

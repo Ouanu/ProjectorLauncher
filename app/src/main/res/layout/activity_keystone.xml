@@ -14,7 +14,7 @@
         android:fontFamily="sans-serif-condensed"
         android:gravity="center"
         android:letterSpacing="0.2"
-        android:text="中心圆为正圆时画面比例最佳"
+        android:text="@string/keystone_content"
         android:textColor="@color/self_4"
         android:textSize="28sp"
         android:textStyle="bold"
@@ -72,7 +72,7 @@
             android:layout_height="50dp"
             android:fontFamily="sans-serif"
             android:gravity="center"
-            android:text="100"
+            android:text="0"
             android:textColor="@color/white"
             android:textSize="23sp"
             android:textStyle="bold" />
@@ -88,7 +88,7 @@
             android:layout_height="50dp"
             android:fontFamily="sans-serif"
             android:gravity="center"
-            android:text="100"
+            android:text="0"
             android:textColor="@color/white"
             android:textSize="23sp"
             android:textStyle="bold" />
@@ -117,7 +117,7 @@
             android:fontFamily="sans-serif"
             android:gravity="center"
             android:letterSpacing="0.2"
-            android:text="为选点"
+            android:text="@string/keystone_select"
             android:textColor="@color/self_4"
             android:textSize="23sp"
             android:textStyle="bold" />
@@ -134,7 +134,7 @@
             android:fontFamily="sans-serif"
             android:gravity="center"
             android:letterSpacing="0.2"
-            android:text="为调整"
+            android:text="@string/keystone_tuning_panel"
             android:textColor="@color/self_4"
             android:textSize="22sp"
             android:textStyle="bold" />
@@ -150,7 +150,7 @@
             android:fontFamily="sans-serif"
             android:gravity="center"
             android:letterSpacing="0.2"
-            android:text="为返回"
+            android:text="@string/keystone_back"
             android:textColor="@color/self_4"
             android:textSize="22sp"
             android:textStyle="bold" />

@@ -173,7 +173,6 @@
                     android:scaleType="centerCrop"
                     android:src="@drawable/home_show"
                     android:foreground="@drawable/home_card_selector"
-
                     android:focusable="true"
                     android:contentDescription="@string/show" />
 
@@ -279,7 +278,7 @@
                     android:layout_weight="1"
                     android:fontFamily="sans-serif"
                     android:gravity="center_horizontal"
-                    android:text="信号源"
+                    android:text="@string/source"
                     android:textColor="@color/white"
                     android:textSize="21sp"
                     android:letterSpacing="0.2"

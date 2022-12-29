@@ -12,7 +12,7 @@
         android:layout_height="35dp"
         android:fontFamily="sans-serif-black"
         android:letterSpacing="0.1"
-        android:text="时间设置"
+        android:text="@string/time_settings"
         android:textColor="@color/white"
         android:textSize="29sp" />
 
@@ -35,7 +35,7 @@
             android:fontFamily="sans-serif-black"
             android:gravity="center"
             android:paddingVertical="5dp"
-            android:text="自动更新时间"
+            android:text="@string/auto_update_time"
             android:textColor="@color/black"
             android:textSize="23sp" />
 
@@ -62,7 +62,7 @@
             android:layout_marginTop="10dp"
             android:fontFamily="sans-serif-black"
             android:letterSpacing="0.1"
-            android:text="时间"
+            android:text="@string/time"
             android:textColor="@color/black"
             android:textSize="21sp" />
 
@@ -86,7 +86,6 @@
                 android:layout_marginEnd="30dp"
                 android:fontFamily="sans-serif-medium"
                 android:gravity="center_vertical"
-                android:text="24"
                 android:textColor="@color/white"
                 android:textSize="21sp" />
 
@@ -118,7 +117,6 @@
                 android:layout_marginEnd="30dp"
                 android:fontFamily="sans-serif-medium"
                 android:gravity="center_vertical"
-                android:text="24"
                 android:textColor="@color/white"
                 android:textSize="21sp" />
 
@@ -139,7 +137,7 @@
             android:layout_marginTop="10dp"
             android:fontFamily="sans-serif-black"
             android:letterSpacing="0.1"
-            android:text="日期"
+            android:text="@string/date"
             android:textColor="@color/black"
             android:textSize="21sp" />
 
@@ -164,7 +162,6 @@
                 android:fontFamily="sans-serif-medium"
                 android:gravity="center_vertical"
                 android:letterSpacing="0.1"
-                android:text="2022年12月5日"
                 android:textColor="@color/white"
                 android:textSize="21sp" />
 
@@ -185,7 +182,7 @@
             android:layout_marginTop="10dp"
             android:fontFamily="sans-serif-black"
             android:letterSpacing="0.1"
-            android:text="时区"
+            android:text="@string/time_zone"
             android:textColor="@color/black"
             android:textSize="21sp" />
 
@@ -211,7 +208,6 @@
                 android:fontFamily="sans-serif-medium"
                 android:gravity="center_vertical"
                 android:letterSpacing="0.1"
-                android:text="北京 (UTC+8:00)"
                 android:textColor="@color/white"
                 android:textSize="21sp" />
 
@@ -235,7 +231,7 @@
             android:focusable="true"
             android:clickable="true"
             android:paddingHorizontal="35dp"
-            android:text="确认"
+            android:text="@string/confirm"
             android:textSize="18sp" />
     </RelativeLayout>
 </LinearLayout>

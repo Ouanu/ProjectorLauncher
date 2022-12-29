@@ -28,7 +28,7 @@
         android:layout_height="35dp"
         android:layout_marginEnd="10dp"
         android:layout_marginVertical="5dp"
-        android:text="确认"
+        android:text="@string/confirm"
         android:textColor="@color/black"
         android:textSize="20sp"
         android:background="@drawable/time_settings_foreground_selector"/>

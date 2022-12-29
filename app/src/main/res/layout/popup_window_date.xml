@@ -17,7 +17,7 @@
         android:id="@+id/confirm"
         android:layout_width="wrap_content"
         android:layout_height="35dp"
-        android:text="确认"
+        android:text="@string/confirm"
         android:textSize="18sp"
         android:background="@drawable/time_settings_background_selector"
         android:layout_marginVertical="10dp"

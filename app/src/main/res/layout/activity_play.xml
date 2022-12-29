@@ -37,7 +37,6 @@
             android:fontFamily="sans-serif-condensed"
             android:gravity="center"
             android:letterSpacing="0.05"
-            android:text="BECAUSE OF YOU"
             android:textColor="@color/background_color"
             android:textSize="30sp" />
 
@@ -51,7 +50,6 @@
             android:fontFamily="sans-serif-condensed-light"
             android:gravity="center"
             android:letterSpacing="0.08"
-            android:text="Kelly Clatkson"
             android:textColor="@color/background_color"
             android:textSize="25sp" />
 

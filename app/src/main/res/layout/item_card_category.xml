@@ -23,7 +23,6 @@
         android:id="@+id/title"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="测试卡片"
         android:textSize="20sp"
         android:singleLine="true"
         android:focusable="false"
