@@ -56,7 +56,6 @@ android {
 dependencies {
     implementation files('libs\\classes.jar')
     implementation files('libs\\vendor.hisilicon.hardware.hwsysmanager-V1.0-java.jar')
-    implementation files('libs\\HitvShare.jar')
     def leanback_version = "1.2.0-alpha02"
 
     implementation "androidx.leanback:leanback:$leanback_version"

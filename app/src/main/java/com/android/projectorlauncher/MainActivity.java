@@ -27,6 +27,7 @@ import com.android.projectorlauncher.ui.fragment.ChildrenFragment;
 import com.android.projectorlauncher.ui.fragment.ComicsFragment;
 import com.android.projectorlauncher.ui.fragment.GameFragment;
 import com.android.projectorlauncher.ui.fragment.HomeFragment;
+import com.android.projectorlauncher.ui.fragment.LanguageFragment;
 import com.android.projectorlauncher.ui.fragment.MatchFragment;
 import com.android.projectorlauncher.ui.fragment.MovieFragment;
 import com.android.projectorlauncher.ui.fragment.SettingsFragment;

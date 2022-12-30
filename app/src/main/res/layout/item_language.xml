@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/option"
+    android:layout_width="300dp"
+    android:layout_height="50dp"
+    android:gravity="center"
+    android:orientation="vertical"
+    android:text="中文"
+    android:textSize="30sp"
+    android:focusable="true"
+    android:textColor="@color/white"
+    android:background="@drawable/item_language_selector">
+
+</TextView>

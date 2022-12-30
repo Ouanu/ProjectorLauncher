@@ -38,6 +38,7 @@ public class SettingsFragment extends Fragment {
 //            options.add("声音设置");
             options.add("时间设置");
             options.add("进阶设置");
+            options.add("语言设置");
         }
 
     }
@@ -131,6 +132,11 @@ public class SettingsFragment extends Fragment {
                             .replace(R.id.container_frameLayout, new AdvanceFragment())
                             .commit();
                     binding.option.setNextFocusRightId(R.id.keystone);
+                    break;
+                case 5:
+                    getParentFragmentManager().beginTransaction()
+                            .replace(R.id.container_frameLayout, new LanguageFragment())
+                            .commit();
                     break;
                 default:
                     break;
