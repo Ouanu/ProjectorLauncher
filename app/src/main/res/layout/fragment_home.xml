@@ -28,8 +28,7 @@
             android:layout_marginHorizontal="5dp"
             android:layout_marginVertical="5dp"
             android:layout_weight="2"
-            android:descendantFocusability="afterDescendants"
-            android:nextFocusRight="@id/settings">
+            android:descendantFocusability="afterDescendants">
 
             <ImageView
                 android:id="@+id/recent_watch"
@@ -39,6 +38,7 @@
                 android:src="@drawable/home_history"
                 android:focusable="true"
                 android:foreground="@drawable/home_card_selector"
+                android:nextFocusRight="@id/settings"
                 android:contentDescription="@string/recent_history" />
 
             <TextView
@@ -294,8 +294,7 @@
             android:layout_height="0dp"
             android:layout_marginHorizontal="5dp"
             android:layout_marginVertical="5dp"
-            android:layout_weight="1.2"
-            android:nextFocusRight="@id/application">
+            android:layout_weight="1.2">
 
             <LinearLayout
                 android:id="@+id/game"
@@ -303,7 +302,8 @@
                 android:layout_height="match_parent"
                 android:background="@drawable/home_game_selector"
                 android:focusable="true"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:nextFocusRight="@id/application">
 
                 <ImageView
                     android:layout_width="match_parent"
