@@ -32,8 +32,4 @@ public class LanguageUtils {
         LocalePicker.updateLocale(localeInfo.getLocale());
     }
 
-    public static String getLanguage() {
-        return Locale.getDefault().getDisplayLanguage();
-    }
-
 }

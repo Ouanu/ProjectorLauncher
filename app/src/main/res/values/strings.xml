@@ -73,4 +73,5 @@
     <string name="time_setting">时间设置</string>
     <string name="language_setting">语言设置</string>
     <string name="more_setting">更多设置</string>
+    <string name="language_select">语言选择</string>
 </resources>
