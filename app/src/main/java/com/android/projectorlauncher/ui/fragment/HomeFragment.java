@@ -62,7 +62,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
     @Override
     public void onClick(View v) {
         if (v == homeBinding.application) {
-            listener.turnToPager(7);
+            listener.turnToPager(8);
         } else if (v == homeBinding.tv) {
             listener.turnToPager(2);
         } else if (v == homeBinding.movie) {
@@ -80,6 +80,8 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
             dialog.show(getParentFragmentManager(), "category");
         } else if (v == homeBinding.source) {
             JumpToApplication.turnToSource(requireContext());
+        } else if (v == homeBinding.game) {
+            listener.turnToPager(7);
         }
     }
 

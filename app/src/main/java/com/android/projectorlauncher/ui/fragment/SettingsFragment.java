@@ -31,14 +31,12 @@ public class SettingsFragment extends Fragment {
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
         if (options.size() == 0) {
-            options.add("系统信息");
-            options.add("无线网络");
-            options.add("有线网络");
-//            options.add("画面设置");
-//            options.add("声音设置");
-            options.add("时间设置");
-            options.add("进阶设置");
-            options.add("语言设置");
+            options.add(getString(R.string.system_info));
+            options.add(getString(R.string.wifi));
+            options.add(getString(R.string.ethernet));
+            options.add(getString(R.string.time_setting));
+            options.add(getString(R.string.language_setting));
+            options.add(getString(R.string.more_setting));
         }
 
     }
@@ -129,14 +127,14 @@ public class SettingsFragment extends Fragment {
                     break;
                 case 4:
                     getParentFragmentManager().beginTransaction()
-                            .replace(R.id.container_frameLayout, new AdvanceFragment())
+                            .replace(R.id.container_frameLayout, new LanguageFragment())
                             .commit();
-                    binding.option.setNextFocusRightId(R.id.keystone);
                     break;
                 case 5:
                     getParentFragmentManager().beginTransaction()
-                            .replace(R.id.container_frameLayout, new LanguageFragment())
+                            .replace(R.id.container_frameLayout, new AdvanceFragment())
                             .commit();
+                    binding.option.setNextFocusRightId(R.id.keystone);
                     break;
                 default:
                     break;

@@ -67,4 +67,10 @@
     <string name="time">时间</string>
     <string name="date">日期</string>
     <string name="time_zone">时区</string>
+    <string name="system_info">系统信息</string>
+    <string name="wifi">无线网络</string>
+    <string name="ethernet">有线网络</string>
+    <string name="time_setting">时间设置</string>
+    <string name="language_setting">语言设置</string>
+    <string name="more_setting">更多设置</string>
 </resources>

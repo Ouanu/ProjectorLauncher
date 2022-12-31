@@ -90,7 +90,6 @@ public class ApplicationFragment extends Fragment implements PackagesStatusRecei
     @Override
     public void statusChanged() {
         resolveInfoList.setValue(getAllApplications(requireContext()));
-
     }
 
     class ApplicationViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {

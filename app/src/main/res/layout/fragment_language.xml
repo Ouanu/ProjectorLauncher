@@ -1,13 +1,48 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:gravity="center">
+    android:layout_gravity="center"
+    android:gravity="center"
+    android:orientation="vertical">
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/language_recycle_view"
-        android:layout_width="600dp"
-        android:layout_height="600dp"
-        android:descendantFocusability="afterDescendants"/>
+
+    <LinearLayout
+        android:layout_width="550dp"
+        android:layout_height="50dp"
+        android:background="@drawable/settings_language_background"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:layout_marginBottom="200dp"
+        android:descendantFocusability="afterDescendants">
+
+        <TextView
+            android:layout_width="150dp"
+            android:layout_height="35dp"
+            android:layout_marginStart="30dp"
+            android:gravity="center"
+            android:text="语言选择"
+            android:focusable="false"
+            android:textColor="@color/black"
+            android:textSize="19sp" />
+
+        <TextView
+            android:id="@+id/language_select"
+            android:layout_width="270dp"
+            android:layout_height="35dp"
+            android:layout_marginStart="40dp"
+            android:background="@drawable/language_select"
+            android:focusable="true"
+            android:drawableEnd="@drawable/arrow_drop_black"
+            android:gravity="center"
+            android:text="简体"
+            android:textColor="@color/black"
+            android:textSize="18sp" />
+    </LinearLayout>
+
+<!--    <androidx.recyclerview.widget.RecyclerView-->
+<!--        android:id="@+id/language_recycle_view"-->
+<!--        android:layout_width="600dp"-->
+<!--        android:layout_height="600dp"-->
+<!--        android:descendantFocusability="afterDescendants" />-->
 </LinearLayout>
